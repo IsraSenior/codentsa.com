@@ -93,31 +93,122 @@ const handleClick = (event) => {
 
 ## Componentes UI Base
 
-### Button.vue
+### Logo.vue
+
+Componente SVG del logo Codentsa con soporte para cambio dinámico de color usando `fill="currentColor"`.
 
 **Props:**
-- `variant`: 'primary' | 'secondary' | 'outline' | 'ghost'
-- `size`: 'sm' | 'md' | 'lg'
-- `disabled`: boolean
-- `fullWidth`: boolean
-- `type`: 'button' | 'submit' | 'reset'
-
-**Events:**
-- `@click`: Emitido al hacer click
+- `color`: string (clase de Tailwind, ej: 'text-primary', 'text-black', 'text-white', 'text-secondary')
+  - Default: `'text-primary'`
 
 **Uso:**
 ```vue
 <template>
-  <Button variant="primary" size="lg" @click="handleSubmit">
+  <!-- Logo en rojo (default) -->
+  <Logo />
+
+  <!-- Logo en negro para header -->
+  <Logo color="text-black" />
+
+  <!-- Logo en blanco para footer -->
+  <Logo color="text-white" />
+
+  <!-- Logo en azul -->
+  <Logo color="text-secondary" />
+
+  <!-- Con cualquier clase de color de Tailwind -->
+  <Logo color="text-neutral-700" />
+</template>
+```
+
+**Nota:** El logo usa `fill="currentColor"` y acepta cualquier clase de texto de Tailwind para máxima flexibilidad.
+
+---
+
+### Button.vue
+
+Componente polimórfico que puede renderizarse como `<button>`, `<NuxtLink>` o `<a>` según los props.
+
+**Props de Estilo:**
+- `variant`: 'solid' | 'outline' | 'link' (default: 'solid')
+- `color`: 'dark' | 'light' | 'primary' | 'secondary' (default: 'dark')
+- `size`: 'sm' | 'md' | 'lg' (default: 'md')
+- `fullWidth`: boolean (default: false)
+- `iconOnly`: boolean (default: false) - Para botones cuadrados solo con icono
+
+**Props de Funcionalidad:**
+- `type`: 'button' | 'submit' | 'reset' (default: 'button') - Solo para `<button>`
+- `disabled`: boolean (default: false)
+
+**Props de Navegación:**
+- `to`: string | object - Renderiza como `<NuxtLink>` para navegación interna
+- `href`: string - Renderiza como `<a>` para enlaces externos
+- `target`: '_blank' | '_self' | '_parent' | '_top' - Target del enlace
+- `rel`: string - Relación del enlace (auto: 'noopener noreferrer' para _blank)
+
+**Events:**
+- `@click`: Emitido al hacer click (no emite si disabled)
+
+**Slots:**
+- `default`: Contenido principal del botón
+- `icon`: Slot para iconos (se renderiza después del texto)
+
+**Uso:**
+```vue
+<template>
+  <!-- Botones sólidos -->
+  <Button color="primary" size="lg" @click="handleSubmit">
     Comprar Ahora
   </Button>
 
-  <Button variant="outline" size="md">
+  <Button color="dark">
+    Dark Button
+  </Button>
+
+  <!-- Botones outline -->
+  <Button variant="outline" color="primary">
     Ver Detalles
   </Button>
 
-  <Button variant="ghost" size="sm" disabled>
+  <!-- Botones con iconos -->
+  <Button color="secondary">
+    Añadir al carrito
+    <template #icon>
+      <ShoppingCartIcon class="w-5 h-5 stroke-2" />
+    </template>
+  </Button>
+
+  <!-- Botones solo icono -->
+  <Button icon-only variant="outline" color="dark" size="sm">
+    <HeartIcon class="w-5 h-5 stroke-2" />
+  </Button>
+
+  <!-- Link variant (sin padding/border, con underline en hover) -->
+  <Button variant="link" color="primary" size="sm">
+    Más información
+  </Button>
+
+  <!-- Como NuxtLink (navegación interna) -->
+  <Button to="/productos" color="primary">
+    Ver Productos
+  </Button>
+
+  <!-- Como enlace externo -->
+  <Button href="https://example.com" target="_blank" color="secondary">
+    Abrir en nueva pestaña
+    <template #icon>
+      <ArrowRightIcon class="w-5 h-5 stroke-2" />
+    </template>
+  </Button>
+
+  <!-- Disabled -->
+  <Button disabled color="primary">
     Agotado
+  </Button>
+
+  <!-- Full width -->
+  <Button full-width color="primary">
+    Continuar
   </Button>
 </template>
 ```

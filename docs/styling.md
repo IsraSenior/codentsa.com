@@ -148,6 +148,7 @@ Escala de grises para fondos, textos, bordes y elementos estructurales.
 
 **Alias de conveniencia:**
 - `bg-white` / `text-white` = `neutral-0` (#FFFFFF)
+- `bg-black` / `text-black` = `neutral-900` (#162526)
 
 **Ejemplo:**
 ```html

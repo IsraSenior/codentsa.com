@@ -59,8 +59,9 @@
   --color-neutral-800: #2a5157;
   --color-neutral-900: #162526;
 
-  /* White que hereda directamente */
+  /* White & Black que hereda directamente */
   --color-white: var(--color-neutral-0);
+  --color-black: var(--color-neutral-900);
 
   /* System Colors - Solo default */
   --color-success: #22c393;

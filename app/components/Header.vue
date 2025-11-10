@@ -22,7 +22,7 @@ const announcements = [
         <div class="flex items-center justify-between gap-8">
           <!-- Logo -->
           <NuxtLink to="/" class="flex-shrink-0">
-            <Logo color="black" />
+            <Logo color="text-primary" />
           </NuxtLink>
 
           <!-- Navigation Links -->
