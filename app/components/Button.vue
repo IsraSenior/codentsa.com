@@ -105,7 +105,7 @@ const componentAttrs = computed(() => {
 const buttonClasses = computed(() => {
   // Link variant tiene estilo completamente diferente
   if (props.variant === 'link') {
-    const linkBase = 'font-body font-medium transition-all duration-200 focus:outline-none inline-flex items-center gap-2 underline-offset-4 hover:underline'
+    const linkBase = 'font-body font-normal transition-all duration-200 focus:outline-none inline-flex items-center gap-2 underline-offset-4 hover:underline'
 
     const linkColors = {
       dark: 'text-neutral-900 hover:text-neutral-700',
@@ -127,7 +127,7 @@ const buttonClasses = computed(() => {
 
   // Solid y Outline variants (comportamiento original)
   const base =
-    'font-body font-semibold rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center gap-2'
+    'font-body font-normal rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center gap-2'
 
   // Sizes
   const sizes = props.iconOnly
@@ -145,10 +145,10 @@ const buttonClasses = computed(() => {
   // Variants & Colors
   const variants = {
     solid: {
-      dark: 'bg-neutral-900 text-white hover:bg-neutral-800 focus:ring-neutral-900',
-      light: 'bg-neutral-50 text-neutral-900 hover:bg-neutral-100 focus:ring-neutral-200',
-      primary: 'bg-primary text-white hover:bg-primary-700 focus:ring-primary-300',
-      secondary: 'bg-secondary text-white hover:bg-secondary-700 focus:ring-secondary-300',
+      dark: 'bg-neutral-900 text-white hover:bg-neutral-900/50 focus:ring-neutral-900',
+      light: 'bg-neutral-50 text-neutral-900 hover:bg-neutral-50/50 focus:ring-neutral-200',
+      primary: 'bg-primary text-white hover:bg-primary/50 focus:ring-primary-300',
+      secondary: 'bg-secondary text-white hover:bg-secondary/50 focus:ring-secondary-300',
     },
     outline: {
       dark: 'border-2 border-neutral-900 text-neutral-900 bg-transparent hover:bg-neutral-900 hover:text-white focus:ring-neutral-900',
