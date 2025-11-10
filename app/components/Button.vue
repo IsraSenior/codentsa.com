@@ -1,5 +1,6 @@
 <script setup>
 const props = defineProps({
+  // Styling
   variant: {
     type: String,
     default: 'solid',
@@ -15,25 +16,91 @@ const props = defineProps({
     default: 'md',
     validator: (value) => ['sm', 'md', 'lg'].includes(value),
   },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
   fullWidth: {
     type: Boolean,
     default: false,
   },
+
+  // Button-specific
   type: {
     type: String,
     default: 'button',
     validator: (value) => ['button', 'submit', 'reset'].includes(value),
   },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+
+  // Link-specific (internal navigation with NuxtLink)
+  to: {
+    type: [String, Object],
+    default: null,
+  },
+
+  // Link-specific (external links with <a>)
+  href: {
+    type: String,
+    default: null,
+  },
+  target: {
+    type: String,
+    default: null,
+    validator: (value) => [null, '_blank', '_self', '_parent', '_top'].includes(value),
+  },
+  rel: {
+    type: String,
+    default: null,
+  },
 })
 
 const emit = defineEmits(['click'])
 
+// Determinar qué componente renderizar
+const componentType = computed(() => {
+  if (props.to) return 'NuxtLink'
+  if (props.href) return 'a'
+  return 'button'
+})
+
+// Atributos dinámicos según el tipo de componente
+const componentAttrs = computed(() => {
+  const base = {
+    class: buttonClasses.value,
+  }
+
+  if (componentType.value === 'button') {
+    return {
+      ...base,
+      type: props.type,
+      disabled: props.disabled,
+    }
+  }
+
+  if (componentType.value === 'NuxtLink') {
+    return {
+      ...base,
+      to: props.to,
+      target: props.target,
+      rel: props.rel || (props.target === '_blank' ? 'noopener noreferrer' : null),
+    }
+  }
+
+  if (componentType.value === 'a') {
+    return {
+      ...base,
+      href: props.href,
+      target: props.target,
+      rel: props.rel || (props.target === '_blank' ? 'noopener noreferrer' : null),
+    }
+  }
+
+  return base
+})
+
 const buttonClasses = computed(() => {
-  const base = 'font-body font-semibold rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center gap-2'
+  const base =
+    'font-body font-semibold rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center gap-2'
 
   // Sizes
   const sizes = {
@@ -52,9 +119,12 @@ const buttonClasses = computed(() => {
     },
     outline: {
       dark: 'border-2 border-neutral-900 text-neutral-900 bg-transparent hover:bg-neutral-900 hover:text-white focus:ring-neutral-900',
-      light: 'border-2 border-neutral-50 text-neutral-50 bg-transparent hover:bg-neutral-50 hover:text-neutral-900 focus:ring-neutral-200',
-      primary: 'border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-white focus:ring-primary-300',
-      secondary: 'border-2 border-secondary text-secondary bg-transparent hover:bg-secondary hover:text-white focus:ring-secondary-300',
+      light:
+        'border-2 border-neutral-50 text-neutral-50 bg-transparent hover:bg-neutral-50 hover:text-neutral-900 focus:ring-neutral-200',
+      primary:
+        'border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-white focus:ring-primary-300',
+      secondary:
+        'border-2 border-secondary text-secondary bg-transparent hover:bg-secondary hover:text-white focus:ring-secondary-300',
     },
   }
 
@@ -72,8 +142,8 @@ const handleClick = (event) => {
 </script>
 
 <template>
-  <button :type="type" :class="buttonClasses" :disabled="disabled" @click="handleClick">
+  <component :is="componentType" v-bind="componentAttrs" @click="handleClick">
     <slot />
     <slot name="icon" />
-  </button>
+  </component>
 </template>

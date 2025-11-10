@@ -104,13 +104,62 @@ const handleClick = () => {
         </div>
 
         <!-- Dark Background -->
-        <div class="bg-neutral-900 rounded-lg p-8">
+        <div class="bg-neutral-900 rounded-lg p-8 mb-8">
           <h3 class="font-title text-xl font-medium text-white mb-4">En fondo oscuro</h3>
           <div class="flex flex-wrap gap-4">
             <Button variant="solid" color="light">Light Solid</Button>
             <Button variant="outline" color="light">Light Outline</Button>
             <Button variant="solid" color="primary">Primary</Button>
             <Button variant="outline" color="primary">Primary Outline</Button>
+          </div>
+        </div>
+
+        <!-- As Links -->
+        <div class="bg-white rounded-lg p-8">
+          <h3 class="font-title text-xl font-medium text-neutral-900 mb-4">Como Links</h3>
+
+          <h4 class="font-body text-sm font-semibold text-neutral-700 mb-3">
+            NuxtLink (navegación interna)
+          </h4>
+          <div class="flex flex-wrap gap-4 mb-6">
+            <Button to="/" color="primary">Ir a inicio</Button>
+            <Button to="/about" variant="outline" color="dark">
+              Sobre nosotros
+              <template #icon>
+                <ArrowRightIcon class="w-5 h-5" />
+              </template>
+            </Button>
+          </div>
+
+          <h4 class="font-body text-sm font-semibold text-neutral-700 mb-3">
+            Enlaces externos (target="_blank")
+          </h4>
+          <div class="flex flex-wrap gap-4">
+            <Button href="https://google.com" target="_blank" color="secondary">
+              Abrir Google
+              <template #icon>
+                <ArrowRightIcon class="w-5 h-5" />
+              </template>
+            </Button>
+            <Button
+              href="https://github.com"
+              target="_blank"
+              variant="outline"
+              color="dark"
+            >
+              Ver en GitHub
+              <template #icon>
+                <ArrowRightIcon class="w-5 h-5" />
+              </template>
+            </Button>
+          </div>
+
+          <div class="mt-6 p-4 bg-neutral-50 rounded-lg">
+            <p class="font-body text-sm text-neutral-700">
+              <strong>Nota:</strong> Los enlaces externos con <code class="bg-neutral-200 px-2 py-1 rounded">target="_blank"</code>
+              automáticamente incluyen <code class="bg-neutral-200 px-2 py-1 rounded">rel="noopener noreferrer"</code>
+              por seguridad.
+            </p>
           </div>
         </div>
       </section>
