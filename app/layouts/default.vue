@@ -3,9 +3,11 @@
 </script>
 
 <template>
-    <div>
-        <Header />
-        <main />
-        <Footer />
-    </div>
+  <div>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </div>
 </template>

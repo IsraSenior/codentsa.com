@@ -4,7 +4,7 @@ const props = defineProps({
   variant: {
     type: String,
     default: 'solid',
-    validator: (value) => ['solid', 'outline'].includes(value),
+    validator: (value) => ['solid', 'outline', 'link'].includes(value),
   },
   color: {
     type: String,
@@ -103,6 +103,29 @@ const componentAttrs = computed(() => {
 })
 
 const buttonClasses = computed(() => {
+  // Link variant tiene estilo completamente diferente
+  if (props.variant === 'link') {
+    const linkBase = 'font-body font-medium transition-all duration-200 focus:outline-none inline-flex items-center gap-2 underline-offset-4 hover:underline'
+
+    const linkColors = {
+      dark: 'text-neutral-900 hover:text-neutral-700',
+      light: 'text-neutral-50 hover:text-neutral-200',
+      primary: 'text-primary hover:text-primary-700',
+      secondary: 'text-secondary hover:text-secondary-700',
+    }
+
+    const linkSizes = {
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+    }
+
+    const disabled = props.disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'cursor-pointer'
+
+    return `${linkBase} ${linkSizes[props.size]} ${linkColors[props.color]} ${disabled}`
+  }
+
+  // Solid y Outline variants (comportamiento original)
   const base =
     'font-body font-semibold rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center gap-2'
 
