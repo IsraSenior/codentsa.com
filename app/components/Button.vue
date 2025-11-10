@@ -20,6 +20,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  iconOnly: {
+    type: Boolean,
+    default: false,
+  },
 
   // Button-specific
   type: {
@@ -103,11 +107,17 @@ const buttonClasses = computed(() => {
     'font-body font-semibold rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center gap-2'
 
   // Sizes
-  const sizes = {
-    sm: 'px-4 py-2 text-sm h-[36px]',
-    md: 'px-6 py-3 text-base h-[42px]',
-    lg: 'px-8 py-4 text-lg h-[50px]',
-  }
+  const sizes = props.iconOnly
+    ? {
+        sm: 'p-2 text-sm w-[36px] h-[36px]',
+        md: 'p-3 text-base w-[42px] h-[42px]',
+        lg: 'p-4 text-lg w-[50px] h-[50px]',
+      }
+    : {
+        sm: 'px-4 py-2 text-sm h-[36px]',
+        md: 'px-6 py-3 text-base h-[42px]',
+        lg: 'px-8 py-4 text-lg h-[50px]',
+      }
 
   // Variants & Colors
   const variants = {

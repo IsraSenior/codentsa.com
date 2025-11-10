@@ -103,6 +103,39 @@ const handleClick = () => {
           </div>
         </div>
 
+        <!-- Icon Only Buttons -->
+        <div class="bg-white rounded-lg p-8 mb-8">
+          <h3 class="font-title text-xl font-medium text-neutral-900 mb-4">
+            Botones de solo icono
+          </h3>
+
+          <h4 class="font-body text-sm font-semibold text-neutral-700 mb-3">Solid</h4>
+          <div class="flex flex-wrap items-center gap-4 mb-6">
+            <Button icon-only size="sm" color="dark">
+              <ShoppingCartIcon class="w-5 h-5" />
+            </Button>
+            <Button icon-only size="md" color="primary">
+              <HeartIcon class="w-5 h-5" />
+            </Button>
+            <Button icon-only size="lg" color="secondary">
+              <ArrowRightIcon class="w-5 h-5" />
+            </Button>
+          </div>
+
+          <h4 class="font-body text-sm font-semibold text-neutral-700 mb-3">Outline</h4>
+          <div class="flex flex-wrap items-center gap-4">
+            <Button icon-only variant="outline" size="sm" color="dark">
+              <ShoppingCartIcon class="w-5 h-5" />
+            </Button>
+            <Button icon-only variant="outline" size="md" color="primary">
+              <HeartIcon class="w-5 h-5" />
+            </Button>
+            <Button icon-only variant="outline" size="lg" color="secondary">
+              <ArrowRightIcon class="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+
         <!-- Dark Background -->
         <div class="bg-neutral-900 rounded-lg p-8 mb-8">
           <h3 class="font-title text-xl font-medium text-white mb-4">En fondo oscuro</h3>
