@@ -1,0 +1,208 @@
+/* Blauer Nue Font Family */
+
+/* Thin - 100 */
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Thin.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Thin.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Thin_Italic.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Thin_Italic.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Thin_Italic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Extra Light - 200 */
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraLight.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraLight.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraLight_Italic.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraLight_Italic.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraLight_Italic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Light - 300 */
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Light.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Light.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Light_Italic.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Light_Italic.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Light_Italic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Regular - 400 */
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Regular.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Regular.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Regular_Italic.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Regular_Italic.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Regular_Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Medium - 500 */
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Medium.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Medium.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Medium_Italic.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Medium_Italic.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Medium_Italic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Semi Bold - 600 */
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-SemiBold.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-SemiBold.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-SemiBold_Italic.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-SemiBold_Italic.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-SemiBold_Italic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold - 700 */
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Bold.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Bold.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Bold_Italic.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Bold_Italic.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Bold_Italic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Extra Bold - 800 */
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraBold.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraBold.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraBold_Italic.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraBold_Italic.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-ExtraBold_Italic.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Heavy - 900 */
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Heavy.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Heavy.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Heavy.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Blauer Nue';
+  src:
+    url('/assets/fonts/blauer-nue/BlauerNue-Heavy_Italic.woff2') format('woff2'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Heavy_Italic.woff') format('woff'),
+    url('/assets/fonts/blauer-nue/BlauerNue-Heavy_Italic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
