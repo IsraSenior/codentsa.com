@@ -56,6 +56,8 @@ Codentsa utiliza Tailwind CSS v4 con la nueva sintaxis `@theme` para definir el 
 
 ## Paleta de Colores
 
+**Importante:** Este proyecto **resetea todos los colores por defecto de Tailwind**. Solo están disponibles los colores de marca definidos abajo. Intentar usar colores como `bg-blue-500`, `text-red-600`, etc. no funcionará.
+
 Todos los colores siguen una **escala estandarizada** de 50-900 para facilitar la maquetación con una lógica consistente.
 
 ### Colores Primarios (Rojo Codentsa)
@@ -80,12 +82,19 @@ Color principal de la marca, usado para CTAs, enlaces importantes, y elementos d
 
 **Ejemplo:**
 ```html
+<!-- Botón con hover -->
 <button class="bg-primary hover:bg-primary-700 text-white">
   Comprar Ahora
 </button>
 
+<!-- Fondo claro con texto oscuro -->
 <div class="bg-primary-50 text-primary-900">
-  Fondo muy claro con texto oscuro
+  Mensaje destacado
+</div>
+
+<!-- Card con fondo blanco -->
+<div class="bg-white border border-primary-200 rounded-lg p-6">
+  <h3 class="text-primary">Título</h3>
 </div>
 ```
 
@@ -136,6 +145,9 @@ Escala de grises para fondos, textos, bordes y elementos estructurales.
 | `--color-neutral-700` | #396B71 | `bg-neutral-700`, `text-neutral-700` | Textos oscuros |
 | `--color-neutral-800` | #2A5157 | `bg-neutral-800`, `text-neutral-800` | Textos muy oscuros |
 | `--color-neutral-900` | #162526 | `bg-neutral-900`, `text-neutral-900` | Textos principales |
+
+**Alias de conveniencia:**
+- `bg-white` / `text-white` = `neutral-0` (#FFFFFF)
 
 **Ejemplo:**
 ```html
