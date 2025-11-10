@@ -10,18 +10,13 @@ import {
 <template>
   <header class="w-full">
     <!-- Main Header -->
-    <div class="bg-neutral-50 border-b border-neutral-200">
+    <div class="bg-neutral-50">
       <div class="container mx-auto px-4 py-4">
         <div class="flex items-center justify-between gap-4">
           <!-- Logo -->
           <NuxtLink to="/" class="shrink-0">
             <Logo color="text-primary" />
           </NuxtLink>
-
-          <!-- Mobile: Announcement Text (centered) -->
-          <div class="flex-1 text-center md:hidden">
-            <span class="text-sm font-body font-medium text-primary">Envío en 24 horas</span>
-          </div>
 
           <!-- Desktop: Navigation Links -->
           <nav class="hidden md:flex items-center gap-6 flex-1 justify-center">

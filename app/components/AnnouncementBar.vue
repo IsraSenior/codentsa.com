@@ -8,7 +8,7 @@ const announcements = [
 </script>
 
 <template>
-  <div class="bg-primary text-white">
+  <div class="bg-white text-primary">
     <div class="container mx-auto px-4 py-2">
       <div class="flex items-center justify-between gap-4 text-sm font-body font-medium">
         <span
