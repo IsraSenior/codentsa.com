@@ -41,16 +41,16 @@ const announcements = [
           <!-- Action Icons -->
           <div class="flex items-center gap-3 flex-shrink-0">
             <Button icon-only variant="outline" color="dark" size="sm" @click="() => {}">
-              <MagnifyingGlassIcon class="w-5 h-5 stroke-2" />
+              <MagnifyingGlassIcon class="w-5 h-5" :stroke-width="2" />
             </Button>
             <Button icon-only variant="outline" color="dark" size="sm" to="/favoritos">
-              <HeartIcon class="w-5 h-5 stroke-2" />
+              <HeartIcon class="w-5 h-5" :stroke-width="2" />
             </Button>
             <Button icon-only variant="outline" color="dark" size="sm" to="/carrito">
-              <ShoppingCartIcon class="w-5 h-5 stroke-2" />
+              <ShoppingCartIcon class="w-5 h-5" :stroke-width="2" />
             </Button>
             <Button icon-only variant="solid" color="primary" size="sm" to="/cuenta">
-              <UserIcon class="w-5 h-5 stroke-2" />
+              <UserIcon class="w-5 h-5" :stroke-width="2" />
             </Button>
           </div>
         </div>
