@@ -95,22 +95,31 @@ El proyecto utiliza **JavaScript** en lugar de TypeScript para simplificar el de
 
 ### Paleta de Colores
 
-#### Primarios
-- `primary-50`: #DE6B7B
-- `primary-100`: #D33B50
-- `primary-200`: #D33B50
-- `primary` / `primary-500`: #E71D35 (Default)
+#### Primarios (Escala estandarizada 50-900)
+- `primary-50`: #FEF2F3
+- `primary-100`: #FDE5E7
+- `primary-200`: #FBCED3
+- `primary-300`: #F7A7B0
+- `primary-400`: #F27587
+- `primary-500`: #E71D35 (Default)
+- `primary-600`: #D01729
 - `primary-700`: #A0091E
+- `primary-800`: #87071A
 - `primary-900`: #780716
 
-#### Secundarios
-- `secondary-50`: #D3E0FB
-- `secondary-100`: #7CA1F3
-- `secondary` / `secondary-500`: #2463EB (Default)
+#### Secundarios (Escala estandarizada 50-900)
+- `secondary-50`: #EFF6FF
+- `secondary-100`: #DBEAFE
+- `secondary-200`: #BFDBFE
+- `secondary-300`: #93C5FD
+- `secondary-400`: #60A5FA
+- `secondary-500`: #2463EB (Default)
+- `secondary-600`: #1D4ED8
 - `secondary-700`: #163B8D
+- `secondary-800`: #1E3A8A
 - `secondary-900`: #07142F
 
-#### Neutros
+#### Neutros (Escala estandarizada 0-900)
 - `neutral-0`: #FFFFFF
 - `neutral-50`: #F7FCFC
 - `neutral-100`: #EFF9FA
@@ -120,23 +129,25 @@ El proyecto utiliza **JavaScript** en lugar de TypeScript para simplificar el de
 - `neutral-500`: #57888E
 - `neutral-600`: #487A80
 - `neutral-700`: #396B71
+- `neutral-800`: #2A5157
 - `neutral-900`: #162526
-- `neutral-1000`: #070C0D
 
-#### Sistema
-- `success-light`: #4ECFA9
-- `success` / `success-dark`: #22C393
-- `warning-light`: #FDE5A7
-- `warning` / `warning-dark`: #FCCC4F
-- `error-light`: #F68E8E
-- `error` / `error-dark`: #F04343
+#### Sistema (Solo default - usar opacidades para variantes)
+- `success`: #22C393
+- `warning`: #FCCC4F
+- `error`: #F04343
 
 ### Uso en Tailwind
 ```html
-<!-- Colores -->
-<div class="bg-primary text-neutral-0">Primary background</div>
-<div class="text-secondary-700">Secondary text</div>
-<div class="bg-success text-white">Success message</div>
+<!-- Colores con escala completa -->
+<div class="bg-primary-500 hover:bg-primary-700 text-white">Primary button</div>
+<div class="bg-primary-50 text-primary-900">Light background with dark text</div>
+<div class="text-secondary-600">Secondary text</div>
+
+<!-- Sistema de colores con opacidades -->
+<div class="bg-success/10 text-success border border-success/30">Success light</div>
+<div class="bg-warning text-white">Warning default</div>
+<div class="bg-error/20 text-error-900">Error with opacity</div>
 
 <!-- Tipografías -->
 <h1 class="font-title text-4xl font-bold">Título Principal</h1>
