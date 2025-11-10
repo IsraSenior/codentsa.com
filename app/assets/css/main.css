@@ -13,6 +13,9 @@
   --font-title: 'Figtree', sans-serif;
   --font-body: 'Blauer Nue', sans-serif;
 
+  /* Reinicia los tokens de colores */
+  --color-*: initial;
+
   /* Primary Colors - Escala estandarizada */
   --color-primary-50: #fef2f3;
   --color-primary-100: #fde5e7;
@@ -55,6 +58,9 @@
   --color-neutral-700: #396b71;
   --color-neutral-800: #2a5157;
   --color-neutral-900: #162526;
+
+  /* White que hereda directamente */
+  --color-white: var(--color-neutral-0);
 
   /* System Colors - Solo default */
   --color-success: #22c393;
