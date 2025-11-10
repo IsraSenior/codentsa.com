@@ -25,6 +25,9 @@
   --color-primary-800: #87071a;
   --color-primary-900: #780716;
 
+  /* Default que hereda directamente */
+  --color-primary: var(--color-primary-500);
+
   /* Secondary Colors - Escala estandarizada */
   --color-secondary-50: #eff6ff;
   --color-secondary-100: #dbeafe;
@@ -36,6 +39,9 @@
   --color-secondary-700: #163b8d;
   --color-secondary-800: #1e3a8a;
   --color-secondary-900: #07142f;
+
+  /* Default que hereda directamente */
+  --color-secondary: var(--color-secondary-500);
 
   /* Neutral Colors - Escala estandarizada */
   --color-neutral-0: #ffffff;
