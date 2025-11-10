@@ -40,18 +40,31 @@ const announcements = [
 
           <!-- Action Icons -->
           <div class="flex items-center gap-3 flex-shrink-0">
-            <Button icon-only variant="outline" color="dark" size="sm" @click="() => {}">
-              <MagnifyingGlassIcon class="w-5 h-5" :stroke-width="2" />
-            </Button>
-            <Button icon-only variant="outline" color="dark" size="sm" to="/favoritos">
-              <HeartIcon class="w-5 h-5" :stroke-width="2" />
-            </Button>
-            <Button icon-only variant="outline" color="dark" size="sm" to="/carrito">
-              <ShoppingCartIcon class="w-5 h-5" :stroke-width="2" />
-            </Button>
-            <Button icon-only variant="solid" color="primary" size="sm" to="/cuenta">
-              <UserIcon class="w-5 h-5" :stroke-width="2" />
-            </Button>
+            <button
+              class="p-2 text-neutral-900 hover:text-neutral-700 transition-colors"
+              @click="() => {}"
+            >
+              <MagnifyingGlassIcon class="w-6 h-6" :stroke-width="2" />
+            </button>
+            <NuxtLink
+              to="/favoritos"
+              class="p-2 text-neutral-900 hover:text-neutral-700 transition-colors"
+            >
+              <HeartIcon class="w-6 h-6" :stroke-width="2" />
+            </NuxtLink>
+            <NuxtLink
+              to="/carrito"
+              class="p-2 text-neutral-900 hover:text-neutral-700 transition-colors"
+            >
+              <ShoppingCartIcon class="w-6 h-6" :stroke-width="2" />
+            </NuxtLink>
+            <NuxtLink to="/cuenta" class="flex-shrink-0">
+              <img
+                src="https://avatar.iran.liara.run/public/1"
+                alt="Usuario"
+                class="w-10 h-10 rounded-full border-2 border-primary"
+              >
+            </NuxtLink>
           </div>
         </div>
       </div>
