@@ -61,6 +61,7 @@ const currentPage = ref(initializePageFromURL())
 const itemsPerPage = 12 // 4 + 3 + 4 + pagination
 const currentFilters = ref(initializeFiltersFromURL())
 const currentSort = ref(initializeSortFromURL())
+const isLoading = ref(false)
 
 // Get all products from store
 const allProducts = computed(() => productsStore.allProducts)
@@ -135,6 +136,18 @@ const firstRowProducts = computed(() => paginatedProducts.value.slice(0, 4))
 const secondRowProducts = computed(() => paginatedProducts.value.slice(4, 7))
 const thirdRowProducts = computed(() => paginatedProducts.value.slice(7, 11))
 
+// Check if there are active filters
+const hasActiveFilters = computed(() => {
+  return currentFilters.value.categories.length > 0 ||
+    currentFilters.value.priceRanges.length > 0 ||
+    currentFilters.value.material ||
+    currentFilters.value.brands.length > 0 ||
+    currentSort.value !== 'relevance'
+})
+
+// Check if there are products to show
+const hasProducts = computed(() => filteredProducts.value.length > 0)
+
 // Helper function to update URL with all parameters
 const updateURL = (page = currentPage.value) => {
   const query = {}
@@ -192,6 +205,18 @@ const handlePageChange = (page) => {
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
+
+const handleClearAllFilters = () => {
+  currentFilters.value = {
+    categories: [],
+    priceRanges: [],
+    material: null,
+    brands: [],
+  }
+  currentSort.value = 'relevance'
+  currentPage.value = 1
+  updateURL(1)
+}
 </script>
 
 <template>
@@ -207,8 +232,33 @@ const handlePageChange = (page) => {
         @sort-change="handleSortChange"
       />
 
+      <!-- Loading Skeleton -->
+      <div v-if="isLoading" class="space-y-6">
+        <!-- First Row: 4 Skeletons -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <ProductCardSkeleton v-for="i in 4" :key="`skeleton-1-${i}`" />
+        </div>
+
+        <!-- Second Row: 3 Skeletons -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <ProductCardSkeleton v-for="i in 3" :key="`skeleton-2-${i}`" />
+        </div>
+
+        <!-- Third Row: 4 Skeletons -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <ProductCardSkeleton v-for="i in 4" :key="`skeleton-3-${i}`" />
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <ProductEmptyState
+        v-else-if="!hasProducts"
+        :has-active-filters="hasActiveFilters"
+        @clear-filters="handleClearAllFilters"
+      />
+
       <!-- Products Grid with Special Layout -->
-      <div class="space-y-6">
+      <div v-else class="space-y-6">
         <!-- First Row: 4 Products -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           <ProductCard

@@ -227,7 +227,9 @@ const clearAllFilters = () => {
   selectedPriceRanges.value = []
   selectedMaterial.value = null
   selectedBrands.value = []
+  selectedSort.value = 'relevance'
   emitFilterChange()
+  emit('sortChange', 'relevance')
 }
 
 const emitFilterChange = () => {
