@@ -73,6 +73,74 @@ const bestOffersItems = [
     price: 890,
   },
 ]
+
+// Testimonials Data
+const testimonials = [
+  {
+    productName: 'Turbina eléctrica',
+    review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus...',
+    rating: 5,
+    authorName: 'Mario Ruiz',
+    authorAvatar: 'https://i.pravatar.cc/150?img=12',
+    timeAgo: 'Hace dos días',
+  },
+  {
+    productName: 'Kit de Blanqueamiento',
+    review: 'Excelente producto, superó mis expectativas. La calidad es increíble y el servicio al cliente fue muy atento. Lo recomiendo totalmente para cualquier consultorio dental profesional.',
+    rating: 5,
+    authorName: 'Ana García',
+    authorAvatar: 'https://i.pravatar.cc/150?img=5',
+    timeAgo: 'Hace una semana',
+  },
+  {
+    productName: 'Resina Compuesta',
+    review: 'Muy buena calidad, los resultados son excelentes. Mis pacientes están muy satisfechos con las restauraciones. La durabilidad es excepcional y el acabado es perfecto.',
+    rating: 4,
+    authorName: 'Carlos Méndez',
+    authorAvatar: 'https://i.pravatar.cc/150?img=33',
+    timeAgo: 'Hace tres días',
+  },
+  {
+    productName: 'Cemento Dental',
+    review: 'Producto confiable y de excelente calidad. Lo he usado en múltiples procedimientos y siempre da resultados consistentes. La adherencia es superior a otras marcas que he probado.',
+    rating: 5,
+    authorName: 'Laura Sánchez',
+    authorAvatar: 'https://i.pravatar.cc/150?img=9',
+    timeAgo: 'Hace cinco días',
+  },
+  {
+    productName: 'Instrumental Quirúrgico',
+    review: 'La precisión del instrumental es impresionante. Facilita mucho los procedimientos complejos. La ergonomía es excelente y se nota la calidad de los materiales.',
+    rating: 5,
+    authorName: 'Roberto Díaz',
+    authorAvatar: 'https://i.pravatar.cc/150?img=15',
+    timeAgo: 'Hace un día',
+  },
+]
+
+// Brands Data
+const brands = [
+  {
+    name: "Dentsply Sirona",
+    logo: "https://www.figma.com/api/mcp/asset/658a450a-4a6a-4fcc-a9f3-76c69db9ba2a"
+  },
+  {
+    name: "Align",
+    logo: "https://www.figma.com/api/mcp/asset/b0d6508d-b769-4b60-8d75-6afca63e834c"
+  },
+  {
+    name: "3M",
+    logo: "https://www.figma.com/api/mcp/asset/600e56b7-6926-4459-9fcb-f6a303fab606"
+  },
+  {
+    name: "Straumann",
+    logo: "https://www.figma.com/api/mcp/asset/b6debe7a-c873-4fb8-8c19-b864928748ab"
+  },
+  {
+    name: "Envista",
+    logo: "https://www.figma.com/api/mcp/asset/2efead82-119b-47eb-a305-c6535081dce0"
+  }
+]
 </script>
 
 <template>
