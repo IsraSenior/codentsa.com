@@ -11,6 +11,13 @@ import {
 const route = useRoute()
 const isHomePage = computed(() => route.path === '/')
 
+// Cart and Favorites stores
+const cartStore = useCartStore()
+const favoritesStore = useFavoritesStore()
+
+// Scroll state
+const isScrolled = ref(false)
+
 // Search mega menu state
 const isSearchOpen = ref(false)
 const searchQuery = ref('')
@@ -18,6 +25,7 @@ const searchInputRef = ref(null)
 
 // Navigation links
 const navigationLinks = [
+  { name: 'Productos', path: '/productos' },
   { name: 'Quienes somos', path: '/quienes-somos' },
   { name: 'Soporte técnico', path: '/soporte-tecnico' },
   { name: 'Cambios y devoluciones', path: '/cambios-devoluciones' },
@@ -84,13 +92,36 @@ const closeSearch = () => {
   isSearchOpen.value = false
   searchQuery.value = ''
 }
+
+// Handle scroll event
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 0
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+  // Load cart and favorites from localStorage on mount
+  cartStore.loadFromLocalStorage()
+  favoritesStore.loadFromLocalStorage()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
-  <header class="w-full relative">
-    <!-- Main Header -->
-    <div class="bg-neutral-50 relative z-50">
-      <div class="container mx-auto px-5 lg:px-0 py-5">
+  <div>
+    <!-- Spacer when header is fixed to prevent content jump -->
+    <div v-if="isScrolled" class="h-[88px]" />
+
+    <header
+      class="w-full transition-all duration-300"
+      :class="isScrolled ? 'fixed top-0 left-0 right-0 z-50 shadow-md shadow-black/5' : 'relative'"
+    >
+      <!-- Main Header -->
+      <div class="bg-neutral-50 relative z-50">
+        <div class="container mx-auto px-5 lg:px-0 py-5">
         <div class="flex items-center justify-between gap-4">
           <!-- Logo -->
           <NuxtLink to="/" class="shrink-0">
@@ -147,15 +178,27 @@ const closeSearch = () => {
             <!-- Desktop Only Icons -->
             <NuxtLink
               to="/favoritos"
-              class="hidden md:block p-2 text-black hover:text-neutral-700 transition-colors"
+              class="hidden md:block p-2 text-black hover:text-neutral-700 transition-colors relative isolate"
             >
               <HeartIcon class="w-6 h-6" :stroke-width="2" />
+              <span
+                v-if="favoritesStore.totalFavorites > 0"
+                class="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs font-body font-medium rounded-full flex items-center justify-center"
+              >
+                {{ favoritesStore.totalFavorites }}
+              </span>
             </NuxtLink>
             <NuxtLink
               to="/carrito"
-              class="hidden md:block p-2 text-black hover:text-neutral-700 transition-colors"
+              class="hidden md:block p-2 text-black hover:text-neutral-700 transition-colors relative isolate"
             >
               <ShoppingCartIcon class="w-6 h-6" :stroke-width="2" />
+              <span
+                v-if="cartStore.totalItems > 0"
+                class="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs font-body font-medium rounded-full flex items-center justify-center"
+              >
+                {{ cartStore.totalItems }}
+              </span>
             </NuxtLink>
             <NuxtLink to="/cuenta" class="hidden md:block shrink-0">
               <img
@@ -261,4 +304,5 @@ const closeSearch = () => {
       <AnnouncementBar />
     </div>
   </header>
+  </div>
 </template>

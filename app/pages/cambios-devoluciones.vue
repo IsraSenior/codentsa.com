@@ -197,28 +197,30 @@ const finish = () => {
 
             <!-- Política de devoluciones -->
             <div class="pt-4">
-              <p class="font-body text-base text-black mb-4">
-                ¿Leíste la política de devoluciones?
-              </p>
-              <div class="flex gap-6 mb-4">
-                <label class="flex items-center gap-2 cursor-pointer">
-                  <input
-                    v-model="formData.leyoPolitica"
-                    type="radio"
-                    :value="true"
-                    class="w-5 h-5 text-primary focus:ring-primary"
-                  >
-                  <span class="font-body text-base text-black">Sí</span>
-                </label>
-                <label class="flex items-center gap-2 cursor-pointer">
-                  <input
-                    v-model="formData.leyoPolitica"
-                    type="radio"
-                    :value="false"
-                    class="w-5 h-5 text-primary focus:ring-primary"
-                  >
-                  <span class="font-body text-base text-black">No</span>
-                </label>
+              <div class="flex items-center gap-4 mb-4">
+                <p class="font-body text-base text-black">
+                  ¿Leíste la política de devoluciones?
+                </p>
+                <div class="flex gap-6">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input
+                      v-model="formData.leyoPolitica"
+                      type="radio"
+                      :value="true"
+                      class="w-5 h-5 accent-black focus:ring-0 focus:outline-none"
+                    >
+                    <span class="font-body text-base text-black">Sí</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input
+                      v-model="formData.leyoPolitica"
+                      type="radio"
+                      :value="false"
+                      class="w-5 h-5 accent-black focus:ring-0 focus:outline-none"
+                    >
+                    <span class="font-body text-base text-black">No</span>
+                  </label>
+                </div>
               </div>
               <NuxtLink
                 to="/politicas-privacidad"

@@ -2,6 +2,11 @@
 import { HeartIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
+  id: {
+    type: Number,
+    required: false,
+    default: null,
+  },
   title: {
     type: String,
     required: true,
@@ -26,20 +31,33 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  isFavorite: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 const emit = defineEmits(['toggleFavorite', 'click'])
 
-// Estado local para favorito
-const isFav = ref(props.isFavorite)
+// Favorites store
+const favoritesStore = useFavoritesStore()
+
+// Computed to check if product is favorited
+const isFav = computed(() => {
+  if (!props.id) return false
+  return favoritesStore.isFavorite(props.id)
+})
 
 const handleFavoriteClick = (e) => {
   e.stopPropagation()
-  isFav.value = !isFav.value
+  if (!props.id) return
+
+  favoritesStore.toggleFavorite({
+    id: props.id,
+    name: props.title,
+    brand: props.brand,
+    image: props.image,
+    description: props.description,
+    price: props.price,
+    originalPrice: props.originalPrice,
+  })
+
   emit('toggleFavorite', isFav.value)
 }
 
@@ -65,14 +83,14 @@ const discountPercentage = computed(() => {
         <p class="text-neutral-700 text-sm">{{ brand }}</p>
       </div>
       <button
-        class="w-8 h-8 transition-colors z-20"
+        class="w-8 h-8 transition-colors relative z-30"
         :class="isFav ? 'text-primary' : 'text-neutral-500 hover:text-primary'"
         @click="handleFavoriteClick"
       >
         <HeartIcon
-          class="size-6 hover:fill-primary"
+          class="size-6 transition-all"
+          :class="isFav ? 'fill-primary' : 'fill-none hover:fill-primary/20'"
           :stroke-width="2"
-          :fill="isFav ? 'currentColor' : 'none'"
         />
       </button>
     </div>
@@ -98,6 +116,6 @@ const discountPercentage = computed(() => {
       </div>
     </div>
 
-    <NuxtLink to="/productos/test-product" class="absolute inset-0"></NuxtLink>
+    <NuxtLink to="/productos/test-product" class="absolute inset-0 z-10"></NuxtLink>
   </div>
 </template>

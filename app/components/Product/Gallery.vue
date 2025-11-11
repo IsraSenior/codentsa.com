@@ -27,9 +27,9 @@ const selectImage = (index) => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full space-y-4">
+  <div class="flex flex-col space-y-4">
     <!-- Main Image -->
-    <div class="relative flex-1 bg-neutral-100 rounded-2xl overflow-hidden group">
+    <div class="relative aspect-square bg-neutral-100 rounded-2xl overflow-hidden group">
       <img
         :src="currentImage"
         :alt="`Product image ${currentIndex + 1}`"

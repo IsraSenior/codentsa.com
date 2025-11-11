@@ -32,7 +32,7 @@ const legalLinks = [
 </script>
 
 <template>
-  <footer class="bg-neutral-100 py-10 md:py-16">
+  <footer id="site-footer" class="bg-neutral-100 py-10 md:py-16">
     <div class="flex flex-col items-center gap-6 md:gap-10 container mx-auto px-4">
       <div class="flex flex-col items-center gap-4">
         <!-- Logo Component -->

@@ -91,13 +91,79 @@ const product = ref({
   ],
 })
 
+// Similar products data
+const similarProducts = ref([
+  {
+    id: 2,
+    name: 'Sealapex Cemento',
+    brand: 'Sybron Endo',
+    description: 'El cemento dental es un material esencial para procedimientos de endodoncia.',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
+    price: 250,
+    originalPrice: 300,
+    rating: 4.5,
+  },
+  {
+    id: 3,
+    name: 'Sealapex Cemento',
+    brand: 'Sybron Endo',
+    description: 'El cemento dental es un material esencial para procedimientos de endodoncia.',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
+    price: 250,
+    originalPrice: 300,
+    rating: 4.5,
+  },
+  {
+    id: 4,
+    name: 'Sealapex Cemento',
+    brand: 'Sybron Endo',
+    description: 'El cemento dental es un material esencial para procedimientos de endodoncia.',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
+    price: 250,
+    originalPrice: 300,
+    rating: 4.5,
+  },
+  {
+    id: 5,
+    name: 'Sealapex Cemento',
+    brand: 'Sybron Endo',
+    description: 'El cemento dental es un material esencial para procedimientos de endodoncia.',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
+    price: 250,
+    originalPrice: 300,
+    rating: 4.5,
+  },
+  {
+    id: 6,
+    name: 'Sealapex Cemento',
+    brand: 'Sybron Endo',
+    description: 'El cemento dental es un material esencial para procedimientos de endodoncia.',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
+    price: 250,
+    originalPrice: 300,
+    rating: 4.5,
+  },
+])
+
+// Stores
+const favoritesStore = useFavoritesStore()
+const cartStore = useCartStore()
+
 // State
 const quantity = ref(1)
 const selectedColor = ref(null)
 const selectedSize = ref(null)
 const selectedMaterial = ref(null)
-const isFavorite = ref(false)
 const isReviewModalOpen = ref(false)
+const showFloatingCart = ref(false)
+
+// Check if product is favorited
+const isFavorite = computed(() => {
+  return favoritesStore.isFavorite(parseInt(product.value.id))
+})
+
+// Refs for scroll detection
+const productDetailsRef = ref(null)
 
 // Methods
 const incrementQuantity = () => {
@@ -111,16 +177,29 @@ const decrementQuantity = () => {
 }
 
 const toggleFavorite = () => {
-  isFavorite.value = !isFavorite.value
+  favoritesStore.toggleFavorite({
+    id: parseInt(product.value.id),
+    name: product.value.name,
+    brand: product.value.brand,
+    image: product.value.images[0],
+    description: product.value.description,
+    price: product.value.price,
+    originalPrice: product.value.originalPrice,
+  })
 }
 
 const addToCart = () => {
-  console.log('Add to cart', {
-    product: product.value.id,
+  cartStore.addItem({
+    id: parseInt(product.value.id),
+    name: product.value.name,
+    brand: product.value.brand,
+    image: product.value.images[0],
+    price: product.value.price,
+    originalPrice: product.value.originalPrice,
     quantity: quantity.value,
-    color: selectedColor.value,
-    size: selectedSize.value,
-    material: selectedMaterial.value,
+    selectedColor: selectedColor.value,
+    selectedSize: selectedSize.value,
+    selectedMaterial: selectedMaterial.value,
   })
 }
 
@@ -152,144 +231,181 @@ const formatPrice = (price) => {
     currency: 'EUR',
   }).format(price)
 }
+
+// Handle scroll to show/hide floating cart
+const handleScroll = () => {
+  if (!productDetailsRef.value) return
+
+  const element = productDetailsRef.value.$el || productDetailsRef.value
+  const rect = element.getBoundingClientRect()
+  const hasScrolledPast = rect.bottom < 0
+
+  // Check if footer is in view
+  const footer = document.getElementById('site-footer')
+  const footerRect = footer?.getBoundingClientRect()
+  const footerInView = footerRect && footerRect.top < window.innerHeight
+
+  // Show floating cart only when scrolled past product details AND footer is not in view
+  showFloatingCart.value = hasScrolledPast && !footerInView
+}
+
+onMounted(() => {
+  // Load favorites and cart from localStorage
+  favoritesStore.loadFromLocalStorage()
+  cartStore.loadFromLocalStorage()
+
+  window.addEventListener('scroll', handleScroll)
+  // Trigger initial check
+  nextTick(() => {
+    handleScroll()
+  })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
   <div>
     <!-- Product Details -->
-    <Section class="!pt-0">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+    <div ref="productDetailsRef">
+      <Section class="pt-0!">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:items-start">
         <!-- Left: Gallery -->
-        <div class="lg:sticky lg:top-4 h-full">
+        <div>
           <ProductGallery :images="product.images" />
         </div>
 
         <!-- Right: Product Info -->
-        <div>
-          <h1 class="font-title text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-4">
-            {{ product.name }}
-          </h1>
-
-          <!-- Rating -->
-          <div class="flex items-center gap-2 mb-6">
-            <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-              />
-            </svg>
-            <span class="font-body text-base text-black font-medium">
-              {{ product.rating }}
-            </span>
-          </div>
-
-          <!-- Description -->
-          <p class="font-body text-base text-neutral-700 mb-6">
-            {{ product.description }}
-          </p>
-
-          <!-- Additional Files -->
-          <div class="mb-6">
-            <h3 class="font-title text-lg text-black font-normal mb-3">
-              Archivos adicionales:
-            </h3>
-            <div class="space-y-2">
-              <button
-                class="font-body text-sm text-primary hover:underline"
-                @click="downloadTechSheet"
-              >
-                Descargar ficha tecnica
-              </button>
-              <br>
-              <button
-                class="font-body text-sm text-primary hover:underline"
-                @click="scrollToDetails"
-              >
-                Ver toda la informacion del producto
-              </button>
-            </div>
-          </div>
-
-          <!-- Price and Quantity Selector -->
-          <div class="flex items-center gap-4 mb-6">
-            <div class="flex-1">
-              <div class="flex items-baseline gap-3">
-                <span class="font-title text-3xl md:text-4xl text-black font-normal">
-                  {{ formatPrice(product.price) }}
+         <div class="lg:sticky lg:top-28">
+            <div>
+            <h1 class="font-title text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-4">
+                {{ product.name }}
+            </h1>
+    
+            <!-- Rating -->
+            <div class="flex items-center gap-2 mb-6">
+                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                />
+                </svg>
+                <span class="font-body text-base text-black font-medium">
+                {{ product.rating }}
                 </span>
-                <span
-                  v-if="product.originalPrice"
-                  class="font-body text-lg text-neutral-500 line-through"
+            </div>
+    
+            <!-- Description -->
+            <p class="font-body text-base text-neutral-700 mb-6">
+                {{ product.description }}
+            </p>
+    
+            <!-- Additional Files -->
+            <div class="mb-6">
+                <h3 class="font-title text-lg text-black font-normal mb-3">
+                Archivos adicionales:
+                </h3>
+                <div class="space-y-2">
+                <button
+                    class="font-body text-sm text-primary hover:underline"
+                    @click="downloadTechSheet"
                 >
-                  {{ formatPrice(product.originalPrice) }}
+                    Descargar ficha tecnica
+                </button>
+                <br>
+                <button
+                    class="font-body text-sm text-primary hover:underline"
+                    @click="scrollToDetails"
+                >
+                    Ver toda la informacion del producto
+                </button>
+                </div>
+            </div>
+
+            <!-- Variants Accordion -->
+            <div class="mb-6">
+                <ProductVariantAccordion
+                title="Color"
+                :options="product.colors"
+                :selected="selectedColor"
+                @select="(value) => (selectedColor = value)"
+                />
+    
+                <ProductVariantAccordion
+                title="Seleccione la talla"
+                :options="product.sizes"
+                :selected="selectedSize"
+                @select="(value) => (selectedSize = value)"
+                />
+    
+                <ProductVariantAccordion
+                title="Seleccione material"
+                :options="product.materials"
+                :selected="selectedMaterial"
+                @select="(value) => (selectedMaterial = value)"
+                />
+            </div>
+
+            <!-- Price and Quantity Selector -->
+            <div class="flex items-center gap-4 mb-6">
+                <div class="flex-1">
+                <div class="flex items-baseline gap-3">
+                    <span class="font-title text-3xl md:text-4xl text-black font-normal">
+                    {{ formatPrice(product.price) }}
+                    </span>
+                    <span
+                    v-if="product.originalPrice"
+                    class="font-body text-lg text-neutral-500 line-through"
+                    >
+                    {{ formatPrice(product.originalPrice) }}
+                    </span>
+                </div>
+                </div>
+    
+                <div class="flex items-center gap-2">
+                <button
+                    class="w-10 h-10 border border-neutral-300 rounded-lg flex items-center justify-center hover:border-primary transition-colors"
+                    @click="decrementQuantity"
+                >
+                    <span class="text-xl text-black">-</span>
+                </button>
+                <span class="font-body text-lg text-black font-medium w-12 text-center">
+                    {{ quantity }}
                 </span>
-              </div>
+                <button
+                    class="w-10 h-10 border border-neutral-300 rounded-lg flex items-center justify-center hover:border-primary transition-colors"
+                    @click="incrementQuantity"
+                >
+                    <span class="text-xl text-black">+</span>
+                </button>
+                </div>
             </div>
-
-            <div class="flex items-center gap-2">
-              <button
-                class="w-10 h-10 border border-neutral-300 rounded-lg flex items-center justify-center hover:border-primary transition-colors"
-                @click="decrementQuantity"
-              >
-                <span class="text-xl text-black">-</span>
-              </button>
-              <span class="font-body text-lg text-black font-medium w-12 text-center">
-                {{ quantity }}
-              </span>
-              <button
-                class="w-10 h-10 border border-neutral-300 rounded-lg flex items-center justify-center hover:border-primary transition-colors"
-                @click="incrementQuantity"
-              >
-                <span class="text-xl text-black">+</span>
-              </button>
+    
+            <!-- Action Buttons -->
+            <div class="space-y-3">
+                <button
+                class="w-full px-6 py-4 bg-black text-white rounded-lg font-body text-base hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
+                @click="addToCart"
+                >
+                <ShoppingCartIcon class="w-5 h-5" />
+                <span>Anadir al carrito</span>
+                </button>
+    
+                <button
+                class="w-full px-6 py-4 border border-neutral-300 rounded-lg font-body text-base hover:border-primary transition-colors flex items-center justify-center gap-2"
+                @click="toggleFavorite"
+                >
+                <HeartIconSolid v-if="isFavorite" class="w-5 h-5 text-primary" />
+                <HeartIcon v-else class="w-5 h-5" />
+                <span>Anadir a lista de favoritos</span>
+                </button>
             </div>
-          </div>
-
-          <!-- Variants Accordion -->
-          <div class="mb-6">
-            <ProductVariantAccordion
-              title="Color"
-              :options="product.colors"
-              :selected="selectedColor"
-              @select="(value) => (selectedColor = value)"
-            />
-
-            <ProductVariantAccordion
-              title="Seleccione la talla"
-              :options="product.sizes"
-              :selected="selectedSize"
-              @select="(value) => (selectedSize = value)"
-            />
-
-            <ProductVariantAccordion
-              title="Seleccione material"
-              :options="product.materials"
-              :selected="selectedMaterial"
-              @select="(value) => (selectedMaterial = value)"
-            />
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="space-y-3">
-            <button
-              class="w-full px-6 py-4 bg-black text-white rounded-full font-body text-base hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
-              @click="addToCart"
-            >
-              <ShoppingCartIcon class="w-5 h-5" />
-              <span>Anadir al carrito</span>
-            </button>
-
-            <button
-              class="w-full px-6 py-4 border border-neutral-300 rounded-full font-body text-base hover:border-primary transition-colors flex items-center justify-center gap-2"
-              @click="toggleFavorite"
-            >
-              <HeartIconSolid v-if="isFavorite" class="w-5 h-5 text-primary" />
-              <HeartIcon v-else class="w-5 h-5" />
-              <span>Anadir a lista de favoritos</span>
-            </button>
-          </div>
+            </div>
+         </div>
         </div>
-      </div>
-    </Section>
+      </Section>
+    </div>
 
     <!-- Features -->
     <Section class="bg-neutral-50">
@@ -297,7 +413,7 @@ const formatPrice = (price) => {
         Caracteristicas destacadas
       </h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-20">
         <div
           v-for="(feature, index) in product.features"
           :key="index"
@@ -419,6 +535,47 @@ const formatPrice = (price) => {
       @add-review="handleAddReview"
     />
 
+    <!-- Similar Products -->
+    <Section class="bg-neutral-50">
+      <div class="mb-8 md:mb-12">
+        <h2 class="font-title text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-4">
+          Productos similares
+        </h2>
+        <p class="font-body text-base md:text-lg text-neutral-700 max-w-4xl">
+          Aqui va el resumen. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus.
+        </p>
+      </div>
+
+      <!-- Products Carousel -->
+      <BaseCarousel :items="similarProducts" :slides-per-view="4" :autoplay="false" :loop="false">
+        <template #default="{ item }">
+          <ProductCard
+            :id="item.id"
+            :name="item.name"
+            :brand="item.brand"
+            :description="item.description"
+            :image="item.image"
+            :price="item.price"
+            :original-price="item.originalPrice"
+            :rating="item.rating"
+          />
+        </template>
+      </BaseCarousel>
+
+      <!-- View More Button -->
+      <!-- <div class="flex justify-center mt-8 md:mt-12">
+        <NuxtLink
+          to="/productos"
+          class="inline-flex items-center gap-3 px-8 py-4 border-2 border-black rounded-full font-body text-base md:text-lg text-black hover:bg-black hover:text-white transition-all duration-300 group"
+        >
+          <span>Ver mas productos</span>
+          <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </NuxtLink>
+      </div> -->
+    </Section>
+
     <!-- Review Modal -->
     <ProductReviewModal
       :is-open="isReviewModalOpen"
@@ -426,5 +583,34 @@ const formatPrice = (price) => {
       @close="isReviewModalOpen = false"
       @submit="handleSubmitReview"
     />
+
+    <!-- Floating Cart Widget -->
+    <Transition
+      enter-active-class="transition-all duration-300 ease-out"
+      enter-from-class="opacity-0 translate-y-full"
+      enter-to-class="opacity-100 translate-y-0"
+      leave-active-class="transition-all duration-200 ease-in"
+      leave-from-class="opacity-100 translate-y-0"
+      leave-to-class="opacity-0 translate-y-full"
+    >
+      <ProductFloatingCart
+        v-if="showFloatingCart"
+        :product-name="product.name"
+        :price="product.price"
+        :quantity="quantity"
+        :selected-color="selectedColor"
+        :selected-size="selectedSize"
+        :selected-material="selectedMaterial"
+        :color-options="product.colors"
+        :size-options="product.sizes"
+        :material-options="product.materials"
+        @increment="incrementQuantity"
+        @decrement="decrementQuantity"
+        @add-to-cart="addToCart"
+        @select-color="(value) => (selectedColor = value)"
+        @select-size="(value) => (selectedSize = value)"
+        @select-material="(value) => (selectedMaterial = value)"
+      />
+    </Transition>
   </div>
 </template>

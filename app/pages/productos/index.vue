@@ -209,5 +209,8 @@ const thirdRowProducts = computed(() => products.value.slice(7, 11))
         @page-change="handlePageChange"
       />
     </Section>
+
+    <!-- Offer Popup -->
+    <OfferPopup />
   </div>
 </template>
