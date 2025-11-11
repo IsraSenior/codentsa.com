@@ -103,7 +103,10 @@ const closeSearch = () => {
               v-for="link in navigationLinks"
               :key="link.path"
               :to="link.path"
-              class="font-body font-normal text-base text-neutral-900 hover:text-neutral-700 transition-all duration-200 underline-offset-4 hover:underline cursor-pointer"
+              class="font-body font-normal text-base transition-all duration-200 underline-offset-4 cursor-pointer"
+              :class="route.path === link.path
+                ? 'text-primary underline'
+                : 'text-black hover:text-neutral-700 hover:underline'"
             >
               {{ link.name }}
             </NuxtLink>
