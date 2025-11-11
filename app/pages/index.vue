@@ -1,24 +1,9 @@
 <script setup>
-// Best Offers Data - Array plano de todos los items
-const bestOffersItems = [
-  {
-    type: 'product',
-    title: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia....',
-    originalPrice: null,
-    price: 250,
-  },
-  {
-    type: 'product',
-    title: 'Resina Compuesta Premium',
-    brand: '3M ESPE',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'Resina de alta calidad para restauraciones...',
-    originalPrice: 450,
-    price: 380,
-  },
+// Products store
+const productsStore = useProductsStore()
+
+// Banner items to intersperse with products
+const banners = [
   {
     type: 'banner',
     title: 'Ahorra comprando<br>en Codentsa',
@@ -29,33 +14,6 @@ const bestOffersItems = [
     image: 'https://www.figma.com/api/mcp/asset/c55971d1-1310-436b-83f3-ee40dd547c1f',
   },
   {
-    type: 'product',
-    title: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    image: 'https://www.figma.com/api/mcp/asset/54e7bf55-073d-4469-9d7b-2d33c843c33a',
-    description: 'El cemento dental es un material esencia....',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    type: 'product',
-    title: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia....',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    type: 'product',
-    title: 'Kit de Blanqueamiento',
-    brand: 'Opalescence',
-    image: 'https://www.figma.com/api/mcp/asset/54e7bf55-073d-4469-9d7b-2d33c843c33a',
-    description: 'Sistema profesional de blanqueamiento...',
-    originalPrice: 200,
-    price: 150,
-  },
-  {
     type: 'banner',
     title: 'Nuevos Productos<br>Recién llegados',
     description: 'Lo último en tecnología dental',
@@ -64,15 +22,48 @@ const bestOffersItems = [
     bgColor: 'bg-primary',
     image: 'https://www.figma.com/api/mcp/asset/c55971d1-1310-436b-83f3-ee40dd547c1f'
   },
-  {
-    type: 'product',
-    title: 'Turbina Dental NSK',
-    brand: 'NSK',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'Turbina de alta velocidad con tecnología...',
-    price: 890,
-  },
 ]
+
+// Get products with discounts (those with originalPrice)
+const discountedProducts = computed(() => {
+  return productsStore.allProducts
+    .filter(product => product.originalPrice)
+    .map(product => ({
+      type: 'product',
+      id: product.id,
+      title: product.name,
+      brand: product.brand,
+      image: product.image,
+      description: product.description,
+      originalPrice: product.originalPrice,
+      price: product.price,
+    }))
+})
+
+// Mix products with banners
+const bestOffersItems = computed(() => {
+  const items = []
+  const products = [...discountedProducts.value]
+
+  // Add products and banners in a pattern
+  // 2 products, 1 banner, 3 products, 1 banner, remaining products
+  if (products.length > 0) {
+    items.push(...products.splice(0, 2))
+  }
+  if (banners[0]) {
+    items.push(banners[0])
+  }
+  if (products.length > 0) {
+    items.push(...products.splice(0, 3))
+  }
+  if (banners[1]) {
+    items.push(banners[1])
+  }
+  // Add remaining products
+  items.push(...products)
+
+  return items
+})
 
 // Testimonials Data
 const testimonials = [
@@ -175,13 +166,13 @@ const brands = [
         <template #default="{ item }">
           <ProductCard
             v-if="item.type === 'product'"
+            :id="item.id"
             :title="item.title"
             :brand="item.brand"
             :image="item.image"
             :description="item.description"
             :original-price="item.originalPrice"
             :price="item.price"
-            :is-favorite="item.isFavorite"
           />
           <ProductBanner
             v-else-if="item.type === 'banner'"
