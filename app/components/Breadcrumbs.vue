@@ -40,7 +40,7 @@ const breadcrumbs = computed(() => {
 </script>
 
 <template>
-  <nav class="bg-neutral-white py-5">
+  <nav class="bg-white py-10">
     <div class="container mx-auto px-5 lg:px-0">
       <ol class="flex items-center gap-2 text-sm font-body">
         <li
