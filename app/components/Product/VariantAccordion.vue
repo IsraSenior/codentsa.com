@@ -30,6 +30,8 @@ const toggleAccordion = () => {
 
 const handleSelect = (value) => {
   emit('select', value)
+  // Close accordion after selection
+  isOpen.value = false
 }
 
 const selectedLabel = computed(() => {

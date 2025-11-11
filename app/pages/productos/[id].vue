@@ -156,26 +156,11 @@ const formatPrice = (price) => {
 
 <template>
   <div>
-    <!-- Breadcrumb -->
-    <Section class="!pt-4 !pb-4">
-      <nav class="flex items-center gap-2 font-body text-sm text-neutral-600">
-        <NuxtLink to="/" class="hover:text-primary transition-colors">
-          Home
-        </NuxtLink>
-        <span>></span>
-        <NuxtLink to="/productos" class="hover:text-primary transition-colors">
-          Material preparado
-        </NuxtLink>
-        <span>></span>
-        <span class="text-black">{{ product.category }}</span>
-      </nav>
-    </Section>
-
     <!-- Product Details -->
     <Section class="!pt-0">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:items-start">
         <!-- Left: Gallery -->
-        <div>
+        <div class="lg:sticky lg:top-4">
           <ProductGallery :images="product.images" />
         </div>
 
@@ -205,7 +190,7 @@ const formatPrice = (price) => {
           <!-- Additional Files -->
           <div class="mb-6">
             <h3 class="font-title text-lg text-black font-normal mb-3">
-              Archivos adicionales
+              Archivos adicionales:
             </h3>
             <div class="space-y-2">
               <button
@@ -224,24 +209,23 @@ const formatPrice = (price) => {
             </div>
           </div>
 
-          <!-- Price -->
-          <div class="mb-6">
-            <div class="flex items-baseline gap-3">
-              <span class="font-title text-3xl md:text-4xl text-black font-normal">
-                {{ formatPrice(product.price) }}
-              </span>
-              <span
-                v-if="product.originalPrice"
-                class="font-body text-lg text-neutral-500 line-through"
-              >
-                {{ formatPrice(product.originalPrice) }}
-              </span>
+          <!-- Price and Quantity Selector -->
+          <div class="flex items-center gap-4 mb-6">
+            <div class="flex-1">
+              <div class="flex items-baseline gap-3">
+                <span class="font-title text-3xl md:text-4xl text-black font-normal">
+                  {{ formatPrice(product.price) }}
+                </span>
+                <span
+                  v-if="product.originalPrice"
+                  class="font-body text-lg text-neutral-500 line-through"
+                >
+                  {{ formatPrice(product.originalPrice) }}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <!-- Quantity Selector -->
-          <div class="mb-6">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
               <button
                 class="w-10 h-10 border border-neutral-300 rounded-lg flex items-center justify-center hover:border-primary transition-colors"
                 @click="decrementQuantity"
@@ -263,7 +247,7 @@ const formatPrice = (price) => {
           <!-- Variants Accordion -->
           <div class="mb-6">
             <ProductVariantAccordion
-              title="Color: Rojo"
+              title="Color"
               :options="product.colors"
               :selected="selectedColor"
               @select="(value) => (selectedColor = value)"
@@ -395,12 +379,13 @@ const formatPrice = (price) => {
         </div>
 
         <!-- Right: Specs -->
-        <div>
-          <h2 class="font-title text-3xl md:text-4xl text-black font-normal mb-6">
+        <div class="flex items-center">
+          <div>
+            <h2 class="font-title text-3xl md:text-4xl text-black font-normal mb-3">
             Datos tecnicos
           </h2>
 
-          <p class="font-body text-base text-neutral-700 mb-6">
+          <p class="font-body text-base text-black mb-6">
             Marca: {{ product.technicalSpecs.brand }}
           </p>
 
@@ -420,6 +405,7 @@ const formatPrice = (price) => {
           >
             Contactar a soporte
           </button>
+          </div>
         </div>
       </div>
     </Section>
@@ -429,6 +415,7 @@ const formatPrice = (price) => {
       :reviews="product.reviews"
       :average-rating="product.rating"
       :total-reviews="product.reviews.length"
+      :product-name="product.name"
       @add-review="handleAddReview"
     />
 
