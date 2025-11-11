@@ -86,20 +86,77 @@ const handlePersonalInfoSubmit = () => {
   currentStep.value = 2
 }
 
-const handlePaymentSubmit = () => {
-  // Mark step 2 as completed
-  if (!completedSteps.value.includes(2)) {
-    completedSteps.value.push(2)
+// Payment processing state
+const isProcessingPayment = ref(false)
+const paymentError = ref(null)
+
+const handlePaymentSubmit = async () => {
+  try {
+    isProcessingPayment.value = true
+    paymentError.value = null
+
+    // Mark step 2 as completed
+    if (!completedSteps.value.includes(2)) {
+      completedSteps.value.push(2)
+    }
+
+    // Prepare cart data for payment
+    const cartData = {
+      items: cartItems.value,
+      subtotal: subtotal.value,
+      shipping: shipping.value,
+      tax: tax.value,
+    }
+
+    // Call backend to create payment
+    const response = await $fetch('/api/redsys/create-payment', {
+      method: 'POST',
+      body: {
+        cart: cartData,
+        customer: personalInfo.value,
+      },
+    })
+
+    if (!response.success) {
+      throw new Error('Error creating payment')
+    }
+
+    // Create hidden form to POST to Redsys
+    const form = document.createElement('form')
+    form.method = 'POST'
+    form.action = response.redsysUrl
+    form.style.display = 'none'
+
+    // Add Redsys parameters
+    const params = {
+      Ds_SignatureVersion: response.signatureVersion,
+      Ds_MerchantParameters: response.merchantParameters,
+      Ds_Signature: response.signature,
+    }
+
+    Object.entries(params).forEach(([key, value]) => {
+      const input = document.createElement('input')
+      input.type = 'hidden'
+      input.name = key
+      input.value = value
+      form.appendChild(input)
+    })
+
+    // Append form to body and submit
+    document.body.appendChild(form)
+    form.submit()
+
+    // The page will redirect to Redsys
+    // If we reach this point, something went wrong
+  } catch (error) {
+    console.error('Error processing payment:', error)
+    isProcessingPayment.value = false
+    paymentError.value = error.message || 'Error al procesar el pago'
+
+    // Show toast notification
+    const toastStore = useToastStore()
+    toastStore.error('Error al procesar el pago. Por favor, inténtalo de nuevo.')
   }
-
-  // Process the order
-  console.log('Processing order...', {
-    personalInfo: personalInfo.value,
-    paymentInfo: paymentInfo.value,
-  })
-
-  // In production: redirect to confirmation page or show success message
-  alert('Pedido confirmado! (En producción, esto redirigiría a una página de confirmación)')
 }
 
 </script>
