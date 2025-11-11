@@ -12,83 +12,36 @@ useHead({
   ],
 })
 
+// Cart store
+const cartStore = useCartStore()
+
 // State
 const isLoading = ref(false)
 
-// Cart items (in production this would come from Pinia store)
-const cartItems = ref([
-  {
-    id: 1,
-    name: 'Sealapex Cemento Sellador Radicular',
-    brand: 'Sybron Endo',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    price: 250,
-    originalPrice: 300,
-    quantity: 1,
-    selectedColor: null,
-    selectedSize: null,
-    selectedMaterial: null,
-  },
-  {
-    id: 2,
-    name: 'Sealapex Cemento Sellador Radicular',
-    brand: 'Sybron Endo',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    price: 250,
-    originalPrice: 300,
-    quantity: 1,
-    selectedColor: null,
-    selectedSize: null,
-    selectedMaterial: null,
-  },
-  {
-    id: 3,
-    name: 'Sealapex Cemento Sellador Radicular',
-    brand: 'Sybron Endo',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    price: 250,
-    originalPrice: 300,
-    quantity: 1,
-    selectedColor: null,
-    selectedSize: null,
-    selectedMaterial: null,
-  },
-])
+// Load cart from localStorage on mount
+onMounted(() => {
+  cartStore.loadFromLocalStorage()
+})
 
 // Computed
-const totalItems = computed(() => {
-  return cartItems.value.reduce((sum, item) => sum + item.quantity, 0)
-})
-
-const subtotal = computed(() => {
-  return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
-})
-
-const shipping = computed(() => 15)
-const tax = computed(() => subtotal.value * 0.021) // 2.1% IVA en España
-
-const isEmpty = computed(() => cartItems.value.length === 0)
+const cartItems = computed(() => cartStore.items)
+const totalItems = computed(() => cartStore.totalItems)
+const subtotal = computed(() => cartStore.subtotal)
+const shipping = computed(() => cartStore.shipping)
+const tax = computed(() => cartStore.tax)
+const isEmpty = computed(() => cartStore.isEmpty)
 
 // Methods
 const incrementQuantity = (id) => {
-  const item = cartItems.value.find((item) => item.id === id)
-  if (item) {
-    item.quantity++
-  }
+  cartStore.incrementQuantity(id)
 }
 
 const decrementQuantity = (id) => {
-  const item = cartItems.value.find((item) => item.id === id)
-  if (item && item.quantity > 1) {
-    item.quantity--
-  }
+  cartStore.decrementQuantity(id)
 }
 
 const removeItem = (id) => {
-  const index = cartItems.value.findIndex((item) => item.id === id)
-  if (index > -1) {
-    cartItems.value.splice(index, 1)
-  }
+  cartStore.removeItem(id)
 }
 
 const router = useRouter()

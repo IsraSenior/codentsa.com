@@ -1,4 +1,6 @@
 <script setup>
+import { ShoppingCartIcon } from '@heroicons/vue/24/outline'
+
 // Meta tags
 useHead({
   title: 'Checkout - Codentsa',
@@ -8,6 +10,14 @@ useHead({
       content: 'Completa tu pedido de instrumental odontológico',
     },
   ],
+})
+
+// Cart store
+const cartStore = useCartStore()
+
+// Load cart from localStorage on mount
+onMounted(() => {
+  cartStore.loadFromLocalStorage()
 })
 
 // Steps state
@@ -34,40 +44,12 @@ const paymentInfo = ref({
   cvv: '',
 })
 
-// Cart data (in production would come from Pinia store)
-const cartItems = ref([
-  {
-    id: 1,
-    name: 'Sealapex Cemento Sellador Radicular',
-    brand: 'Sybron Endo',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    price: 250,
-    quantity: 1,
-  },
-  {
-    id: 2,
-    name: 'Sealapex Cemento Sellador Radicular',
-    brand: 'Sybron Endo',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    price: 250,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    name: 'Sealapex Cemento Sellador Radicular',
-    brand: 'Sybron Endo',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    price: 250,
-    quantity: 1,
-  },
-])
-
-const subtotal = computed(() => {
-  return cartItems.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
-})
-
-const shipping = ref(15)
-const tax = computed(() => subtotal.value * 0.021)
+// Cart data from store
+const cartItems = computed(() => cartStore.items)
+const subtotal = computed(() => cartStore.subtotal)
+const shipping = computed(() => cartStore.shipping)
+const tax = computed(() => cartStore.tax)
+const isEmpty = computed(() => cartStore.isEmpty)
 
 // Computed
 const getStepStatus = (step) => {
@@ -143,8 +125,30 @@ const handlePaymentSubmit = () => {
         </h1>
       </div>
 
+      <!-- Empty State -->
+      <div v-if="isEmpty" class="text-center py-16 md:py-24">
+        <div class="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-neutral-100 rounded-full">
+          <ShoppingCartIcon class="w-12 h-12 text-black" :stroke-width="1.5" />
+        </div>
+        <h2 class="font-title text-2xl md:text-3xl text-black font-normal mb-4">
+          Tu carrito está vacío
+        </h2>
+        <p class="font-body text-base md:text-lg text-neutral-600 mb-8 max-w-md mx-auto">
+          No puedes proceder al checkout sin productos en tu carrito. Agrega algunos productos para continuar.
+        </p>
+        <NuxtLink
+          to="/productos"
+          class="inline-flex items-center gap-3 px-8 py-4 bg-black text-white rounded-full font-body text-base hover:bg-neutral-800 transition-colors"
+        >
+          <span>Ver productos</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </NuxtLink>
+      </div>
+
       <!-- Checkout Content -->
-      <div class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8 lg:gap-12">
+      <div v-else class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8 lg:gap-12">
         <!-- Left: Checkout Steps -->
         <div class="space-y-4">
           <!-- Step 1: Personal Information -->

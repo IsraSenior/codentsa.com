@@ -79,7 +79,7 @@ const discountPercentage = computed(() => {
   >
     <div class="flex justify-between items-start">
       <div>
-        <h3 class="text-black text-2xl leading-tight">{{ title }}</h3>
+        <h3 class="text-black text-2xl leading-tight line-clamp-1">{{ title }}</h3>
         <p class="text-neutral-700 text-sm">{{ brand }}</p>
       </div>
       <button
@@ -116,6 +116,6 @@ const discountPercentage = computed(() => {
       </div>
     </div>
 
-    <NuxtLink to="/productos/test-product" class="absolute inset-0 z-10"></NuxtLink>
+    <NuxtLink :to="`/productos/${id}`" class="absolute inset-0 z-10"></NuxtLink>
   </div>
 </template>
