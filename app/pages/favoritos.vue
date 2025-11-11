@@ -61,6 +61,7 @@ onMounted(() => {
         <ProductCard
           v-for="product in favoritesStore.items"
           :key="product.id"
+          :id="product.id"
           :title="product.name"
           :brand="product.brand"
           :image="product.image"
