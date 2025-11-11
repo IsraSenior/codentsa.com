@@ -16,6 +16,13 @@ const isSearchOpen = ref(false)
 const searchQuery = ref('')
 const searchInputRef = ref(null)
 
+// Navigation links
+const navigationLinks = [
+  { name: 'Quienes somos', path: '/quienes-somos' },
+  { name: 'Soporte técnico', path: '/soporte-tecnico' },
+  { name: 'Cambios y devoluciones', path: '/cambios-devoluciones' },
+]
+
 // Categories data
 const categories = [
   { id: 1, name: 'Categoría 1', slug: 'categoria-1' },
@@ -92,15 +99,14 @@ const closeSearch = () => {
 
           <!-- Normal State: Navigation Links -->
           <nav v-if="!isSearchOpen" class="hidden md:flex items-center gap-6 flex-1 justify-center">
-            <Button variant="link" to="/quienes-somos" color="dark" size="md">
-              Quienes somos
-            </Button>
-            <Button variant="link" to="/soporte-tecnico" color="dark" size="md">
-              Soporte técnico
-            </Button>
-            <Button variant="link" to="/cambios-devoluciones" color="dark" size="md">
-              Cambios y devoluciones
-            </Button>
+            <NuxtLink
+              v-for="link in navigationLinks"
+              :key="link.path"
+              :to="link.path"
+              class="font-body font-normal text-base text-neutral-900 hover:text-neutral-700 transition-all duration-200 underline-offset-4 hover:underline cursor-pointer"
+            >
+              {{ link.name }}
+            </NuxtLink>
           </nav>
 
           <!-- Search Open State: Search Input -->
