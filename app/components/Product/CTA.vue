@@ -26,10 +26,9 @@
         <div class="flex-1 flex items-center justify-center relative">
           <div class="w-full max-w-md aspect-[4/3] bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 flex items-center justify-center">
             <img
-              src="/images/dental-tools.png"
+              src="https://www.figma.com/api/mcp/asset/c55971d1-1310-436b-83f3-ee40dd547c1f"
               alt="Instrumentos odontologicos"
               class="w-full h-full object-contain"
-              onerror="this.style.display='none'"
             >
           </div>
 
