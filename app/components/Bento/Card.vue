@@ -6,7 +6,7 @@
         },
         textColor: {
             type: String,
-            required: true,
+            required: false,
             default: "text-primary"
         }
     })
