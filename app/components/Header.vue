@@ -197,6 +197,7 @@ const closeSearch = () => {
 
             <!-- Products Grid -->
             <div class="flex-1">
+              <!-- Products Found -->
               <div v-if="filteredProducts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <ProductCard
                   v-for="product in filteredProducts"
@@ -210,10 +211,15 @@ const closeSearch = () => {
                   @click="closeSearch"
                 />
               </div>
-              <div v-else class="flex items-center justify-center py-16">
-                <p class="text-neutral-500 text-lg font-body">
+
+              <!-- No Results - Show Skeletons -->
+              <div v-else>
+                <p class="text-neutral-500 text-lg font-body mb-6 text-center">
                   No se encontraron productos
                 </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <ProductSkeleton v-for="i in 3" :key="`skeleton-${i}`" />
+                </div>
               </div>
             </div>
           </div>
