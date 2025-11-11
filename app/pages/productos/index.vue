@@ -47,11 +47,20 @@ const initializePageFromURL = () => {
   return 1
 }
 
+// Initialize sort from URL
+const initializeSortFromURL = () => {
+  const validSorts = ['relevance', 'price-asc', 'price-desc', 'name-asc', 'name-desc']
+  if (route.query.orden && validSorts.includes(route.query.orden)) {
+    return route.query.orden
+  }
+  return 'relevance'
+}
+
 // State
 const currentPage = ref(initializePageFromURL())
 const itemsPerPage = 12 // 4 + 3 + 4 + pagination
 const currentFilters = ref(initializeFiltersFromURL())
-const currentSort = ref('relevance')
+const currentSort = ref(initializeSortFromURL())
 
 // Get all products from store
 const allProducts = computed(() => productsStore.allProducts)
@@ -147,6 +156,11 @@ const updateURL = (page = currentPage.value) => {
     query.marca = currentFilters.value.brands.join(',')
   }
 
+  // Add sort parameter if not default (relevance)
+  if (currentSort.value !== 'relevance') {
+    query.orden = currentSort.value
+  }
+
   // Add page parameter if not page 1
   if (page > 1) {
     query.pagina = page.toString()
@@ -188,6 +202,7 @@ const handlePageChange = (page) => {
         :total-products="filteredProducts.length"
         :initial-category="initialCategory"
         :initial-filters="currentFilters"
+        :initial-sort="currentSort"
         @filter-change="handleFilterChange"
         @sort-change="handleSortChange"
       />

@@ -19,6 +19,10 @@ const props = defineProps({
       brands: [],
     }),
   },
+  initialSort: {
+    type: String,
+    default: 'relevance',
+  },
 })
 
 const emit = defineEmits(['filterChange', 'sortChange'])
@@ -66,7 +70,7 @@ const brands = [
 ]
 
 // State
-const selectedSort = ref('relevance')
+const selectedSort = ref(props.initialSort)
 const isSortOpen = ref(false)
 const isFilterOpen = ref(false)
 const selectedCategories = ref([])
@@ -121,6 +125,11 @@ const activeFilterCount = computed(() => {
     selectedPriceRanges.value.length +
     (selectedMaterial.value ? 1 : 0) +
     selectedBrands.value.length
+})
+
+const selectedSortLabel = computed(() => {
+  const option = sortOptions.find(opt => opt.value === selectedSort.value)
+  return option ? option.label : 'Relevancia'
 })
 
 const activeFilterChips = computed(() => {
@@ -265,7 +274,7 @@ const emitFilterChange = () => {
           class="flex items-center gap-2 px-4 py-2 border border-neutral-300 rounded-lg font-body text-base text-black hover:border-primary transition-colors min-w-[200px] justify-between"
           @click="isSortOpen = !isSortOpen"
         >
-          <span>Ordenar por</span>
+          <span>{{ selectedSortLabel }}</span>
           <ChevronDownIcon
             class="w-5 h-5 transition-transform duration-200"
             :class="isSortOpen ? 'rotate-180' : ''"
