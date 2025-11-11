@@ -299,8 +299,8 @@ onUnmounted(() => {
       />
     </Transition>
 
-    <!-- Announcement Bar (Desktop Only, Home Page Only) -->
-    <div v-if="!isSearchOpen && isHomePage" class="hidden md:block">
+    <!-- Announcement Bar (Desktop Only, Home Page Only, No Scroll) -->
+    <div v-if="!isSearchOpen && isHomePage && !isScrolled" class="hidden md:block">
       <AnnouncementBar />
     </div>
   </header>
