@@ -61,37 +61,25 @@ const staff = [
     id: 1,
     name: 'Dr. Carlos Méndez',
     role: 'Odontólogo General',
-    image: 'https://avatar.iran.liara.run/public/1',
+    image: '/staff/staff-1.webp',
   },
   {
     id: 2,
     name: 'Dra. María González',
     role: 'Ortodoncista',
-    image: 'https://avatar.iran.liara.run/public/2',
+    image: '/staff/staff-2.webp',
   },
   {
     id: 3,
     name: 'Dr. Juan Pérez',
     role: 'Endodoncista',
-    image: 'https://avatar.iran.liara.run/public/3',
+    image: '/staff/staff-3.webp',
   },
   {
     id: 4,
     name: 'Dra. Ana Rodríguez',
     role: 'Periodoncista',
-    image: 'https://avatar.iran.liara.run/public/4',
-  },
-  {
-    id: 5,
-    name: 'Dr. Luis Martínez',
-    role: 'Cirujano Maxilofacial',
-    image: 'https://avatar.iran.liara.run/public/5',
-  },
-  {
-    id: 6,
-    name: 'Dra. Sofia López',
-    role: 'Odontopediatra',
-    image: 'https://avatar.iran.liara.run/public/6',
+    image: '/staff/staff-4.webp',
   },
 ]
 </script>
