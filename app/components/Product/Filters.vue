@@ -336,7 +336,7 @@ const emitFilterChange = () => {
     >
       <div
         v-if="isFilterOpen"
-        class="bg-white border border-neutral-200 rounded-lg shadow-lg p-6 md:p-8 mb-6"
+        class="bg-white border border-neutral-200 rounded-lg shadow-lg p-6 md:p-8"
       >
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <!-- Category Filter -->
