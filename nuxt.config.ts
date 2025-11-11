@@ -26,10 +26,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     // Private keys (only available server-side)
-    directus: {
-      url: process.env.NUXT_DIRECTUS_URL,
-      token: process.env.NUXT_DIRECTUS_TOKEN,
-    },
+    directusToken: process.env.NUXT_DIRECTUS_TOKEN,
     redsys: {
       merchantCode: process.env.NUXT_REDSYS_MERCHANT_CODE,
       terminal: process.env.NUXT_REDSYS_TERMINAL,
@@ -39,6 +36,7 @@ export default defineNuxtConfig({
 
     // Public keys (exposed to client)
     public: {
+      directusUrl: process.env.NUXT_PUBLIC_DIRECTUS_URL,
       googleAnalyticsId: process.env.NUXT_PUBLIC_GOOGLE_ANALYTICS_ID,
       metaPixelId: process.env.NUXT_PUBLIC_META_PIXEL_ID,
     },
