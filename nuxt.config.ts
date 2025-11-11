@@ -13,6 +13,13 @@ export default defineNuxtConfig({
 
   modules: ['@pinia/nuxt', 'nuxt-gtag'],
 
+  app: {
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in',
+    },
+  },
+
   gtag: {
     id: process.env.NUXT_PUBLIC_GOOGLE_ANALYTICS_ID,
   },
