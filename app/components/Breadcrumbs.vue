@@ -40,8 +40,8 @@ const breadcrumbs = computed(() => {
 </script>
 
 <template>
-  <nav class="bg-neutral-50 py-4 border-b border-neutral-200">
-    <div class="container mx-auto px-4">
+  <nav class="bg-neutral-white py-5">
+    <div class="container mx-auto px-5 lg:px-0">
       <ol class="flex items-center gap-2 text-sm font-body">
         <li
           v-for="(item, index) in breadcrumbs"
@@ -52,13 +52,13 @@ const breadcrumbs = computed(() => {
           <NuxtLink
             v-if="!item.isActive"
             :to="item.path"
-            class="text-neutral-700 hover:text-primary transition-colors underline"
+            class="text-black font-medium hover:text-primary transition-colors"
           >
             {{ item.name }}
           </NuxtLink>
           <span
             v-else
-            class="text-black font-medium"
+            class="text-neutral-700 underline"
           >
             {{ item.name }}
           </span>
