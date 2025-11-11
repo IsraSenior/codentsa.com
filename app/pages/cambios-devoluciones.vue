@@ -25,6 +25,26 @@ const formData = reactive({
   leyoPolitica: null, // true for Sí, false for No
 })
 
+// Date input handling
+const fechaSolicitudType = ref('text')
+const fechaCompraType = ref('text')
+
+const handleFechaFocus = (field) => {
+  if (field === 'solicitud') {
+    fechaSolicitudType.value = 'date'
+  } else if (field === 'compra') {
+    fechaCompraType.value = 'date'
+  }
+}
+
+const handleFechaBlur = (field) => {
+  if (field === 'solicitud' && !formData.fechaSolicitud) {
+    fechaSolicitudType.value = 'text'
+  } else if (field === 'compra' && !formData.fechaCompra) {
+    fechaCompraType.value = 'text'
+  }
+}
+
 // Navigation functions
 const nextStep = () => {
   if (currentStep.value < totalSteps) {
@@ -110,9 +130,11 @@ const finish = () => {
             <!-- Fecha de solicitud -->
             <input
               v-model="formData.fechaSolicitud"
-              type="date"
-              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              :type="fechaSolicitudType"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors custom-date-input"
               placeholder="Fecha de solicitud"
+              @focus="handleFechaFocus('solicitud')"
+              @blur="handleFechaBlur('solicitud')"
             >
 
             <!-- Apartamento, piso, etc. -->
@@ -194,9 +216,11 @@ const finish = () => {
             <!-- Fecha de compra del producto -->
             <input
               v-model="formData.fechaCompra"
-              type="date"
-              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              :type="fechaCompraType"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors custom-date-input"
               placeholder="Fecha de compra del producto"
+              @focus="handleFechaFocus('compra')"
+              @blur="handleFechaBlur('compra')"
             >
 
             <!-- Política de devoluciones -->
@@ -297,3 +321,59 @@ const finish = () => {
     </Section>
   </div>
 </template>
+
+<style>
+/* Custom date input styles */
+.custom-date-input::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+/* Hide default date icon when type is text */
+.custom-date-input[type="text"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+/* Style for date input when focused/filled */
+.custom-date-input[type="date"] {
+  color-scheme: light;
+}
+
+/* Remove default date input styles in WebKit browsers */
+.custom-date-input::-webkit-datetime-edit {
+  font-family: 'Blauer Nue', sans-serif;
+}
+
+.custom-date-input::-webkit-datetime-edit-fields-wrapper {
+  font-family: 'Blauer Nue', sans-serif;
+}
+
+.custom-date-input::-webkit-datetime-edit-text {
+  color: #162526;
+  padding: 0 0.25rem;
+}
+
+.custom-date-input::-webkit-datetime-edit-month-field,
+.custom-date-input::-webkit-datetime-edit-day-field,
+.custom-date-input::-webkit-datetime-edit-year-field {
+  color: #162526;
+}
+
+/* Firefox */
+.custom-date-input::-moz-calendar-picker-indicator {
+  background: transparent;
+  cursor: pointer;
+}
+
+.custom-date-input[type="text"]::-moz-calendar-picker-indicator {
+  display: none;
+}
+</style>
