@@ -26,36 +26,12 @@ const contactOptions = [
     buttonAction: 'tel:+1234567890',
   },
 ]
-
-// FAQ data
-const faqs = [
-  {
-    id: 1,
-    question: '¿Aquí va una pregunta frecuente?',
-    answer: 'Aquí va la respuesta a esta pregunta frecuente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-  },
-  {
-    id: 2,
-    question: '¿Aquí va una pregunta frecuente?',
-    answer: 'Aquí va la respuesta a esta pregunta frecuente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-  },
-  {
-    id: 3,
-    question: '¿Aquí va una pregunta frecuente?',
-    answer: 'Aquí va la respuesta a esta pregunta frecuente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-  },
-  {
-    id: 4,
-    question: '¿Aquí va una pregunta frecuente?',
-    answer: 'Aquí va la respuesta a esta pregunta frecuente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-  },
-]
 </script>
 
 <template>
   <div>
     <!-- Hero Section -->
-    <Section>
+    <Section class="!pt-0">
       <div class="text-center mb-12">
         <h1 class="font-title text-4xl md:text-5xl lg:text-6xl text-black font-normal mb-4">
           Soporte técnico
@@ -110,7 +86,7 @@ const faqs = [
 
     <!-- FAQ Section -->
     <Section class="bg-white">
-      <FAQAccordion :faqs="faqs" />
+      <FAQAccordion />
     </Section>
   </div>
 </template>

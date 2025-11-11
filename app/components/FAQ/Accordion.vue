@@ -14,11 +14,6 @@ const props = defineProps({
     type: String,
     default: 'Escribe algo como "tiempo de devoluciones"',
   },
-  faqs: {
-    type: Array,
-    required: true,
-    // Expected format: [{ id: 1, question: 'string', answer: 'string' }]
-  },
   showSearch: {
     type: Boolean,
     default: true,
@@ -33,15 +28,39 @@ const props = defineProps({
   },
 })
 
+// FAQ data
+const faqs = [
+  {
+    id: 1,
+    question: '¿Aquí va una pregunta frecuente?',
+    answer: 'Aquí va la respuesta a esta pregunta frecuente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+  },
+  {
+    id: 2,
+    question: '¿Aquí va una pregunta frecuente?',
+    answer: 'Aquí va la respuesta a esta pregunta frecuente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+  },
+  {
+    id: 3,
+    question: '¿Aquí va una pregunta frecuente?',
+    answer: 'Aquí va la respuesta a esta pregunta frecuente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+  },
+  {
+    id: 4,
+    question: '¿Aquí va una pregunta frecuente?',
+    answer: 'Aquí va la respuesta a esta pregunta frecuente. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+  },
+]
+
 // Search and filtering
 const searchQuery = ref('')
 const openItems = ref(new Set())
 
 const filteredFaqs = computed(() => {
-  if (!searchQuery.value) return props.faqs
+  if (!searchQuery.value) return faqs
 
   const query = searchQuery.value.toLowerCase()
-  return props.faqs.filter(faq =>
+  return faqs.filter(faq =>
     faq.question.toLowerCase().includes(query) ||
     faq.answer.toLowerCase().includes(query)
   )
