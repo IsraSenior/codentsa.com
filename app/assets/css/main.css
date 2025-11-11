@@ -16,6 +16,9 @@
   /* Reinicia los tokens de colores */
   --color-*: initial;
 
+  /* Black - defined first to ensure it's available */
+  --color-black: #162526;
+
   /* Primary Colors - Escala estandarizada */
   --color-primary-50: #fef2f3;
   --color-primary-100: #fde5e7;
@@ -59,9 +62,8 @@
   --color-neutral-800: #2a5157;
   --color-neutral-900: #162526;
 
-  /* White & Black que hereda directamente */
+  /* White que hereda directamente */
   --color-white: var(--color-neutral-0);
-  --color-black: var(--color-neutral-900);
 
   /* System Colors - Solo default */
   --color-success: #22c393;
