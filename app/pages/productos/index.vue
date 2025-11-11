@@ -1,20 +1,47 @@
 <script setup>
-// Read category from URL query parameter
+// Read filter parameters from URL query
 const route = useRoute()
 const initialCategory = computed(() => route.query.categoria || null)
 
 // Products store
 const productsStore = useProductsStore()
 
+// Initialize filters from URL parameters
+const initializeFiltersFromURL = () => {
+  const filters = {
+    categories: [],
+    priceRanges: [],
+    material: null,
+    brands: [],
+  }
+
+  // Parse category parameter
+  if (route.query.categoria) {
+    filters.categories = route.query.categoria.split(',')
+  }
+
+  // Parse price parameter
+  if (route.query.precio) {
+    filters.priceRanges = route.query.precio.split(',')
+  }
+
+  // Parse material parameter
+  if (route.query.material) {
+    filters.material = route.query.material
+  }
+
+  // Parse brand parameter
+  if (route.query.marca) {
+    filters.brands = route.query.marca.split(',')
+  }
+
+  return filters
+}
+
 // State
 const currentPage = ref(1)
 const itemsPerPage = 12 // 4 + 3 + 4 + pagination
-const currentFilters = ref({
-  categories: [],
-  priceRanges: [],
-  material: null,
-  brands: [],
-})
+const currentFilters = ref(initializeFiltersFromURL())
 const currentSort = ref('relevance')
 
 // Get all products from store
@@ -94,6 +121,35 @@ const thirdRowProducts = computed(() => paginatedProducts.value.slice(7, 11))
 const handleFilterChange = (filters) => {
   currentFilters.value = filters
   currentPage.value = 1 // Reset to first page when filters change
+
+  // Update URL with filter parameters
+  const query = {}
+
+  // Add category parameter if any selected
+  if (filters.categories.length > 0) {
+    query.categoria = filters.categories.join(',')
+  }
+
+  // Add price ranges if any selected
+  if (filters.priceRanges.length > 0) {
+    query.precio = filters.priceRanges.join(',')
+  }
+
+  // Add material if selected
+  if (filters.material) {
+    query.material = filters.material
+  }
+
+  // Add brands if any selected
+  if (filters.brands.length > 0) {
+    query.marca = filters.brands.join(',')
+  }
+
+  // Update URL without page reload
+  navigateTo({
+    path: route.path,
+    query,
+  })
 }
 
 const handleSortChange = (sortValue) => {
@@ -115,6 +171,7 @@ const handlePageChange = (page) => {
       <ProductFilters
         :total-products="filteredProducts.length"
         :initial-category="initialCategory"
+        :initial-filters="currentFilters"
         @filter-change="handleFilterChange"
         @sort-change="handleSortChange"
       />

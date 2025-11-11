@@ -10,6 +10,15 @@ const props = defineProps({
     type: String,
     default: null,
   },
+  initialFilters: {
+    type: Object,
+    default: () => ({
+      categories: [],
+      priceRanges: [],
+      material: null,
+      brands: [],
+    }),
+  },
 })
 
 const emit = defineEmits(['filterChange', 'sortChange'])
@@ -69,15 +78,24 @@ const selectedBrands = ref([])
 const sortDropdownRef = ref(null)
 const filterPanelRef = ref(null)
 
-// Click outside handler and initialize category from URL
+// Click outside handler and initialize filters from URL
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
 
-  // Apply initial category if provided
-  if (props.initialCategory) {
-    selectedCategories.value = [props.initialCategory]
-    isFilterOpen.value = true // Open filter panel to show the selected filter
-    emitFilterChange()
+  // Apply initial filters if provided
+  if (props.initialFilters) {
+    selectedCategories.value = props.initialFilters.categories || []
+    selectedPriceRanges.value = props.initialFilters.priceRanges || []
+    selectedMaterial.value = props.initialFilters.material || null
+    selectedBrands.value = props.initialFilters.brands || []
+
+    // Only emit if there are active filters
+    if (selectedCategories.value.length > 0 ||
+        selectedPriceRanges.value.length > 0 ||
+        selectedMaterial.value ||
+        selectedBrands.value.length > 0) {
+      emitFilterChange()
+    }
   }
 })
 
