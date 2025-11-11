@@ -6,7 +6,7 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-1',
-    image: '/images/products/product-1.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -16,7 +16,7 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-2',
-    image: '/images/products/product-2.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -26,7 +26,7 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-3',
-    image: '/images/products/product-3.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -36,7 +36,7 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-4',
-    image: '/images/products/product-4.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -46,7 +46,7 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-5',
-    image: '/images/products/product-5.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -56,7 +56,7 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-6',
-    image: '/images/products/product-6.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -66,7 +66,7 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-7',
-    image: '/images/products/product-7.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -76,7 +76,7 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-8',
-    image: '/images/products/product-8.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -86,7 +86,7 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-9',
-    image: '/images/products/product-9.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -96,7 +96,17 @@ const products = ref([
     name: 'Sealapex Cemento',
     brand: 'Sybron Endo',
     slug: 'sealapex-cemento-10',
-    image: '/images/products/product-10.png',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
+    description: 'El cemento dental es un material esencia...',
+    originalPrice: 300,
+    price: 250,
+  },
+  {
+    id: 10,
+    name: 'Sealapex Cemento',
+    brand: 'Sybron Endo',
+    slug: 'sealapex-cemento-10',
+    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
     description: 'El cemento dental es un material esencia...',
     originalPrice: 300,
     price: 250,
@@ -129,9 +139,9 @@ const handlePageChange = (page) => {
 // First 4 products
 const firstRowProducts = computed(() => products.value.slice(0, 4))
 // Next 2 products (larger cards)
-const secondRowProducts = computed(() => products.value.slice(4, 6))
+const secondRowProducts = computed(() => products.value.slice(4, 7))
 // Last 4 products
-const thirdRowProducts = computed(() => products.value.slice(6, 10))
+const thirdRowProducts = computed(() => products.value.slice(7, 11))
 </script>
 
 <template>
@@ -161,7 +171,7 @@ const thirdRowProducts = computed(() => products.value.slice(6, 10))
         </div>
 
         <!-- Second Row: 2 Larger Products -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <ProductCard
             v-for="product in secondRowProducts"
             :key="product.id"

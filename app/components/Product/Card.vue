@@ -98,6 +98,6 @@ const discountPercentage = computed(() => {
       </div>
     </div>
 
-    <a href="#" class="absolute inset-0"></a>
+    <NuxtLink to="/productos/test-product" class="absolute inset-0"></NuxtLink>
   </div>
 </template>
