@@ -139,6 +139,26 @@ const brands = [
   {
     name: "Envista",
     logo: "https://www.figma.com/api/mcp/asset/2efead82-119b-47eb-a305-c6535081dce0"
+  },
+  {
+    name: "Dentsply Sirona",
+    logo: "https://www.figma.com/api/mcp/asset/658a450a-4a6a-4fcc-a9f3-76c69db9ba2a"
+  },
+  {
+    name: "Align",
+    logo: "https://www.figma.com/api/mcp/asset/b0d6508d-b769-4b60-8d75-6afca63e834c"
+  },
+  {
+    name: "3M",
+    logo: "https://www.figma.com/api/mcp/asset/600e56b7-6926-4459-9fcb-f6a303fab606"
+  },
+  {
+    name: "Straumann",
+    logo: "https://www.figma.com/api/mcp/asset/b6debe7a-c873-4fb8-8c19-b864928748ab"
+  },
+  {
+    name: "Envista",
+    logo: "https://www.figma.com/api/mcp/asset/2efead82-119b-47eb-a305-c6535081dce0"
   }
 ]
 </script>
@@ -151,10 +171,6 @@ const brands = [
     <Section title="Revisa las mejores ofertas">
       <BaseCarousel
         :items="bestOffersItems"
-        :slides-per-view="4"
-        :space-between="16"
-        :navigation="true"
-        :loop="true"
       >
         <template #default="{ item }">
           <ProductCard
@@ -238,6 +254,24 @@ const brands = [
             :author-name="item.authorName"
             :author-avatar="item.authorAvatar"
             :time-ago="item.timeAgo"
+          />
+        </template>
+      </BaseCarousel>
+    </Section>
+
+    <!-- Marcas -->
+    <Section title="Marcas con las que trabajamos">
+      <BaseCarousel
+        :items="brands"
+        :slides-per-view="5"
+        :space-between="64"
+        :navigation="true"
+        :loop="true"
+      >
+        <template #default="{ item }">
+          <BrandCard
+            :name="item.name"
+            :logo="item.logo"
           />
         </template>
       </BaseCarousel>
