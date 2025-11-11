@@ -7,6 +7,10 @@ import {
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 
+// Route for detecting home page
+const route = useRoute()
+const isHomePage = computed(() => route.path === '/')
+
 // Search mega menu state
 const isSearchOpen = ref(false)
 const searchQuery = ref('')
@@ -243,8 +247,8 @@ const closeSearch = () => {
       />
     </Transition>
 
-    <!-- Announcement Bar (Desktop Only) -->
-    <div v-if="!isSearchOpen" class="hidden md:block">
+    <!-- Announcement Bar (Desktop Only, Home Page Only) -->
+    <div v-if="!isSearchOpen && isHomePage" class="hidden md:block">
       <AnnouncementBar />
     </div>
   </header>
