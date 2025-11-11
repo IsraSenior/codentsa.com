@@ -49,7 +49,7 @@ const finish = () => {
 <template>
   <div>
     <!-- Hero Section -->
-    <Section class="pt-0">
+    <Section class="!pt-0">
       <div class="text-center mb-12">
         <h1 class="font-title text-4xl md:text-5xl lg:text-6xl text-black font-normal mb-4">
           Cambios y devoluciones
@@ -60,13 +60,18 @@ const finish = () => {
       </div>
 
       <!-- Progress Indicator -->
-      <div class="flex justify-center items-center gap-3 mb-12">
-        <div
-          v-for="step in totalSteps"
-          :key="step"
-          class="w-3 h-3 rounded-full transition-colors duration-300"
-          :class="step <= currentStep ? 'bg-primary' : 'bg-neutral-300'"
-        />
+      <div class="flex justify-center items-center mb-12">
+        <template v-for="step in totalSteps" :key="step">
+          <div
+            class="w-4 h-4 rounded-full transition-all duration-300 border-2"
+            :class="step <= currentStep ? 'bg-black border-black' : 'bg-white border-black'"
+          />
+          <div
+            v-if="step < totalSteps"
+            class="w-16 md:w-24 h-0.5 transition-colors duration-300"
+            :class="step < currentStep ? 'bg-black' : 'bg-black'"
+          />
+        </template>
       </div>
 
       <!-- Form Container -->
@@ -80,125 +85,81 @@ const finish = () => {
 
             <!-- Nombres y Apellidos -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label class="block font-body text-sm md:text-base text-black mb-2">
-                  Nombres
-                </label>
-                <input
-                  v-model="formData.nombres"
-                  type="text"
-                  class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                  placeholder="Ingresa tus nombres"
-                >
-              </div>
-              <div>
-                <label class="block font-body text-sm md:text-base text-black mb-2">
-                  Apellidos
-                </label>
-                <input
-                  v-model="formData.apellidos"
-                  type="text"
-                  class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                  placeholder="Ingresa tus apellidos"
-                >
-              </div>
+              <input
+                v-model="formData.nombres"
+                type="text"
+                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+                placeholder="Nombres"
+              >
+              <input
+                v-model="formData.apellidos"
+                type="text"
+                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+                placeholder="Apellidos"
+              >
             </div>
 
             <!-- Email -->
-            <div>
-              <label class="block font-body text-sm md:text-base text-black mb-2">
-                E-mail
-              </label>
-              <input
-                v-model="formData.email"
-                type="email"
-                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                placeholder="tu@email.com"
-              >
-            </div>
+            <input
+              v-model="formData.email"
+              type="email"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              placeholder="E-mail"
+            >
 
             <!-- Fecha de solicitud -->
-            <div>
-              <label class="block font-body text-sm md:text-base text-black mb-2">
-                Fecha de solicitud
-              </label>
-              <input
-                v-model="formData.fechaSolicitud"
-                type="date"
-                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-              >
-            </div>
+            <input
+              v-model="formData.fechaSolicitud"
+              type="date"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              placeholder="Fecha de solicitud"
+            >
 
             <!-- Apartamento, piso, etc. -->
-            <div>
-              <label class="block font-body text-sm md:text-base text-black mb-2">
-                Apartamento, piso, etc.
-              </label>
+            <input
+              v-model="formData.apartamento"
+              type="text"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              placeholder="Apartamento, piso, etc."
+            >
+
+            <!-- Ciudad, Estado -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
-                v-model="formData.apartamento"
+                v-model="formData.ciudad"
                 type="text"
                 class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                placeholder="Número de apartamento o información adicional"
+                placeholder="Ciudad"
               >
-            </div>
-
-            <!-- Ciudad, Estado, País -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label class="block font-body text-sm md:text-base text-black mb-2">
-                  Ciudad
-                </label>
-                <input
-                  v-model="formData.ciudad"
-                  type="text"
-                  class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                  placeholder="Tu ciudad"
-                >
-              </div>
-              <div>
-                <label class="block font-body text-sm md:text-base text-black mb-2">
-                  Estado
-                </label>
-                <input
-                  v-model="formData.estado"
-                  type="text"
-                  class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                  placeholder="Tu estado"
-                >
-              </div>
+              <input
+                v-model="formData.estado"
+                type="text"
+                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+                placeholder="Estado"
+              >
             </div>
 
             <!-- País -->
-            <div>
-              <label class="block font-body text-sm md:text-base text-black mb-2">
-                País
-              </label>
-              <input
-                v-model="formData.pais"
-                type="text"
-                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                placeholder="Tu país"
-              >
-            </div>
+            <input
+              v-model="formData.pais"
+              type="text"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              placeholder="País"
+            >
 
             <!-- Celular -->
-            <div>
-              <label class="block font-body text-sm md:text-base text-black mb-2">
-                Celular
-              </label>
-              <input
-                v-model="formData.celular"
-                type="tel"
-                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                placeholder="+1 234 567 8900"
-              >
-            </div>
+            <input
+              v-model="formData.celular"
+              type="tel"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              placeholder="Celular"
+            >
 
             <!-- Navigation -->
             <div class="flex justify-end pt-4">
               <Button
                 variant="solid"
-                color="primary"
+                color="dark"
                 size="lg"
                 @click="nextStep"
               >
@@ -215,42 +176,28 @@ const finish = () => {
             </h2>
 
             <!-- Nombre del producto -->
-            <div>
-              <label class="block font-body text-sm md:text-base text-black mb-2">
-                Nombre del producto
-              </label>
-              <input
-                v-model="formData.nombreProducto"
-                type="text"
-                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                placeholder="Ingresa el nombre del producto"
-              >
-            </div>
+            <input
+              v-model="formData.nombreProducto"
+              type="text"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              placeholder="Nombre del producto"
+            >
 
             <!-- ID del producto -->
-            <div>
-              <label class="block font-body text-sm md:text-base text-black mb-2">
-                ID del producto
-              </label>
-              <input
-                v-model="formData.idProducto"
-                type="text"
-                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-                placeholder="Código o ID del producto"
-              >
-            </div>
+            <input
+              v-model="formData.idProducto"
+              type="text"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              placeholder="ID del producto"
+            >
 
             <!-- Fecha de compra del producto -->
-            <div>
-              <label class="block font-body text-sm md:text-base text-black mb-2">
-                Fecha de compra del producto
-              </label>
-              <input
-                v-model="formData.fechaCompra"
-                type="date"
-                class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-              >
-            </div>
+            <input
+              v-model="formData.fechaCompra"
+              type="date"
+              class="w-full px-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+              placeholder="Fecha de compra del producto"
+            >
 
             <!-- Política de devoluciones -->
             <div class="pt-4">
@@ -298,7 +245,7 @@ const finish = () => {
               </Button>
               <Button
                 variant="solid"
-                color="primary"
+                color="dark"
                 size="lg"
                 @click="nextStep"
               >
@@ -311,19 +258,6 @@ const finish = () => {
           <!-- Step 3: Confirmation -->
           <div v-if="currentStep === 3" class="text-center py-8">
             <div class="mb-8">
-              <svg
-                class="w-20 h-20 mx-auto text-success mb-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
               <h2 class="font-title text-2xl md:text-3xl text-black font-normal mb-4">
                 Espera un correo de confirmación de Codentsa
               </h2>
@@ -345,7 +279,7 @@ const finish = () => {
               </Button>
               <Button
                 variant="solid"
-                color="primary"
+                color="dark"
                 size="lg"
                 @click="finish"
               >
