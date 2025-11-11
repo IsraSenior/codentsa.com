@@ -127,7 +127,7 @@ const buttonClasses = computed(() => {
 
   // Solid y Outline variants (comportamiento original)
   const base =
-    'font-body font-normal rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center gap-2'
+    'font-body font-normal rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center justify-center gap-2'
 
   // Sizes
   const sizes = props.iconOnly
