@@ -20,7 +20,7 @@ const props = defineProps({
   },
   autoplay: {
     type: [Boolean, Object],
-    default: false,
+    default: true,
   },
   loop: {
     type: Boolean,
@@ -38,19 +38,26 @@ const props = defineProps({
 
 const modules = [Pagination, Autoplay]
 
+// Configuración de autoplay
+const autoplayConfig = computed(() => {
+  if (props.autoplay === false) return false
+  if (typeof props.autoplay === 'object') return props.autoplay
+  return {
+    delay: 3500,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: true,
+  }
+})
+
 // Configuración responsiva
 const breakpoints = {
   320: {
     slidesPerView: 1,
     spaceBetween: 10,
   },
-  640: {
+  768: {
     slidesPerView: 2,
     spaceBetween: 12,
-  },
-  1024: {
-    slidesPerView: 3,
-    spaceBetween: 16,
   },
   1280: {
     slidesPerView: props.slidesPerView,
@@ -108,7 +115,7 @@ const nextSlide = () => {
       :slides-per-view="slidesPerView"
       :space-between="spaceBetween"
       :pagination="pagination ? { clickable: true } : false"
-      :autoplay="autoplay"
+      :autoplay="autoplayConfig"
       :loop="loop"
       :breakpoints="breakpoints"
       :class="pagination ? 'pb-12!' : 'pb-0!'"
