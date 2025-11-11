@@ -6,6 +6,10 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  initialCategory: {
+    type: String,
+    default: null,
+  },
 })
 
 const emit = defineEmits(['filterChange', 'sortChange'])
@@ -65,9 +69,16 @@ const selectedBrands = ref([])
 const sortDropdownRef = ref(null)
 const filterPanelRef = ref(null)
 
-// Click outside handler
+// Click outside handler and initialize category from URL
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
+
+  // Apply initial category if provided
+  if (props.initialCategory) {
+    selectedCategories.value = [props.initialCategory]
+    isFilterOpen.value = true // Open filter panel to show the selected filter
+    emitFilterChange()
+  }
 })
 
 onUnmounted(() => {

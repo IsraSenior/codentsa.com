@@ -31,13 +31,14 @@ const navigationLinks = [
   { name: 'Cambios y devoluciones', path: '/cambios-devoluciones' },
 ]
 
-// Categories data
+// Categories data (matching Product/Filters categories)
 const categories = [
-  { id: 1, name: 'Categoría 1', slug: 'categoria-1' },
-  { id: 2, name: 'Categoría 2', slug: 'categoria-2' },
-  { id: 3, name: 'Categoría 3', slug: 'categoria-3' },
-  { id: 4, name: 'Categoría 4', slug: 'categoria-4' },
-  { id: 5, name: 'Categoría 5', slug: 'categoria-5' },
+  { id: 'exploracion', name: 'Exploración' },
+  { id: 'restauracion', name: 'Restauración' },
+  { id: 'cirugia', name: 'Cirugía' },
+  { id: 'ortodoncia', name: 'Ortodoncia' },
+  { id: 'higiene', name: 'Higiene & Profilaxis' },
+  { id: 'accesorios', name: 'Accesorios y bandejas' },
 ]
 
 // Sample products data (in real app, this would come from API)
@@ -242,7 +243,7 @@ onUnmounted(() => {
                 <NuxtLink
                   v-for="category in categories"
                   :key="category.id"
-                  :to="`/categoria/${category.slug}`"
+                  :to="`/productos?categoria=${category.id}`"
                   class="text-neutral-700 hover:text-primary text-base font-body py-2 transition-colors"
                   @click="closeSearch"
                 >

@@ -1,4 +1,8 @@
 <script setup>
+// Read category from URL query parameter
+const route = useRoute()
+const initialCategory = computed(() => route.query.categoria || null)
+
 // Product data (mock data for now)
 const products = ref([
   {
@@ -150,6 +154,7 @@ const thirdRowProducts = computed(() => products.value.slice(7, 11))
       <!-- Filters Bar -->
       <ProductFilters
         :total-products="256"
+        :initial-category="initialCategory"
         @filter-change="handleFilterChange"
         @sort-change="handleSortChange"
       />
