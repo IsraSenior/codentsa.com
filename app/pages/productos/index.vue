@@ -38,8 +38,17 @@ const initializeFiltersFromURL = () => {
   return filters
 }
 
+// Initialize page from URL
+const initializePageFromURL = () => {
+  if (route.query.pagina) {
+    const page = parseInt(route.query.pagina, 10)
+    return page > 0 ? page : 1
+  }
+  return 1
+}
+
 // State
-const currentPage = ref(1)
+const currentPage = ref(initializePageFromURL())
 const itemsPerPage = 12 // 4 + 3 + 4 + pagination
 const currentFilters = ref(initializeFiltersFromURL())
 const currentSort = ref('relevance')
@@ -117,32 +126,30 @@ const firstRowProducts = computed(() => paginatedProducts.value.slice(0, 4))
 const secondRowProducts = computed(() => paginatedProducts.value.slice(4, 7))
 const thirdRowProducts = computed(() => paginatedProducts.value.slice(7, 11))
 
-// Handlers
-const handleFilterChange = (filters) => {
-  currentFilters.value = filters
-  currentPage.value = 1 // Reset to first page when filters change
-
-  // Update URL with filter parameters
+// Helper function to update URL with all parameters
+const updateURL = (page = currentPage.value) => {
   const query = {}
 
-  // Add category parameter if any selected
-  if (filters.categories.length > 0) {
-    query.categoria = filters.categories.join(',')
+  // Add filter parameters
+  if (currentFilters.value.categories.length > 0) {
+    query.categoria = currentFilters.value.categories.join(',')
   }
 
-  // Add price ranges if any selected
-  if (filters.priceRanges.length > 0) {
-    query.precio = filters.priceRanges.join(',')
+  if (currentFilters.value.priceRanges.length > 0) {
+    query.precio = currentFilters.value.priceRanges.join(',')
   }
 
-  // Add material if selected
-  if (filters.material) {
-    query.material = filters.material
+  if (currentFilters.value.material) {
+    query.material = currentFilters.value.material
   }
 
-  // Add brands if any selected
-  if (filters.brands.length > 0) {
-    query.marca = filters.brands.join(',')
+  if (currentFilters.value.brands.length > 0) {
+    query.marca = currentFilters.value.brands.join(',')
+  }
+
+  // Add page parameter if not page 1
+  if (page > 1) {
+    query.pagina = page.toString()
   }
 
   // Update URL without page reload
@@ -152,13 +159,22 @@ const handleFilterChange = (filters) => {
   })
 }
 
+// Handlers
+const handleFilterChange = (filters) => {
+  currentFilters.value = filters
+  currentPage.value = 1 // Reset to first page when filters change
+  updateURL(1)
+}
+
 const handleSortChange = (sortValue) => {
   currentSort.value = sortValue
   currentPage.value = 1 // Reset to first page when sort changes
+  updateURL(1)
 }
 
 const handlePageChange = (page) => {
   currentPage.value = page
+  updateURL(page)
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
