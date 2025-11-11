@@ -27,9 +27,9 @@ const selectImage = (index) => {
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="flex flex-col h-full space-y-4">
     <!-- Main Image -->
-    <div class="relative aspect-square bg-neutral-100 rounded-2xl overflow-hidden group">
+    <div class="relative flex-1 bg-neutral-100 rounded-2xl overflow-hidden group">
       <img
         :src="currentImage"
         :alt="`Product image ${currentIndex + 1}`"
@@ -53,7 +53,7 @@ const selectImage = (index) => {
     </div>
 
     <!-- Thumbnail Navigation -->
-    <div class="grid grid-cols-4 gap-3">
+    <div class="grid grid-cols-4 gap-3 flex-shrink-0">
       <button
         v-for="(image, index) in images"
         :key="index"

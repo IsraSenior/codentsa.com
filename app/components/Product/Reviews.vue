@@ -1,4 +1,6 @@
 <script setup>
+import { StarIcon } from '@heroicons/vue/24/solid'
+
 const props = defineProps({
   reviews: {
     type: Array,
@@ -39,23 +41,17 @@ const ratingDistribution = computed(() => {
 </script>
 
 <template>
-  <Section class="!pt-0">
+  <Section class="pt-0!">
     <div class="flex items-center justify-between mb-8">
       <h2 class="font-title text-3xl md:text-4xl text-black font-normal">
         Reviews & Valoraciones
       </h2>
-      <button
-        class="px-6 py-3 bg-black text-white rounded-full font-body text-sm md:text-base hover:bg-neutral-800 transition-colors"
-        @click="emit('addReview')"
-      >
-        Añade tu comentario
-      </button>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
       <!-- Left: Rating Summary -->
-      <div class="lg:col-span-1">
-        <div class="flex items-center gap-6">
+      <div class="flex items-center justify-center">
+        <div class="flex items-start gap-6 w-full max-w-lg">
           <div class="text-center">
             <div class="text-6xl md:text-7xl font-title font-bold text-black mb-2">
               {{ averageRating.toFixed(1) }}
@@ -72,20 +68,30 @@ const ratingDistribution = computed(() => {
               :key="item.rating"
               class="flex items-center gap-3"
             >
-              <span class="font-body text-sm text-black w-4">{{ item.rating }}</span>
+              <div class="flex items-center gap-1">
+                <span class="font-body text-sm text-black w-4">{{ item.rating }}</span>
+                <StarIcon class="w-4 h-4 text-primary" />
+              </div>
               <div class="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden">
                 <div
-                  class="h-full bg-primary transition-all duration-300"
+                  class="h-full bg-black transition-all duration-300"
                   :style="{ width: `${item.percentage}%` }"
                 />
               </div>
             </div>
+
+            <button
+            class="mt-6 px-6 py-3 bg-black text-white rounded-full font-body text-sm md:text-base hover:bg-neutral-800 transition-colors"
+            @click="emit('addReview')"
+          >
+            Añade tu comentario
+          </button>
           </div>
         </div>
       </div>
 
       <!-- Right: Review Carousel -->
-      <div v-if="reviews.length > 0" class="lg:col-span-2">
+      <div v-if="reviews.length > 0" class="">
         <BaseCarousel :items="reviews" :slides-per-view="1" :autoplay="false" :loop="false">
           <template #default="{ item }">
             <TestimonialsCard

@@ -158,9 +158,9 @@ const formatPrice = (price) => {
   <div>
     <!-- Product Details -->
     <Section class="!pt-0">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
         <!-- Left: Gallery -->
-        <div class="lg:sticky lg:top-4">
+        <div class="lg:sticky lg:top-4 h-full">
           <ProductGallery :images="product.images" />
         </div>
 
