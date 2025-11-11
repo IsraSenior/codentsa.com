@@ -16,8 +16,8 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="flex flex-col gap-4 group cursor-pointer">
-    <!-- Image -->
+  <div class="group cursor-pointer">
+    <!-- Image Container -->
     <div class="relative overflow-hidden rounded-3xl aspect-3/4 bg-neutral-100">
       <!-- Background overlay on hover -->
       <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
@@ -34,16 +34,18 @@ const props = defineProps({
         :alt="name"
         class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105 relative z-20"
       >
-    </div>
 
-    <!-- Info -->
-    <div class="text-left space-y-1">
-      <h3 class="font-title text-lg md:text-xl text-black group-hover:text-primary font-normal transition-colors duration-300">
-        {{ name }}
-      </h3>
-      <p class="font-body text-sm text-neutral-700 group-hover:text-primary transition-colors duration-300">
-        {{ role }}
-      </p>
+      <!-- Info overlay (only visible on hover) -->
+      <div class="absolute bottom-0 left-0 right-0 p-6 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div class="text-left space-y-1">
+          <h3 class="font-title text-lg md:text-xl text-white font-normal">
+            {{ name }}
+          </h3>
+          <p class="font-body text-sm text-white">
+            {{ role }}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
