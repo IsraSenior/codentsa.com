@@ -273,5 +273,8 @@ const brands = [
         </template>
       </BaseCarousel>
     </Section>
+
+    <!-- Offer Popup -->
+    <OfferPopup />
   </div>
 </template>
