@@ -264,6 +264,7 @@ const handleClearAllFilters = () => {
           <ProductCard
             v-for="product in firstRowProducts"
             :key="product.id"
+            :id="product.id"
             :title="product.name"
             :brand="product.brand"
             :image="product.image"
@@ -278,6 +279,7 @@ const handleClearAllFilters = () => {
           <ProductCard
             v-for="product in secondRowProducts"
             :key="product.id"
+            :id="product.id"
             :title="product.name"
             :brand="product.brand"
             :image="product.image"
@@ -295,6 +297,7 @@ const handleClearAllFilters = () => {
           <ProductCard
             v-for="product in thirdRowProducts"
             :key="product.id"
+            :id="product.id"
             :title="product.name"
             :brand="product.brand"
             :image="product.image"
