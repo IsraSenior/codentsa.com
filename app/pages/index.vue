@@ -149,13 +149,35 @@ const brands = [
 
     <!-- Product Carousel -->
     <Section title="Revisa las mejores ofertas">
-        <ProductCarousel
-          :items="bestOffersItems"
-          :slides-per-view="4"
-          :space-between="16"
-          :navigation="true"
-          :loop="true"
-        />
+      <BaseCarousel
+        :items="bestOffersItems"
+        :slides-per-view="4"
+        :space-between="16"
+        :navigation="true"
+        :loop="true"
+      >
+        <template #default="{ item }">
+          <ProductCard
+            v-if="item.type === 'product'"
+            :title="item.title"
+            :brand="item.brand"
+            :image="item.image"
+            :description="item.description"
+            :original-price="item.originalPrice"
+            :price="item.price"
+            :is-favorite="item.isFavorite"
+          />
+          <ProductBanner
+            v-else-if="item.type === 'banner'"
+            :title="item.title"
+            :description="item.description"
+            :cta-text="item.ctaText"
+            :cta-link="item.ctaLink"
+            :bg-color="item.bgColor"
+            :image="item.image"
+          />
+        </template>
+      </BaseCarousel>
     </Section>
 
     <!-- Sección Promoción Primera Compra -->
@@ -201,14 +223,24 @@ const brands = [
 
     <!-- Testimonials -->
     <Section title="Reseñas de nuestros clientes">
-      <!-- Carrousel de reseñas -->
-      <TestimonialsCarousel
-          :items="testimonials"
-          :slides-per-view="4"
-          :space-between="16"
-          :navigation="true"
-          :loop="true"
-        />
+      <BaseCarousel
+        :items="testimonials"
+        :slides-per-view="4"
+        :space-between="16"
+        :navigation="true"
+        :loop="true"
+      >
+        <template #default="{ item }">
+          <TestimonialsCard
+            :product-name="item.productName"
+            :review="item.review"
+            :rating="item.rating"
+            :author-name="item.authorName"
+            :author-avatar="item.authorAvatar"
+            :time-ago="item.timeAgo"
+          />
+        </template>
+      </BaseCarousel>
     </Section>
   </div>
 </template>
