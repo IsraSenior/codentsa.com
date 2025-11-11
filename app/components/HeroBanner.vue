@@ -60,7 +60,7 @@ const currentSlideData = computed(() => props.slides[currentSlide.value])
 </script>
 
 <template>
-  <section class="relative h-[670px] overflow-hidden rounded-b-2xl flex items-center">
+  <section class="relative h-[400px] md:h-[500px] lg:h-[670px] overflow-hidden rounded-b-2xl flex items-center">
     <!-- Background Color with smooth transition -->
     <Transition name="fade" mode="out-in">
       <div
@@ -83,26 +83,27 @@ const currentSlideData = computed(() => props.slides[currentSlide.value])
     </div>
 
     <!-- Content with fade animation -->
-    <div class="relative z-10 container mx-auto">
+    <div class="relative z-10 container px-5 lg:px-0 mx-auto">
       <div class="relative min-h-[300px]">
         <Transition name="content-fade">
           <div
             :key="`content-${currentSlide}`"
             class="absolute inset-0 flex flex-col gap-8 items-start"
           >
-            <div class="flex flex-col gap-2 text-white max-w-3xl">
-              <h1 class="font-title text-7xl leading-none font-normal">
+            <div class="flex flex-col gap-2 text-white max-w-3xl text-center lg:text-left">
+              <h1 class="font-title text-3xl md:text-5xl lg:text-7xl leading-none font-normal">
                 {{ currentSlideData.title }}
               </h1>
-              <p class="text-base leading-6 font-body font-normal">
+              <p class="text-sm md:text-base leading-6 font-body font-normal">
                 {{ currentSlideData.description }}
               </p>
             </div>
             <Button
               variant="solid"
               color="dark"
-              size="lg"
+              size="md"
               :to="currentSlideData.ctaLink"
+              class="md:!h-[50px] md:!px-8 md:!py-4 md:!text-lg w-full lg:w-auto"
             >
               {{ currentSlideData.ctaText }}
             </Button>
@@ -112,14 +113,14 @@ const currentSlideData = computed(() => props.slides[currentSlide.value])
     </div>
 
     <!-- Navigation -->
-    <div class="left-24 absolute bottom-10 flex gap-6 z-10">
+    <div class="left-1/2 lg:left-4 transform -translate-x-1/2 lg:translate-x-0 md:left-24 absolute bottom-6 md:bottom-10 flex gap-3 md:gap-6 z-10">
       <button
         class="bg-neutral-200 p-2 rounded-full hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
         :class="{ 'opacity-50 cursor-not-allowed': isTransitioning }"
         :disabled="isTransitioning"
         @click="prevSlide"
       >
-        <ChevronLeftIcon class="w-6 h-6 text-black" />
+        <ChevronLeftIcon class="w-5 h-5 md:w-6 md:h-6 text-black" />
       </button>
       <button
         class="bg-neutral-200 p-2 rounded-full hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
@@ -127,7 +128,7 @@ const currentSlideData = computed(() => props.slides[currentSlide.value])
         :disabled="isTransitioning"
         @click="nextSlide"
       >
-        <ChevronRightIcon class="w-6 h-6 text-black" />
+        <ChevronRightIcon class="w-5 h-5 md:w-6 md:h-6 text-black" />
       </button>
     </div>
   </section>

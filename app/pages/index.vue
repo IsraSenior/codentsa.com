@@ -197,29 +197,29 @@ const brands = [
     </Section>
 
     <!-- Sección Promoción Primera Compra -->
-    <section class="bg-linear-to-r from-primary to-primary-700 py-16 relative overflow-hidden flex items-center min-h-[35vh]">
-        <div class="container mx-auto">
-          <div class="relative flex items-start justify-between mb-24">
-            <p class="text-neutral-100 text-4xl font-title font-light leading-10 mb-4 max-w-md">
+    <section class="bg-linear-to-r from-primary to-primary-700 py-10 md:py-16 relative overflow-hidden flex items-center min-h-[35vh]">
+        <div class="container mx-auto px-4">
+          <div class="relative flex flex-col md:flex-row items-start justify-between mb-12 md:mb-24 gap-4 text-center lg:text-left">
+            <p class="text-neutral-100 text-2xl md:text-3xl lg:text-4xl font-title font-light leading-snug md:leading-10 mb-4 max-w-md">
               Disfruta de esta promoción en tu primera compra:
             </p>
-            <button class="absolute top-6 right-20 border-2 border-neutral-100 text-neutral-100 px-6 py-3 rounded-full text-lg font-body">
+            <button class="md:absolute md:top-6 md:right-20 border-2 border-neutral-100 text-neutral-100 px-5 md:px-6 py-2 md:py-3 rounded-full text-base md:text-lg font-body whitespace-nowrap w-full lg:w-auto">
               Ver ofertas
             </button>
           </div>
-          
-          <div class="grid grid-cols-3 gap-10 divide-x-2 divide-white">
-              <div class="text-center relative">
-                  <p class="font-title text-[288px] absolute left-1/3 transform -translate-x-1/2 font-medium bottom-[-150px] leading-none text-primary-500">01</p>
-                  <p class="text-neutral-100 text-2xl leading-tight relative">Descuentos<br>exclusivos</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 md:divide-x-2 divide-white">
+              <div class="text-center relative pb-8 md:pb-0">
+                  <p class="font-title text-[120px] md:text-[200px] lg:text-[288px] absolute left-1/2 md:left-1/3 transform -translate-x-1/2 font-medium -bottom-2.5 md:bottom-[-100px] lg:bottom-[-150px] leading-none text-primary-500">01</p>
+                  <p class="text-neutral-100 text-xl md:text-2xl leading-tight relative">Descuentos<br>exclusivos</p>
               </div>
-              <div class="text-center relative">
-                  <p class="font-title text-[288px] absolute left-1/3 transform -translate-x-1/2 font-medium bottom-[-150px] leading-none text-primary-500">02</p>
-                  <p class="text-neutral-100 text-2xl leading-tight relative">Envíos<br>gratuitos</p>
+              <div class="text-center relative pb-8 md:pb-0">
+                  <p class="font-title text-[120px] md:text-[200px] lg:text-[288px] absolute left-1/2 md:left-1/3 transform -translate-x-1/2 font-medium -bottom-2.5 md:bottom-[-100px] lg:bottom-[-150px] leading-none text-primary-500">02</p>
+                  <p class="text-neutral-100 text-xl md:text-2xl leading-tight relative">Envíos<br>gratuitos</p>
               </div>
-              <div class="text-center relative">
-                  <p class="font-title text-[288px] absolute left-1/3 transform -translate-x-1/2 font-medium bottom-[-150px] leading-none text-primary-500">03</p>
-                  <p class="text-neutral-100 text-2xl leading-tight relative">Envíos<br>express</p>
+              <div class="text-center relative pb-8 md:pb-0">
+                  <p class="font-title text-[120px] md:text-[200px] lg:text-[288px] absolute left-1/2 md:left-1/3 transform -translate-x-1/2 font-medium -bottom-2.5 md:bottom-[-100px] lg:bottom-[-150px] leading-none text-primary-500">03</p>
+                  <p class="text-neutral-100 text-xl md:text-2xl leading-tight relative">Envíos<br>express</p>
               </div>
           </div>
         </div>
@@ -227,13 +227,13 @@ const brands = [
 
     <!-- Soluciones -->
     <Section title="Tenemos una solución para ti">
-      <div class="grid grid-cols-3 grid-rows-3 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-3 gap-4 md:gap-5">
           <BentoCard bg="bg-card-solution-1.webp" textColor="text-white">1</BentoCard>
-          <BentoCard bg="bg-card-solution-2.webp" class="row-span-2">2</BentoCard>
+          <BentoCard bg="bg-card-solution-2.webp" class="lg:row-span-2">2</BentoCard>
           <BentoCard bg="bg-card-solution-3.webp" textColor="text-white">3</BentoCard>
-          <BentoCard bg="bg-card-solution-4.webp" class="row-span-2">4</BentoCard>
-          <BentoCard bg="bg-card-solution-5.webp" textColor="text-white" class="col-start-2 row-start-3">5</BentoCard>
-          <BentoCard bg="bg-card-solution-6.webp" class="row-span-2 col-start-3 row-start-2">6</BentoCard>
+          <BentoCard bg="bg-card-solution-4.webp" class="lg:row-span-2">4</BentoCard>
+          <BentoCard bg="bg-card-solution-5.webp" textColor="text-white" class="lg:col-start-2 lg:row-start-3">5</BentoCard>
+          <BentoCard bg="bg-card-solution-6.webp" class="lg:row-span-2 lg:col-start-3 lg:row-start-2">6</BentoCard>
       </div>
     </Section>
 

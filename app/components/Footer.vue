@@ -1,40 +1,86 @@
 <script setup>
-    
+const currentYear = new Date().getFullYear()
+
+const socialLinks = [
+  {
+    name: 'Instagram',
+    href: '#',
+    icon: 'M11.999 7.377a4.623 4.623 0 1 0 0 9.248 4.623 4.623 0 0 0 0-9.248m0 7.627a3.004 3.004 0 1 1 0-6.008 3.004 3.004 0 0 1 0 6.008M16.806 6.129a1.078 1.078 0 1 0 0 2.156 1.078 1.078 0 1 0 0-2.156M20.533 6.111A4.6 4.6 0 0 0 17.9 3.479a6.6 6.6 0 0 0-2.186-.42c-.963-.042-1.268-.054-3.71-.054s-2.755 0-3.71.054a6.6 6.6 0 0 0-2.184.42 4.6 4.6 0 0 0-2.633 2.632 6.6 6.6 0 0 0-.419 2.186c-.043.962-.056 1.267-.056 3.71s0 2.753.056 3.71c.015.748.156 1.486.419 2.187a4.6 4.6 0 0 0 2.634 2.632 6.6 6.6 0 0 0 2.185.45c.963.042 1.268.055 3.71.055s2.755 0 3.71-.055a6.6 6.6 0 0 0 2.186-.419 4.61 4.61 0 0 0 2.633-2.633c.263-.7.404-1.438.419-2.186.043-.962.056-1.267.056-3.71s0-2.753-.056-3.71a6.6 6.6 0 0 0-.421-2.217m-1.218 9.532a5 5 0 0 1-.311 1.688 2.99 2.99 0 0 1-1.712 1.711 5 5 0 0 1-1.67.311c-.95.044-1.218.055-3.654.055-2.438 0-2.687 0-3.655-.055a5 5 0 0 1-1.669-.311 2.99 2.99 0 0 1-1.719-1.711 5.1 5.1 0 0 1-.311-1.669c-.043-.95-.053-1.218-.053-3.654s0-2.686.053-3.655a5 5 0 0 1 .311-1.687c.305-.789.93-1.41 1.719-1.712a5 5 0 0 1 1.669-.311c.951-.043 1.218-.055 3.655-.055s2.687 0 3.654.055a5 5 0 0 1 1.67.311 3 3 0 0 1 1.712 1.712 5.1 5.1 0 0 1 .311 1.669c.043.951.054 1.218.054 3.655s0 2.698-.043 3.654z'
+  },
+  {
+    name: 'Facebook',
+    href: '#',
+    icon: 'M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22 22 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202z'
+  },
+  {
+    name: 'TikTok',
+    href: '#',
+    icon: 'M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 3 3 0 0 1 .88.13V9.4a7 7 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a5 5 0 0 1-1-.1z'
+  },
+  {
+    name: 'LinkedIn',
+    href: '#',
+    icon: 'M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002M7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z'
+  },
+]
+
+const legalLinks = [
+  { text: 'Políticas de privacidad', href: '/privacy' },
+  { text: 'Términos y Condiciones', href: '/terms' },
+  { text: 'Aviso Legal', href: '/legal' }
+]
 </script>
 
 <template>
-    <footer class="bg-neutral-100 py-16">
-        <div class="flex flex-col items-center gap-10 container mx-auto">
-            <div class="flex flex-col items-center gap-4">
-                <img src="https://www.figma.com/api/mcp/asset/dc6b47f9-d110-43f4-bad6-841c2d65017d" alt="Codentsa Logo" class="w-[149px] h-[24.55px]">
-                <p class="text-neutral-1000 text-base text-center">Acompañando a profesionales a llegar a su máximo potencial</p>
-                <div class="flex gap-10 items-center">
-                    <a href="#" class="w-5 h-5">
-                        <svg viewBox="0 0 24 24" fill="#162526">
-                            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="w-6 h-6">
-                        <svg viewBox="0 0 24 24" fill="#162526">
-                            <rect width="24" height="24" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
-                            <circle cx="18" cy="6" r="1.5" fill="currentColor"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="w-6 h-6">
-                        <svg viewBox="0 0 24 24" fill="#162526">
-                            <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
-                        </svg>
-                    </a>
-                </div>
-                <p class="text-neutral-1000 text-base text-center w-full">© 2025 Gedesa. All rights reserved.</p>
-            </div>
-            
-            <div class="flex gap-20 justify-center w-full">
-                <a href="#" class="text-neutral-1000 text-xs text-center">Políticas de privacidad</a>
-                <a href="#" class="text-neutral-1000 text-xs text-center">Términos y Condiciones</a>
-                <a href="#" class="text-neutral-1000 text-xs text-center">Aviso Legal</a>
-            </div>
+  <footer class="bg-neutral-100 py-10 md:py-16">
+    <div class="flex flex-col items-center gap-6 md:gap-10 container mx-auto px-4">
+      <div class="flex flex-col items-center gap-4">
+        <!-- Logo Component -->
+        <Logo />
+
+        <!-- Tagline -->
+        <p class="text-black text-base text-center">
+          Acompañando a profesionales a llegar a su máximo potencial
+        </p>
+
+        <!-- Social Media Links -->
+        <div class="flex gap-6 md:gap-10 items-center">
+          <NuxtLink
+            v-for="social in socialLinks"
+            :key="social.name"
+            :to="social.href"
+            :aria-label="social.name"
+            class="w-5 h-5 md:w-6 md:h-6 text-black hover:text-primary transition-colors duration-200"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="w-full h-full"
+            >
+              <path :d="social.icon" />
+            </svg>
+          </NuxtLink>
         </div>
-    </footer>
+
+        <!-- Copyright -->
+        <p class="text-black text-sm md:text-base text-center w-full">
+          © {{ currentYear }} Gedesa. All rights reserved.
+        </p>
+      </div>
+
+      <!-- Legal Links -->
+      <div class="flex flex-col md:flex-row gap-2 md:gap-20 justify-center items-center w-full">
+        <Button
+          v-for="link in legalLinks"
+          :key="link.text"
+          :to="link.href"
+          variant="link"
+          color="dark"
+          size="sm"
+        >
+          {{ link.text }}
+        </Button>
+      </div>
+    </div>
+  </footer>
 </template>
