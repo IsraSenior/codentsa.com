@@ -62,7 +62,7 @@ const nextPage = () => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center gap-2 py-8">
+  <div class="flex items-center justify-center gap-2 py-8 mt-16">
     <!-- Previous Button -->
     <button
       class="w-10 h-10 flex items-center justify-center rounded-lg border border-neutral-300 hover:border-primary hover:bg-neutral-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
