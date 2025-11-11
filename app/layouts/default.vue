@@ -14,6 +14,8 @@ const isHomePage = computed(() => route.path === '/')
       <NuxtPage />
     </main>
     <Footer />
+    <!-- Toast Notifications -->
+    <ToastContainer />
   </div>
 </template>
 
