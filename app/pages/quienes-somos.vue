@@ -62,24 +62,48 @@ const staff = [
     name: 'Dr. Carlos Méndez',
     role: 'Odontólogo General',
     image: '/staff/staff-1.webp',
+    bio: 'Especialista en odontología general con más de 15 años de experiencia. Comprometido con la salud dental integral de nuestros pacientes.',
+    social: {
+      linkedin: '#',
+      instagram: '#',
+      twitter: '#',
+    },
   },
   {
     id: 2,
     name: 'Dra. María González',
     role: 'Ortodoncista',
     image: '/staff/staff-2.webp',
+    bio: 'Experta en ortodoncia invisible y tratamientos estéticos. Apasionada por crear sonrisas perfectas y mejorar la confianza de cada paciente.',
+    social: {
+      linkedin: '#',
+      instagram: '#',
+      twitter: '#',
+    },
   },
   {
     id: 3,
     name: 'Dr. Juan Pérez',
     role: 'Endodoncista',
     image: '/staff/staff-3.webp',
+    bio: 'Especializado en endodoncia y tratamientos de conducto. Utiliza las técnicas más avanzadas para preservar la salud dental natural.',
+    social: {
+      linkedin: '#',
+      instagram: '#',
+      twitter: '#',
+    },
   },
   {
     id: 4,
     name: 'Dra. Ana Rodríguez',
     role: 'Periodoncista',
     image: '/staff/staff-4.webp',
+    bio: 'Dedicada a la salud de las encías y tejidos periodontales. Prevención y tratamiento especializado para mantener una base dental sana.',
+    social: {
+      linkedin: '#',
+      instagram: '#',
+      twitter: '#',
+    },
   },
 ]
 </script>
@@ -287,6 +311,8 @@ const staff = [
                     :name="item.name"
                     :role="item.role"
                     :image="item.image"
+                    :bio="item.bio"
+                    :social="item.social"
                 />
             </template>
         </BaseCarousel>
