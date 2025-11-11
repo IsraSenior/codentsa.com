@@ -1,4 +1,4 @@
-import { useRedsys, RedsysHelper } from '~/server/utils/redsys'
+import { useRedsys, RedsysHelper } from '../../utils/redsys'
 
 /**
  * Redsys Notification Webhook
