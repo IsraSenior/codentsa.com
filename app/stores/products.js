@@ -13,7 +13,7 @@ export const useProductsStore = defineStore('products', {
         price: 250,
         originalPrice: 300,
         rating: 4.5,
-        category: 'Material preparado',
+        category: 'restauracion',
         inStock: true,
       },
       {
@@ -25,7 +25,7 @@ export const useProductsStore = defineStore('products', {
         price: 380,
         originalPrice: 450,
         rating: 4.8,
-        category: 'Material preparado',
+        category: 'restauracion',
         inStock: true,
       },
       {
@@ -37,7 +37,7 @@ export const useProductsStore = defineStore('products', {
         price: 450,
         originalPrice: null,
         rating: 4.7,
-        category: 'Instrumentos',
+        category: 'exploracion',
         inStock: true,
       },
       {
@@ -49,7 +49,7 @@ export const useProductsStore = defineStore('products', {
         price: 180,
         originalPrice: 220,
         rating: 4.6,
-        category: 'Material preparado',
+        category: 'restauracion',
         inStock: true,
       },
       {
@@ -61,7 +61,7 @@ export const useProductsStore = defineStore('products', {
         price: 850,
         originalPrice: 1000,
         rating: 4.9,
-        category: 'Equipamiento',
+        category: 'accesorios',
         inStock: true,
       },
       {
@@ -73,7 +73,7 @@ export const useProductsStore = defineStore('products', {
         price: 320,
         originalPrice: 400,
         rating: 4.5,
-        category: 'Material preparado',
+        category: 'restauracion',
         inStock: true,
       },
       {
@@ -85,7 +85,7 @@ export const useProductsStore = defineStore('products', {
         price: 280,
         originalPrice: 350,
         rating: 4.7,
-        category: 'Equipamiento',
+        category: 'accesorios',
         inStock: true,
       },
       {
@@ -97,7 +97,7 @@ export const useProductsStore = defineStore('products', {
         price: 95,
         originalPrice: null,
         rating: 4.4,
-        category: 'Instrumentos',
+        category: 'exploracion',
         inStock: true,
       },
       {
@@ -109,7 +109,7 @@ export const useProductsStore = defineStore('products', {
         price: 420,
         originalPrice: 500,
         rating: 4.8,
-        category: 'Estética',
+        category: 'higiene',
         inStock: true,
       },
       {
@@ -121,7 +121,7 @@ export const useProductsStore = defineStore('products', {
         price: 45,
         originalPrice: null,
         rating: 4.3,
-        category: 'Protección',
+        category: 'higiene',
         inStock: true,
       },
       {
@@ -133,7 +133,7 @@ export const useProductsStore = defineStore('products', {
         price: 680,
         originalPrice: 800,
         rating: 4.9,
-        category: 'Equipamiento',
+        category: 'accesorios',
         inStock: true,
       },
       {
@@ -145,7 +145,7 @@ export const useProductsStore = defineStore('products', {
         price: 165,
         originalPrice: 200,
         rating: 4.6,
-        category: 'Material preparado',
+        category: 'restauracion',
         inStock: true,
       },
       {
@@ -157,7 +157,7 @@ export const useProductsStore = defineStore('products', {
         price: 12500,
         originalPrice: 15000,
         rating: 5.0,
-        category: 'Equipamiento',
+        category: 'exploracion',
         inStock: true,
       },
       {
@@ -169,7 +169,7 @@ export const useProductsStore = defineStore('products', {
         price: 125,
         originalPrice: null,
         rating: 4.7,
-        category: 'Instrumentos',
+        category: 'cirugia',
         inStock: true,
       },
       {
@@ -181,7 +181,7 @@ export const useProductsStore = defineStore('products', {
         price: 35,
         originalPrice: 45,
         rating: 4.4,
-        category: 'Material preparado',
+        category: 'cirugia',
         inStock: true,
       },
       {
@@ -193,7 +193,7 @@ export const useProductsStore = defineStore('products', {
         price: 8500,
         originalPrice: null,
         rating: 4.9,
-        category: 'Equipamiento',
+        category: 'accesorios',
         inStock: true,
       },
       {
@@ -205,7 +205,7 @@ export const useProductsStore = defineStore('products', {
         price: 3200,
         originalPrice: 3800,
         rating: 4.8,
-        category: 'Equipamiento',
+        category: 'accesorios',
         inStock: true,
       },
       {
@@ -217,7 +217,7 @@ export const useProductsStore = defineStore('products', {
         price: 28,
         originalPrice: null,
         rating: 4.2,
-        category: 'Material preparado',
+        category: 'higiene',
         inStock: true,
       },
       {
@@ -229,7 +229,7 @@ export const useProductsStore = defineStore('products', {
         price: 65,
         originalPrice: 80,
         rating: 4.5,
-        category: 'Material preparado',
+        category: 'ortodoncia',
         inStock: true,
       },
       {
@@ -241,7 +241,7 @@ export const useProductsStore = defineStore('products', {
         price: 1850,
         originalPrice: 2200,
         rating: 4.7,
-        category: 'Equipamiento',
+        category: 'cirugia',
         inStock: true,
       },
     ],

@@ -3,134 +3,102 @@
 const route = useRoute()
 const initialCategory = computed(() => route.query.categoria || null)
 
-// Product data (mock data for now)
-const products = ref([
-  {
-    id: 1,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-1',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 2,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-2',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 3,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-3',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 4,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-4',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 5,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-5',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 6,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-6',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 7,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-7',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 8,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-8',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 9,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-9',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 10,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-10',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-  {
-    id: 10,
-    name: 'Sealapex Cemento',
-    brand: 'Sybron Endo',
-    slug: 'sealapex-cemento-10',
-    image: 'https://www.figma.com/api/mcp/asset/2fbb830f-f66f-44d9-9220-dfd0d0cf061b',
-    description: 'El cemento dental es un material esencia...',
-    originalPrice: 300,
-    price: 250,
-  },
-])
+// Products store
+const productsStore = useProductsStore()
+
+// State
+const currentPage = ref(1)
+const itemsPerPage = 12 // 4 + 3 + 4 + pagination
+const currentFilters = ref({
+  categories: [],
+  priceRanges: [],
+  material: null,
+  brands: [],
+})
+const currentSort = ref('relevance')
+
+// Get all products from store
+const allProducts = computed(() => productsStore.allProducts)
+
+// Apply filters
+const filteredProducts = computed(() => {
+  let filtered = [...allProducts.value]
+
+  // Filter by categories (if any selected)
+  if (currentFilters.value.categories.length > 0) {
+    filtered = filtered.filter(product =>
+      currentFilters.value.categories.includes(product.category)
+    )
+  }
+
+  // Filter by price ranges
+  if (currentFilters.value.priceRanges.length > 0) {
+    filtered = filtered.filter(product => {
+      const price = product.price
+      return currentFilters.value.priceRanges.some(range => {
+        if (range === 'price-0-10') return price <= 10
+        if (range === 'price-10-50') return price > 10 && price <= 50
+        if (range === 'price-50-100') return price > 50 && price <= 100
+        if (range === 'price-100-500') return price > 100 && price <= 500
+        if (range === 'price-500') return price > 500
+        return false
+      })
+    })
+  }
+
+  // Filter by brands
+  if (currentFilters.value.brands.length > 0) {
+    filtered = filtered.filter(product =>
+      currentFilters.value.brands.some(brandId =>
+        product.brand.toLowerCase().includes(brandId.toLowerCase())
+      )
+    )
+  }
+
+  return filtered
+})
+
+// Apply sorting
+const sortedProducts = computed(() => {
+  const sorted = [...filteredProducts.value]
+
+  switch (currentSort.value) {
+    case 'price-asc':
+      return sorted.sort((a, b) => a.price - b.price)
+    case 'price-desc':
+      return sorted.sort((a, b) => b.price - a.price)
+    case 'name-asc':
+      return sorted.sort((a, b) => a.name.localeCompare(b.name))
+    case 'name-desc':
+      return sorted.sort((a, b) => b.name.localeCompare(a.name))
+    default: // relevance
+      return sorted
+  }
+})
 
 // Pagination
-const currentPage = ref(1)
-const totalPages = ref(7)
+const totalPages = computed(() => Math.ceil(sortedProducts.value.length / itemsPerPage))
 
-// Filters
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return sortedProducts.value.slice(start, end)
+})
+
+// Split products for the special layout
+const firstRowProducts = computed(() => paginatedProducts.value.slice(0, 4))
+const secondRowProducts = computed(() => paginatedProducts.value.slice(4, 7))
+const thirdRowProducts = computed(() => paginatedProducts.value.slice(7, 11))
+
+// Handlers
 const handleFilterChange = (filters) => {
-  console.log('Filters changed:', filters)
-  // Implement filter logic here
-  // filters.categories, filters.priceRanges, filters.material, filters.brands
+  currentFilters.value = filters
+  currentPage.value = 1 // Reset to first page when filters change
 }
 
 const handleSortChange = (sortValue) => {
-  console.log('Sort changed to:', sortValue)
-  // Implement sorting logic here
+  currentSort.value = sortValue
+  currentPage.value = 1 // Reset to first page when sort changes
 }
 
 const handlePageChange = (page) => {
@@ -138,14 +106,6 @@ const handlePageChange = (page) => {
   // Scroll to top
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
-
-// Split products for the special layout
-// First 4 products
-const firstRowProducts = computed(() => products.value.slice(0, 4))
-// Next 2 products (larger cards)
-const secondRowProducts = computed(() => products.value.slice(4, 7))
-// Last 4 products
-const thirdRowProducts = computed(() => products.value.slice(7, 11))
 </script>
 
 <template>
@@ -153,7 +113,7 @@ const thirdRowProducts = computed(() => products.value.slice(7, 11))
     <Section class="!pt-0">
       <!-- Filters Bar -->
       <ProductFilters
-        :total-products="256"
+        :total-products="filteredProducts.length"
         :initial-category="initialCategory"
         @filter-change="handleFilterChange"
         @sort-change="handleSortChange"
@@ -209,6 +169,7 @@ const thirdRowProducts = computed(() => products.value.slice(7, 11))
 
       <!-- Pagination -->
       <Pagination
+        v-if="totalPages > 1"
         :current-page="currentPage"
         :total-pages="totalPages"
         @page-change="handlePageChange"
