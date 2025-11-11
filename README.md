@@ -44,8 +44,9 @@ Codentsa es una plataforma e-commerce moderna y escalable desarrollada con Nuxt 
 - ✅ Sistema de carrito y favoritos con persistencia local
 - ✅ Diseño responsive y accesible
 - ✅ SEO optimizado para motores de búsqueda
-- 🔄 Integración futura con CMS (Directus)
-- 🔄 Sistema de pagos (Redsys)
+- ✅ Integración con CMS (Directus)
+- ✅ Sistema de pagos (Redsys)
+- ✅ Analytics multi-plataforma (Umami, GA4, Meta Pixel)
 
 ---
 
@@ -91,10 +92,25 @@ Codentsa es una plataforma e-commerce moderna y escalable desarrollada con Nuxt 
   - Lazy loading de componentes
   - Optimización de imágenes
 
+- **💳 Pasarela de Pagos**
+  - Integración con Redsys (tarjetas, Bizum)
+  - Páginas de éxito y error personalizadas
+  - Firma HMAC-SHA256 para seguridad
+  - Soporte para entornos sandbox y producción
+
+- **📊 CMS & Backend**
+  - Integración con Directus CMS
+  - SDK para gestión de productos y pedidos
+  - Infraestructura lista para sincronización de datos
+
+- **📈 Analytics**
+  - Umami Analytics (privacy-first, sin cookies)
+  - Google Analytics 4 (opcional, con consentimiento)
+  - Meta Pixel (Facebook/Instagram tracking)
+  - Tracking unificado de eventos de e-commerce
+
 ### Próximamente
 
-- 🔄 Integración con Directus CMS
-- 🔄 Pasarela de pagos Redsys
 - 🔄 Sistema de autenticación
 - 🔄 Panel de administración
 - 🔄 Emails transaccionales
@@ -127,8 +143,19 @@ Codentsa es una plataforma e-commerce moderna y escalable desarrollada con Nuxt 
 
 ### Analytics
 
+- **[nuxt-umami 3.2.1](https://github.com/ijkml/nuxt-umami)** - Umami Analytics (privacy-first)
 - **[nuxt-gtag 4.1.0](https://github.com/johannschopplich/nuxt-gtag)** - Google Analytics 4
 - **Meta Pixel** - Facebook/Instagram tracking
+
+### CMS & Backend
+
+- **[@directus/sdk 20.1.1](https://docs.directus.io/guides/sdk/)** - Directus Headless CMS SDK
+- **Directus** - Headless CMS para gestión de contenido y productos
+
+### Seguridad & Pagos
+
+- **[crypto-js 4.2.0](https://github.com/brix/crypto-js)** - Cryptografía para firmas de pago
+- **Redsys** - Pasarela de pagos española (tarjetas, Bizum)
 
 ### Calidad de Código
 
@@ -161,21 +188,36 @@ cd codentsa.com
 pnpm install
 ```
 
-3. **Configurar variables de entorno** (opcional)
+3. **Configurar variables de entorno**
 
 ```bash
 cp .env.example .env
 ```
 
-Edita el archivo `.env` con tus credenciales:
+Edita el archivo `.env` con tus credenciales. Ver `.env.example` para la lista completa de variables disponibles:
 
 ```env
-# Google Analytics
-NUXT_PUBLIC_GTAG_ID=G-XXXXXXXXXX
+# Directus CMS
+NUXT_PUBLIC_DIRECTUS_URL=http://localhost:8055
+NUXT_DIRECTUS_TOKEN=your_directus_static_token_here
 
-# Meta Pixel
-NUXT_PUBLIC_META_PIXEL_ID=XXXXXXXXXXXXXXXX
+# Redsys Payment Gateway
+REDSYS_MERCHANT_CODE=999008881          # Código de comercio
+REDSYS_TERMINAL=001                     # Terminal
+REDSYS_SECRET_KEY=sq7HjrUOBfKmC576...  # Clave secreta
+REDSYS_ENVIRONMENT=sandbox              # sandbox | production
+
+# Analytics
+NUXT_PUBLIC_UMAMI_ID=your-umami-website-id
+NUXT_PUBLIC_UMAMI_HOST=https://cloud.umami.is
+NUXT_PUBLIC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+NUXT_PUBLIC_META_PIXEL_ID=123456789012345
+
+# Application
+NUXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
+
+**Nota**: Las credenciales de ejemplo son para el entorno sandbox de Redsys. En producción, usa tus credenciales reales.
 
 4. **Iniciar servidor de desarrollo**
 
@@ -238,6 +280,8 @@ codentsa.com/
 │   │   ├── index.vue                # Homepage
 │   │   ├── carrito.vue              # Página de carrito
 │   │   ├── checkout.vue             # Página de checkout
+│   │   ├── checkout-success.vue     # Pago exitoso
+│   │   ├── checkout-error.vue       # Error en pago
 │   │   ├── favoritos.vue            # Página de favoritos
 │   │   └── productos/
 │   │       ├── index.vue            # Listado de productos
@@ -248,8 +292,23 @@ codentsa.com/
 │   │   ├── index.js                 # Store de productos
 │   │   ├── navigation.js            # Store de navegación
 │   │   └── toast.js                 # Store de notificaciones
+│   ├── composables/
+│   │   └── useDirectus.js           # Composable de Directus
 │   └── utils/                       # Utilidades y helpers
+├── server/                          # Server-side code (Nitro)
+│   ├── api/
+│   │   └── redsys/                  # Endpoints de Redsys
+│   │       ├── create-payment.post.js    # Crear pago
+│   │       ├── notification.post.js      # Webhook de notificación
+│   │       └── verify-payment.post.js    # Verificar resultado
+│   └── utils/
+│       ├── directus.js              # Utilidades Directus server-side
+│       └── redsys.js                # Helper de Redsys con firmas
 ├── docs/                            # Documentación detallada
+│   ├── analytics.md                 # Umami, GA4 y Meta Pixel
+│   ├── directus-integration.md      # Integración con Directus
+│   ├── directus-schemas.md          # Esquemas de Directus
+│   └── redsys-integration.md        # Integración con Redsys
 ├── public/                          # Archivos estáticos
 ├── .editorconfig                    # Configuración de editor
 ├── .prettierrc                      # Configuración de Prettier
@@ -430,6 +489,8 @@ toastStore.info(message)     // Toast informativo
 | `/productos/:id` | `pages/productos/[id].vue` | Detalle de producto |
 | `/carrito` | `pages/carrito.vue` | Carrito de compras |
 | `/checkout` | `pages/checkout.vue` | Proceso de checkout |
+| `/checkout-success` | `pages/checkout-success.vue` | Confirmación de pago exitoso |
+| `/checkout-error` | `pages/checkout-error.vue` | Error en el proceso de pago |
 | `/favoritos` | `pages/favoritos.vue` | Lista de favoritos |
 
 ### Parámetros URL (Productos)
@@ -591,19 +652,23 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - [x] Persistencia en localStorage
 - [x] URL state management
 
-### Fase 5: Integración Directus 🔄
-- [ ] Configurar SDK de Directus
-- [ ] Crear colecciones en Directus
-- [ ] Implementar API endpoints
-- [ ] Sincronizar productos
+### Fase 5: Integración Directus ✅
+- [x] Configurar SDK de Directus
+- [x] Implementar composable y utilidades
+- [x] Documentar esquemas y colecciones
+- [ ] Crear colecciones en instancia de Directus
+- [ ] Sincronizar productos desde Directus
 - [ ] Gestión de imágenes
-- [ ] SEO metadata
+- [ ] SEO metadata dinámico
 
-### Fase 6: Pagos & Checkout 🔄
-- [ ] Integración Redsys
+### Fase 6: Pagos & Checkout ✅
+- [x] Integración Redsys
+- [x] Endpoint de creación de pago
+- [x] Endpoint de notificación de pago
+- [x] Páginas de éxito y error
+- [x] Firma HMAC-SHA256 para seguridad
 - [ ] Métodos de pago manuales
-- [ ] Validación de formularios
-- [ ] Proceso de pago completo
+- [ ] Validación de formularios avanzada
 - [ ] Emails transaccionales
 
 ### Fase 7: SEO & Performance 🔄
@@ -650,8 +715,9 @@ Para información técnica más detallada, consulta:
 - **[CLAUDE.md](./CLAUDE.md)** - Documentación técnica completa para desarrollo
 - **[docs/](./docs/)** - Documentación específica de integraciones
   - `directus-integration.md` - Integración con Directus CMS
+  - `directus-schemas.md` - Esquemas y estructura de datos de Directus
   - `redsys-integration.md` - Integración con Redsys Payment Gateway
-  - `analytics.md` - Configuración de Google Analytics y Meta Pixel
+  - `analytics.md` - Configuración de Umami, Google Analytics 4 y Meta Pixel
 
 ---
 
@@ -660,7 +726,7 @@ Para información técnica más detallada, consulta:
 Para dudas, sugerencias o reportar issues:
 
 - **Issues**: [GitHub Issues](https://github.com/tu-usuario/codentsa.com/issues)
-- **Email**: soporte@codentsa.com
+- **Email**: isenior@neskeep.com
 - **Documentación**: Revisar archivos en `/docs/`
 
 ---
@@ -673,7 +739,7 @@ Este proyecto es privado y propietario de Codentsa. Todos los derechos reservado
 
 <div align="center">
 
-**Construido con ❤️ por el equipo de Codentsa**
+**Construido con ❤️ por el equipo de Tactico Studio**
 
 Nuxt 4.2.1 • Vue 3.5.24 • Tailwind CSS 4.1.17 • Pinia 3.0.4
 
