@@ -11,7 +11,7 @@ const isHomePage = computed(() => route.path === '/')
     <!-- Breadcrumbs only on internal pages (not home) -->
     <Breadcrumbs v-if="!isHomePage" />
     <main>
-      <slot />
+      <NuxtPage />
     </main>
     <Footer />
   </div>
