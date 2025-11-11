@@ -15,7 +15,7 @@
           <h2 class="font-title text-3xl md:text-4xl lg:text-5xl font-normal mb-2 md:mb-4">
             Los mejores<br>
             insumos<br>
-            odontológicos.
+            odontologicos.
           </h2>
           <p class="font-body text-lg md:text-xl">
             y la mejor calidad
@@ -27,7 +27,7 @@
           <div class="w-full max-w-md aspect-[4/3] bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 flex items-center justify-center">
             <img
               src="/images/dental-tools.png"
-              alt="Instrumentos odontológicos"
+              alt="Instrumentos odontologicos"
               class="w-full h-full object-contain"
               onerror="this.style.display='none'"
             >
