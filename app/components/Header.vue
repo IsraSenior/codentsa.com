@@ -90,7 +90,7 @@ const closeSearch = () => {
   <header class="w-full relative">
     <!-- Main Header -->
     <div class="bg-neutral-50 relative z-50">
-      <div class="container mx-auto px-4 py-4">
+      <div class="container mx-auto px-5 lg:px-0 py-5">
         <div class="flex items-center justify-between gap-4">
           <!-- Logo -->
           <NuxtLink to="/" class="shrink-0">
