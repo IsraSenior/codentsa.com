@@ -79,11 +79,8 @@ const bestOffersItems = [
   <div>
     <HeroBanner />
 
-    <section class="py-16 md:py-24">
-      <div class="container mx-auto">
-        <h2 class="text-black text-4xl leading-10 mb-10 font-title">REVISA LAS MEJORES OFERTAS</h2>
-
-        <!-- Product Carousel -->
+    <!-- Product Carousel -->
+    <Section title="Revisa las mejores ofertas">
         <ProductCarousel
           :items="bestOffersItems"
           :slides-per-view="4"
@@ -91,7 +88,59 @@ const bestOffersItems = [
           :navigation="true"
           :loop="true"
         />
-      </div>
+    </Section>
+
+    <!-- Sección Promoción Primera Compra -->
+    <section class="bg-linear-to-r from-primary to-primary-700 py-16 relative overflow-hidden flex items-center min-h-[35vh]">
+        <div class="container mx-auto">
+          <div class="relative flex items-start justify-between mb-24">
+            <p class="text-neutral-100 text-4xl font-title font-light leading-10 mb-4 max-w-md">
+              Disfruta de esta promoción en tu primera compra:
+            </p>
+            <button class="absolute top-6 right-20 border-2 border-neutral-100 text-neutral-100 px-6 py-3 rounded-full text-lg font-body">
+              Ver ofertas
+            </button>
+          </div>
+          
+          <div class="grid grid-cols-3 gap-10 divide-x-2 divide-white">
+              <div class="text-center relative">
+                  <p class="font-title text-[288px] absolute left-1/3 transform -translate-x-1/2 font-medium bottom-[-150px] leading-none text-primary-500">01</p>
+                  <p class="text-neutral-100 text-2xl leading-tight relative">Descuentos<br>exclusivos</p>
+              </div>
+              <div class="text-center relative">
+                  <p class="font-title text-[288px] absolute left-1/3 transform -translate-x-1/2 font-medium bottom-[-150px] leading-none text-primary-500">02</p>
+                  <p class="text-neutral-100 text-2xl leading-tight relative">Envíos<br>gratuitos</p>
+              </div>
+              <div class="text-center relative">
+                  <p class="font-title text-[288px] absolute left-1/3 transform -translate-x-1/2 font-medium bottom-[-150px] leading-none text-primary-500">03</p>
+                  <p class="text-neutral-100 text-2xl leading-tight relative">Envíos<br>express</p>
+              </div>
+          </div>
+        </div>
     </section>
+
+    <!-- Soluciones -->
+    <Section title="Tenemos una solución para ti">
+      <div class="grid grid-cols-3 grid-rows-3 gap-5">
+          <BentoCard bg="bg-card-solution-1.webp" textColor="text-white">1</BentoCard>
+          <BentoCard bg="bg-card-solution-2.webp" class="row-span-2">2</BentoCard>
+          <BentoCard bg="bg-card-solution-3.webp" textColor="text-white">3</BentoCard>
+          <BentoCard bg="bg-card-solution-4.webp" class="row-span-2">4</BentoCard>
+          <BentoCard bg="bg-card-solution-5.webp" textColor="text-white" class="col-start-2 row-start-3">5</BentoCard>
+          <BentoCard bg="bg-card-solution-6.webp" class="row-span-2 col-start-3 row-start-2">6</BentoCard>
+      </div>
+    </Section>
+
+    <!-- Testimonials -->
+    <Section title="Reseñas de nuestros clientes">
+      <!-- Carrousel de reseñas -->
+      <TestimonialsCarousel
+          :items="testimonials"
+          :slides-per-view="4"
+          :space-between="16"
+          :navigation="true"
+          :loop="true"
+        />
+    </Section>
   </div>
 </template>
