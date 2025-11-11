@@ -391,14 +391,19 @@ onUnmounted(() => {
                 <ShoppingCartIcon class="w-5 h-5" />
                 <span>Anadir al carrito</span>
                 </button>
-    
+
                 <button
-                class="w-full px-6 py-4 border border-neutral-300 rounded-lg font-body text-base hover:border-primary transition-colors flex items-center justify-center gap-2"
+                :class="[
+                  'w-full px-6 py-4 rounded-lg font-body text-base transition-all flex items-center justify-center gap-2',
+                  isFavorite
+                    ? 'bg-primary/10 border-2 border-primary text-primary hover:bg-primary/20'
+                    : 'border border-neutral-300 text-black hover:border-primary hover:text-primary'
+                ]"
                 @click="toggleFavorite"
                 >
-                <HeartIconSolid v-if="isFavorite" class="w-5 h-5 text-primary" />
+                <HeartIconSolid v-if="isFavorite" class="w-5 h-5" />
                 <HeartIcon v-else class="w-5 h-5" />
-                <span>Anadir a lista de favoritos</span>
+                <span>{{ isFavorite ? 'En favoritos' : 'Anadir a lista de favoritos' }}</span>
                 </button>
             </div>
             </div>
