@@ -62,7 +62,7 @@ const emit = defineEmits(['click'])
 
 // Determinar qué componente renderizar
 const componentType = computed(() => {
-  if (props.to) return 'NuxtLink'
+  if (props.to) return resolveComponent('NuxtLink')
   if (props.href) return 'a'
   return 'button'
 })
@@ -73,15 +73,7 @@ const componentAttrs = computed(() => {
     class: buttonClasses.value,
   }
 
-  if (componentType.value === 'button') {
-    return {
-      ...base,
-      type: props.type,
-      disabled: props.disabled,
-    }
-  }
-
-  if (componentType.value === 'NuxtLink') {
+  if (props.to) {
     return {
       ...base,
       to: props.to,
@@ -90,7 +82,7 @@ const componentAttrs = computed(() => {
     }
   }
 
-  if (componentType.value === 'a') {
+  if (props.href) {
     return {
       ...base,
       href: props.href,
@@ -99,7 +91,12 @@ const componentAttrs = computed(() => {
     }
   }
 
-  return base
+  // Default button attributes
+  return {
+    ...base,
+    type: props.type,
+    disabled: props.disabled,
+  }
 })
 
 const buttonClasses = computed(() => {
