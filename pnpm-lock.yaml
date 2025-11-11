@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@directus/sdk':
+        specifier: ^20.1.1
+        version: 20.1.1
       '@heroicons/vue':
         specifier: ^2.2.0
         version: 2.2.0(vue@3.5.24(typescript@5.9.3))
@@ -17,6 +20,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.17
         version: 4.1.17(vite@7.2.2(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.1))
+      crypto-js:
+        specifier: ^4.2.0
+        version: 4.2.0
       nuxt:
         specifier: ^4.2.1
         version: 4.2.1(@parcel/watcher@2.5.1)(@vue/compiler-sfc@3.5.24)(db0@0.3.4)(eslint@9.39.1(jiti@2.6.1))(ioredis@5.8.2)(lightningcss@1.30.2)(magicast@0.5.1)(optionator@0.9.4)(rollup@4.53.2)(terser@5.44.1)(typescript@5.9.3)(vite@7.2.2(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.1))(yaml@2.8.1)
@@ -192,6 +198,10 @@ packages:
   '@cloudflare/kv-asset-handler@0.4.0':
     resolution: {integrity: sha512-+tv3z+SPp+gqTIcImN9o0hqE9xyfQjI1XD9pL6NuKjua9B1y7mNYv0S9cP+QEbA4ppVgGZEmKOvHX5G5Ei1CVA==}
     engines: {node: '>=18.0.0'}
+
+  '@directus/sdk@20.1.1':
+    resolution: {integrity: sha512-cCWvxDRKOygVHBkKA7l1I4O4niomK8SKR/+Ul1L9NFF1K2zAf3jRqhjc7JavCECOiiAWME/s2wYatNFqFFh0gQ==}
+    engines: {node: '>=22'}
 
   '@dxup/nuxt@0.2.1':
     resolution: {integrity: sha512-0RLwkep6ftN3nd4Pfcgwrz8L5D2p5Tf8DKs3pr91TYO22N8loa9y8oPLQnJDqvrT0FBMEiCyPA7C8AMl7THPPg==}
@@ -1879,6 +1889,9 @@ packages:
 
   crossws@0.3.5:
     resolution: {integrity: sha512-ojKiDvcmByhwa8YYqbQI/hg7MEU0NC03+pSdEq4ZUnZR9xXpwk7E43SMNGkn+JxJGPFtNvQ48+vV2p+P1ml5PA==}
+
+  crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
 
   css-declaration-sorter@7.3.0:
     resolution: {integrity: sha512-LQF6N/3vkAMYF4xoHLJfG718HRJh34Z8BnNhd6bosOMIVjMlhuZK5++oZa3uYAgrI5+7x2o27gUqTR2U/KjUOQ==}
@@ -4331,6 +4344,8 @@ snapshots:
     dependencies:
       mime: 3.0.0
 
+  '@directus/sdk@20.1.1': {}
+
   '@dxup/nuxt@0.2.1(magicast@0.5.1)':
     dependencies:
       '@dxup/unimport': 0.1.1
@@ -6104,6 +6119,8 @@ snapshots:
   crossws@0.3.5:
     dependencies:
       uncrypto: 0.1.3
+
+  crypto-js@4.2.0: {}
 
   css-declaration-sorter@7.3.0(postcss@8.5.6):
     dependencies:
