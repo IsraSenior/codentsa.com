@@ -63,6 +63,7 @@ const selectedBrands = ref([])
 
 // Refs for click outside
 const sortDropdownRef = ref(null)
+const filterPanelRef = ref(null)
 
 // Click outside handler
 onMounted(() => {
@@ -74,8 +75,14 @@ onUnmounted(() => {
 })
 
 const handleClickOutside = (event) => {
+  // Close sort dropdown if click outside
   if (sortDropdownRef.value && !sortDropdownRef.value.contains(event.target)) {
     isSortOpen.value = false
+  }
+
+  // Close filter panel if click outside
+  if (filterPanelRef.value && !filterPanelRef.value.contains(event.target)) {
+    isFilterOpen.value = false
   }
 }
 
@@ -196,7 +203,7 @@ const emitFilterChange = () => {
 </script>
 
 <template>
-  <div class="mb-8">
+  <div ref="filterPanelRef" class="mb-8">
     <!-- Top Bar: Filter button, Product Count, Sort Dropdown -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
       <!-- Left: Filters Button -->
