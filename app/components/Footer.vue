@@ -25,9 +25,9 @@ const socialLinks = [
 ]
 
 const legalLinks = [
-  { text: 'Políticas de privacidad', href: '/privacy' },
-  { text: 'Términos y Condiciones', href: '/terms' },
-  { text: 'Aviso Legal', href: '/legal' }
+  { text: 'Políticas de privacidad', href: '/politicas-privacidad' },
+  { text: 'Términos y Condiciones', href: '/terminos-condiciones' },
+  { text: 'Aviso Legal', href: '/aviso-legal' }
 ]
 </script>
 
