@@ -1,5 +1,5 @@
 <script setup>
-import { FunnelIcon, ChevronDownIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { FunnelIcon, ChevronDownIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   totalProducts: {
@@ -60,6 +60,24 @@ const selectedCategories = ref([])
 const selectedPriceRanges = ref([])
 const selectedMaterial = ref(null)
 const selectedBrands = ref([])
+
+// Refs for click outside
+const sortDropdownRef = ref(null)
+
+// Click outside handler
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
+const handleClickOutside = (event) => {
+  if (sortDropdownRef.value && !sortDropdownRef.value.contains(event.target)) {
+    isSortOpen.value = false
+  }
+}
 
 // Computed
 const activeFilterCount = computed(() => {
@@ -206,7 +224,7 @@ const emitFilterChange = () => {
       </div>
 
       <!-- Right: Sort Dropdown -->
-      <div class="relative">
+      <div ref="sortDropdownRef" class="relative">
         <button
           class="flex items-center gap-2 px-4 py-2 border border-neutral-300 rounded-lg font-body text-base text-black hover:border-primary transition-colors min-w-[200px] justify-between"
           @click="isSortOpen = !isSortOpen"
@@ -288,7 +306,7 @@ const emitFilterChange = () => {
                 <input
                   type="checkbox"
                   :checked="selectedCategories.includes(category.id)"
-                  class="w-4 h-4 border-2 border-neutral-400 rounded focus:ring-2 focus:ring-primary accent-black cursor-pointer"
+                  class="w-4 h-4 border-2 border-neutral-400 rounded focus:ring-0 focus:outline-none accent-black cursor-pointer"
                   @change="handleCategoryChange(category.id)"
                 >
                 <span class="font-body text-sm md:text-base text-black group-hover:text-primary transition-colors">
@@ -312,7 +330,7 @@ const emitFilterChange = () => {
                 <input
                   type="checkbox"
                   :checked="selectedPriceRanges.includes(range.id)"
-                  class="w-4 h-4 border-2 border-neutral-400 rounded focus:ring-2 focus:ring-primary accent-black cursor-pointer"
+                  class="w-4 h-4 border-2 border-neutral-400 rounded focus:ring-0 focus:outline-none accent-black cursor-pointer"
                   @change="handlePriceChange(range.id)"
                 >
                 <span class="font-body text-sm md:text-base text-black group-hover:text-primary transition-colors">
@@ -337,7 +355,7 @@ const emitFilterChange = () => {
                   type="radio"
                   name="material"
                   :checked="selectedMaterial === material.id"
-                  class="w-4 h-4 border-2 border-neutral-400 focus:ring-2 focus:ring-primary accent-black cursor-pointer"
+                  class="w-4 h-4 border-2 border-neutral-400 focus:ring-0 focus:outline-none accent-black cursor-pointer"
                   @change="handleMaterialChange(material.id)"
                 >
                 <span class="font-body text-sm md:text-base text-black group-hover:text-primary transition-colors">
@@ -361,7 +379,7 @@ const emitFilterChange = () => {
                 <input
                   type="checkbox"
                   :checked="selectedBrands.includes(brand.id)"
-                  class="w-4 h-4 border-2 border-neutral-400 rounded focus:ring-2 focus:ring-primary accent-black cursor-pointer"
+                  class="w-4 h-4 border-2 border-neutral-400 rounded focus:ring-0 focus:outline-none accent-black cursor-pointer"
                   @change="handleBrandChange(brand.id)"
                 >
                 <span class="font-body text-sm md:text-base text-black group-hover:text-primary transition-colors">
