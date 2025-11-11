@@ -23,6 +23,14 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  skeletonCount: {
+    type: Number,
+    default: 3,
+  },
 })
 
 // Search and filtering
@@ -84,8 +92,11 @@ const isOpen = (id) => {
       </div>
     </div>
 
+    <!-- Loading State -->
+    <FAQSkeleton v-if="loading" :count="skeletonCount" />
+
     <!-- FAQ Items -->
-    <div class="max-w-3xl mx-auto space-y-4">
+    <div v-else-if="filteredFaqs.length > 0" class="max-w-3xl mx-auto space-y-4">
       <div
         v-for="faq in filteredFaqs"
         :key="faq.id"
@@ -125,16 +136,19 @@ const isOpen = (id) => {
           </div>
         </Transition>
       </div>
+    </div>
 
-      <!-- No results message -->
-      <div
-        v-if="filteredFaqs.length === 0"
-        class="text-center py-12"
-      >
-        <p class="font-body text-base md:text-lg text-neutral-500">
+    <!-- No results state -->
+    <div v-else>
+      <div class="text-center py-8 mb-8">
+        <p class="font-body text-base md:text-lg text-neutral-500 mb-2">
           No se encontraron preguntas que coincidan con tu búsqueda.
         </p>
+        <p class="font-body text-sm md:text-base text-neutral-400">
+          Intenta con otros términos o explora las preguntas sugeridas
+        </p>
       </div>
+      <FAQSkeleton :count="skeletonCount" />
     </div>
   </div>
 </template>
