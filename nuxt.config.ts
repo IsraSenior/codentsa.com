@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  modules: ['@pinia/nuxt', 'nuxt-gtag'],
+  modules: ['@pinia/nuxt', 'nuxt-gtag', 'nuxt-umami'],
 
   app: {
     pageTransition: {
@@ -22,6 +22,14 @@ export default defineNuxtConfig({
 
   gtag: {
     id: process.env.NUXT_PUBLIC_GOOGLE_ANALYTICS_ID,
+  },
+
+  umami: {
+    id: process.env.NUXT_PUBLIC_UMAMI_ID,
+    host: process.env.NUXT_PUBLIC_UMAMI_HOST,
+    autoTrack: true,
+    ignoreLocalhost: true,
+    version: 2,
   },
 
   runtimeConfig: {

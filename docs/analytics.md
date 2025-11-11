@@ -1,5 +1,196 @@
 # Analytics y Tracking
 
+Esta documentación cubre la integración de tres plataformas de analytics:
+- **Umami Analytics** (Privacy-focused, open source, GDPR compliant)
+- **Google Analytics 4** (Analytics completo de Google)
+- **Meta Pixel** (Facebook/Instagram tracking)
+
+---
+
+## Umami Analytics
+
+Umami es una solución de analytics de código abierto, enfocada en privacidad, que cumple con GDPR sin necesidad de banners de cookies.
+
+### Por qué Umami
+
+✅ **Privacy-first**: No recolecta datos personales
+✅ **GDPR Compliant**: No requiere cookie banner
+✅ **Open Source**: Auditable y self-hosted
+✅ **Lightweight**: Script de ~2KB
+✅ **Real-time**: Datos en tiempo real
+✅ **Sin cookies de terceros**: Alternativa ética a GA4
+
+### Setup
+
+**Variables de entorno (.env):**
+```env
+# Website ID de tu sitio en Umami
+NUXT_PUBLIC_UMAMI_ID=your-umami-website-id
+
+# URL de tu instancia de Umami
+# Cloud: https://cloud.umami.is
+# Self-hosted: https://analytics.tudominio.com
+NUXT_PUBLIC_UMAMI_HOST=https://cloud.umami.is
+```
+
+**Configuración en nuxt.config.ts:**
+```javascript
+export default defineNuxtConfig({
+  modules: ['nuxt-umami'],
+
+  umami: {
+    id: process.env.NUXT_PUBLIC_UMAMI_ID,
+    host: process.env.NUXT_PUBLIC_UMAMI_HOST,
+    autoTrack: true,
+    ignoreLocalhost: true,
+    version: 2,
+  },
+})
+```
+
+### Uso Básico
+
+#### Auto-tracking
+Umami hace auto-tracking de pageviews automáticamente con `autoTrack: true`.
+
+#### Tracking Manual de Eventos
+
+```vue
+<script setup>
+const { umTrackEvent } = useUmami()
+
+// Evento simple
+const trackClick = () => {
+  umTrackEvent('button-click')
+}
+
+// Evento con datos
+const trackProductView = (product) => {
+  umTrackEvent('product-view', {
+    product_id: product.id,
+    product_name: product.name,
+    category: product.category,
+    price: product.price
+  })
+}
+
+// Evento de e-commerce
+const trackAddToCart = (product, quantity) => {
+  umTrackEvent('add-to-cart', {
+    product_id: product.id,
+    product_name: product.name,
+    quantity,
+    value: product.price * quantity
+  })
+}
+</script>
+```
+
+### Eventos E-commerce en Umami
+
+```javascript
+// composables/useUmamiEcommerce.js
+export const useUmamiEcommerce = () => {
+  const { umTrackEvent } = useUmami()
+
+  const trackProductView = (product) => {
+    umTrackEvent('product_view', {
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      brand: product.brand,
+      price: product.price
+    })
+  }
+
+  const trackAddToCart = (product, quantity) => {
+    umTrackEvent('add_to_cart', {
+      id: product.id,
+      name: product.name,
+      quantity,
+      value: product.price * quantity
+    })
+  }
+
+  const trackRemoveFromCart = (item) => {
+    umTrackEvent('remove_from_cart', {
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity
+    })
+  }
+
+  const trackBeginCheckout = (cart) => {
+    umTrackEvent('begin_checkout', {
+      items_count: cart.items.length,
+      value: cart.total
+    })
+  }
+
+  const trackPurchase = (order) => {
+    umTrackEvent('purchase', {
+      order_id: order.orderNumber,
+      value: order.total,
+      tax: order.tax,
+      shipping: order.shipping,
+      items_count: order.items.length
+    })
+  }
+
+  const trackSearch = (query, resultsCount) => {
+    umTrackEvent('search', {
+      query,
+      results_count: resultsCount
+    })
+  }
+
+  return {
+    trackProductView,
+    trackAddToCart,
+    trackRemoveFromCart,
+    trackBeginCheckout,
+    trackPurchase,
+    trackSearch
+  }
+}
+```
+
+### Self-Hosting Umami
+
+Para self-host Umami en tu propio servidor:
+
+1. **Con Docker:**
+```bash
+git clone https://github.com/umami-software/umami.git
+cd umami
+docker-compose up -d
+```
+
+2. **Variables de entorno necesarias:**
+```env
+DATABASE_URL=postgresql://user:pass@localhost:5432/umami
+HASH_SALT=your-random-salt
+```
+
+3. **Acceder a:**
+```
+https://your-domain.com
+Usuario: admin
+Password: umami
+```
+
+### Umami Cloud vs Self-Hosted
+
+| Feature | Cloud | Self-Hosted |
+|---------|-------|-------------|
+| Costo | $9-20/mes | Gratis (hosting aparte) |
+| Setup | Inmediato | Requiere configuración |
+| Mantenimiento | Automático | Manual |
+| Control | Limitado | Total |
+| Datos | En sus servidores | En tu servidor |
+
+---
+
 ## Google Analytics 4
 
 ### Setup
@@ -345,28 +536,41 @@ fbq('track', 'Purchase', {
 })
 ```
 
-### Composable Unificado
+### Composable Unificado (Umami + GA4 + Meta Pixel)
 
 ```javascript
 // composables/useTracking.js
 export const useTracking = () => {
   const config = useRuntimeConfig()
   const { gtag } = useGtag()
+  const { umTrackEvent } = useUmami()
 
   const trackEvent = (eventName, data) => {
+    // Umami Analytics
+    if (umTrackEvent && data.umami) {
+      umTrackEvent(eventName, data.umami)
+    }
+
     // Google Analytics
-    if (gtag) {
+    if (gtag && data.google) {
       gtag('event', eventName, data.google)
     }
 
     // Meta Pixel
-    if (typeof window !== 'undefined' && window.fbq) {
+    if (typeof window !== 'undefined' && window.fbq && data.meta) {
       fbq('track', eventName, data.meta)
     }
   }
 
   const trackProductView = (product) => {
-    trackEvent('ViewContent', {
+    trackEvent('product_view', {
+      umami: {
+        id: product.id,
+        name: product.name,
+        category: product.category,
+        brand: product.brand,
+        price: product.price
+      },
       google: {
         currency: 'EUR',
         value: product.price,
@@ -391,7 +595,13 @@ export const useTracking = () => {
   const trackAddToCart = (product, quantity) => {
     const value = product.price * quantity
 
-    trackEvent('AddToCart', {
+    trackEvent('add_to_cart', {
+      umami: {
+        id: product.id,
+        name: product.name,
+        quantity,
+        value
+      },
       google: {
         currency: 'EUR',
         value,
@@ -413,8 +623,45 @@ export const useTracking = () => {
     })
   }
 
+  const trackBeginCheckout = (cart) => {
+    trackEvent('begin_checkout', {
+      umami: {
+        items_count: cart.items.length,
+        value: cart.total
+      },
+      google: {
+        currency: 'EUR',
+        value: cart.total,
+        items: cart.items.map(item => ({
+          item_id: item.id,
+          item_name: item.name,
+          item_category: item.category,
+          price: item.price,
+          quantity: item.quantity
+        }))
+      },
+      meta: {
+        content_ids: cart.items.map(i => i.id),
+        contents: cart.items.map(i => ({
+          id: i.id,
+          quantity: i.quantity
+        })),
+        value: cart.total,
+        currency: 'EUR',
+        num_items: cart.items.length
+      }
+    })
+  }
+
   const trackPurchase = (order) => {
-    trackEvent('Purchase', {
+    trackEvent('purchase', {
+      umami: {
+        order_id: order.orderNumber,
+        value: order.total,
+        tax: order.tax,
+        shipping: order.shippingCost,
+        items_count: order.items.length
+      },
       google: {
         transaction_id: order.orderNumber,
         value: order.total,
@@ -437,15 +684,62 @@ export const useTracking = () => {
     })
   }
 
+  const trackSearch = (query, resultsCount) => {
+    trackEvent('search', {
+      umami: {
+        query,
+        results_count: resultsCount
+      },
+      google: {
+        search_term: query
+      },
+      meta: {
+        search_string: query
+      }
+    })
+  }
+
   return {
     trackProductView,
     trackAddToCart,
-    trackPurchase
+    trackBeginCheckout,
+    trackPurchase,
+    trackSearch
   }
 }
 ```
 
 ## Dashboards Recomendados
+
+### Umami Dashboard
+
+El dashboard de Umami incluye:
+
+1. **Real-time:**
+   - Visitantes en tiempo real
+   - Páginas activas
+   - Referrers
+
+2. **Metrics:**
+   - Page views
+   - Unique visitors
+   - Bounce rate
+   - Average visit duration
+
+3. **Events:**
+   - Custom events tracking
+   - Event properties y valores
+   - Conversion funnels
+
+4. **Filters:**
+   - Por país, dispositivo, navegador
+   - Por rango de fechas
+   - Por UTM parameters
+
+**Panel de ejemplo:**
+```
+https://analytics.umami.is/share/xxx/codentsa.com
+```
 
 ### Google Analytics 4
 
@@ -478,7 +772,30 @@ export const useTracking = () => {
    - Cart abandoners
    - Purchasers
 
+---
+
 ## GDPR y Consentimiento
+
+### Con Umami: Sin Banner de Cookies Necesario
+
+**Umami es GDPR compliant por diseño:**
+- ✅ No usa cookies de terceros
+- ✅ No almacena datos personales
+- ✅ No requiere consentimiento explícito
+- ✅ Cumple con ePrivacy Directive
+- ✅ Solo usa localStorage opcional para sesiones
+
+**Implementación simple:**
+```vue
+<!-- No se necesita banner para Umami -->
+<template>
+  <div>
+    <!-- Tu contenido -->
+  </div>
+</template>
+```
+
+### Con Google Analytics y Meta Pixel: Banner Requerido
 
 ### Cookie Banner
 
@@ -557,3 +874,135 @@ if (process.dev) {
   })
 }
 ```
+
+### Umami Debug
+
+Umami registra eventos en la consola cuando `ignoreLocalhost` está activo:
+
+```javascript
+// Ver eventos en consola
+// Los eventos Umami se ven en Network tab como llamadas a /api/send
+```
+
+---
+
+## Estrategia Recomendada
+
+### Opción 1: Solo Umami (Privacy-First)
+
+**Ideal para:**
+- Startups enfocadas en privacidad
+- Cumplimiento estricto de GDPR
+- Simplicidad y bajo costo
+
+**Configuración:**
+```javascript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['nuxt-umami'],
+  umami: {
+    id: process.env.NUXT_PUBLIC_UMAMI_ID,
+    host: process.env.NUXT_PUBLIC_UMAMI_HOST,
+    autoTrack: true,
+    ignoreLocalhost: true,
+  }
+})
+```
+
+### Opción 2: Umami + Google Analytics (Recomendado)
+
+**Ideal para:**
+- E-commerce que necesita analytics detallado
+- Análisis de funnel de conversión profundo
+- Remarketing opcional (con consentimiento)
+
+**Ventajas:**
+- Umami para métricas básicas sin cookies
+- GA4 solo para usuarios que aceptan cookies
+- Doble respaldo de datos
+- Flexibilidad en reportes
+
+**Configuración:**
+```javascript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['nuxt-umami', 'nuxt-gtag'],
+  umami: {
+    id: process.env.NUXT_PUBLIC_UMAMI_ID,
+    host: process.env.NUXT_PUBLIC_UMAMI_HOST,
+    autoTrack: true,
+  },
+  gtag: {
+    id: process.env.NUXT_PUBLIC_GOOGLE_ANALYTICS_ID,
+    // Solo iniciar si hay consentimiento
+    enabled: false, // Activar manualmente después de consentimiento
+  }
+})
+```
+
+### Opción 3: Triple Stack (Máximo Tracking)
+
+**Ideal para:**
+- E-commerce maduro con presupuesto de marketing
+- Campañas de Facebook/Instagram activas
+- Remarketing agresivo
+
+**Incluye:**
+- Umami (siempre activo, sin cookies)
+- GA4 (con consentimiento)
+- Meta Pixel (con consentimiento)
+
+**Uso del composable unificado:**
+```vue
+<script setup>
+const { trackAddToCart } = useTracking()
+
+const addToCart = () => {
+  // Envía evento a los 3 sistemas automáticamente
+  trackAddToCart(product.value, quantity.value)
+  cartStore.addItem(product.value, quantity.value)
+}
+</script>
+```
+
+---
+
+## Comparativa Rápida
+
+| Feature | Umami | Google Analytics | Meta Pixel |
+|---------|-------|-----------------|------------|
+| **Privacidad** | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐ |
+| **GDPR Compliance** | ✅ Por defecto | ⚠️ Requiere consentimiento | ⚠️ Requiere consentimiento |
+| **Cookie Banner** | ❌ No necesario | ✅ Necesario | ✅ Necesario |
+| **E-commerce Tracking** | ✅ Custom events | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Funnel Analysis** | ✅ Básico | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **Real-time Data** | ✅ | ✅ | ✅ |
+| **Remarketing** | ❌ | ✅ | ✅ |
+| **Costo** | Gratis/Low | Gratis | Gratis |
+| **Setup Complexity** | ⭐ Fácil | ⭐⭐⭐ Medio | ⭐⭐ Medio |
+| **Data Ownership** | ✅ Tuyo | ❌ Google | ❌ Meta |
+
+---
+
+## Recomendación para Codentsa
+
+**Configuración Actual:** Umami + Google Analytics (Opcional)
+
+**Por qué:**
+1. ✅ Umami tracking sin fricciones (no requiere consentimiento)
+2. ✅ Cumplimiento GDPR desde el día 1
+3. ✅ Google Analytics disponible para análisis profundo (opt-in)
+4. ✅ Flexibilidad para activar Meta Pixel en el futuro
+5. ✅ Doble backup de datos críticos
+
+**Next Steps:**
+1. Configurar cuenta en [Umami Cloud](https://cloud.umami.is) o self-host
+2. Agregar Website ID a `.env`
+3. Deploy y verificar tracking en dashboard
+4. (Opcional) Implementar cookie banner para GA4
+5. (Opcional) Agregar Meta Pixel cuando haya campañas activas
+
+---
+
+**Última actualización**: 2025-01-11
+**Módulos**: nuxt-umami@3.2.1, nuxt-gtag@4.1.0
