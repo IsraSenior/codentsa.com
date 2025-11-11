@@ -108,10 +108,10 @@ const currentPage = ref(1)
 const totalPages = ref(7)
 
 // Filters
-const activeFilters = ref(2)
-
-const handleClearFilters = () => {
-  activeFilters.value = 0
+const handleFilterChange = (filters) => {
+  console.log('Filters changed:', filters)
+  // Implement filter logic here
+  // filters.categories, filters.priceRanges, filters.material, filters.brands
 }
 
 const handleSortChange = (sortValue) => {
@@ -140,8 +140,7 @@ const thirdRowProducts = computed(() => products.value.slice(6, 10))
       <!-- Filters Bar -->
       <ProductFilters
         :total-products="256"
-        :active-filters="activeFilters"
-        @clear-filters="handleClearFilters"
+        @filter-change="handleFilterChange"
         @sort-change="handleSortChange"
       />
 
