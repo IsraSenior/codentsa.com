@@ -103,7 +103,7 @@ const currentSlideData = computed(() => props.slides[currentSlide.value])
               color="dark"
               size="md"
               :to="currentSlideData.ctaLink"
-              class="md:!h-[50px] md:!px-8 md:!py-4 md:!text-lg w-full lg:w-auto"
+              class="md:h-[50px]! md:px-8! md:py-4! md:text-lg! w-full lg:w-auto"
             >
               {{ currentSlideData.ctaText }}
             </Button>
@@ -113,9 +113,9 @@ const currentSlideData = computed(() => props.slides[currentSlide.value])
     </div>
 
     <!-- Navigation -->
-    <div class="left-1/2 lg:left-4 transform -translate-x-1/2 lg:translate-x-0 md:left-24 absolute bottom-6 md:bottom-10 flex gap-3 md:gap-6 z-10">
+    <div class="left-1/2 md:left-24 transform -translate-x-1/2 md:translate-x-0  absolute bottom-6 md:bottom-10 flex gap-3 md:gap-6 z-10">
       <button
-        class="bg-neutral-200 p-2 rounded-full hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
+        class="bg-neutral-200 p-2 rounded-lg hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
         :class="{ 'opacity-50 cursor-not-allowed': isTransitioning }"
         :disabled="isTransitioning"
         @click="prevSlide"
@@ -123,7 +123,7 @@ const currentSlideData = computed(() => props.slides[currentSlide.value])
         <ChevronLeftIcon class="w-5 h-5 md:w-6 md:h-6 text-black" />
       </button>
       <button
-        class="bg-neutral-200 p-2 rounded-full hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
+        class="bg-neutral-200 p-2 rounded-lg hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
         :class="{ 'opacity-50 cursor-not-allowed': isTransitioning }"
         :disabled="isTransitioning"
         @click="nextSlide"

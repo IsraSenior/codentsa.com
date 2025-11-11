@@ -203,9 +203,15 @@ const brands = [
             <p class="text-neutral-100 text-2xl md:text-3xl lg:text-4xl font-title font-light leading-snug md:leading-10 mb-4 max-w-md">
               Disfruta de esta promoción en tu primera compra:
             </p>
-            <button class="md:absolute md:top-6 md:right-20 border-2 border-neutral-100 text-neutral-100 px-5 md:px-6 py-2 md:py-3 rounded-full text-base md:text-lg font-body whitespace-nowrap w-full lg:w-auto">
+            <Button
+              variant="outline"
+              color="light"
+              size="md"
+              to="/ofertas"
+              class="md:absolute! md:top-6! md:right-20! w-full lg:w-auto"
+            >
               Ver ofertas
-            </button>
+            </Button>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 md:divide-x-2 divide-white">

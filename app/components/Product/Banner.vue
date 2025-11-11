@@ -66,7 +66,7 @@ const handleClick = () => {
     <!-- CTA Button -->
     <NuxtLink
       :to="ctaLink"
-      class="bg-neutral-50 text-neutral-900 px-4 py-2 rounded-full text-base font-body flex items-center gap-1 self-end z-10 hover:bg-white transition-colors duration-200"
+      class="bg-neutral-50 text-neutral-900 px-4 py-2 rounded-lg text-base font-body flex items-center gap-1 self-end z-10 hover:bg-white transition-colors duration-200"
       @click="handleClick"
     >
       {{ ctaText }}

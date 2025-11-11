@@ -133,7 +133,7 @@ const nextSlide = () => {
     <!-- Custom Navigation Buttons -->
     <div v-if="navigation" class="flex justify-center lg:justify-start gap-6 mt-6">
       <button
-        class="bg-neutral-200 p-2 rounded-full hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
+        class="bg-neutral-200 p-2 rounded-lg hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
         :class="{ 'opacity-50 cursor-not-allowed': isTransitioning || (!loop && isBeginning) }"
         :disabled="isTransitioning || (!loop && isBeginning)"
         @click="prevSlide"
@@ -141,7 +141,7 @@ const nextSlide = () => {
         <ChevronLeftIcon class="w-6 h-6 text-black" />
       </button>
       <button
-        class="bg-neutral-200 p-2 rounded-full hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
+        class="bg-neutral-200 p-2 rounded-lg hover:bg-neutral-300 hover:scale-110 transition-all duration-200"
         :class="{ 'opacity-50 cursor-not-allowed': isTransitioning || (!loop && isEnd) }"
         :disabled="isTransitioning || (!loop && isEnd)"
         @click="nextSlide"
