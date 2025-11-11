@@ -62,11 +62,91 @@
   --color-neutral-800: #2a5157;
   --color-neutral-900: #162526;
 
-  /* White que hereda directamente */
+  /* White y black que hereda directamente */
   --color-white: var(--color-neutral-0);
+  --color-black: var(--color-neutral-900);
 
   /* System Colors - Solo default */
   --color-success: #22c393;
   --color-warning: #fccc4f;
   --color-error: #f04343;
+}
+
+/* Legal Pages Prose Styles */
+.prose-legal {
+  color: #162526;
+}
+
+.prose-legal p {
+  font-family: 'Blauer Nue', sans-serif;
+  font-size: 1rem;
+  line-height: 1.625;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .prose-legal p {
+    font-size: 1.125rem;
+  }
+}
+
+.prose-legal h2 {
+  font-family: 'Figtree', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .prose-legal h2 {
+    font-size: 1.875rem;
+  }
+}
+
+.prose-legal h3 {
+  font-family: 'Figtree', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .prose-legal h3 {
+    font-size: 1.5rem;
+  }
+}
+
+.prose-legal ul,
+.prose-legal ol {
+  font-family: 'Blauer Nue', sans-serif;
+  font-size: 1rem;
+  line-height: 1.625;
+  margin-bottom: 1.5rem;
+  margin-left: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .prose-legal ul,
+  .prose-legal ol {
+    font-size: 1.125rem;
+  }
+}
+
+.prose-legal li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-legal strong {
+  font-weight: 600;
+}
+
+.prose-legal a {
+  color: #e71d35;
+  text-decoration: none;
+}
+
+.prose-legal a:hover {
+  text-decoration: underline;
 }
