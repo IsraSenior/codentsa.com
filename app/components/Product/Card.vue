@@ -101,7 +101,7 @@ const discountPercentage = computed(() => {
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
       >
     </div>
-    <hr class="border-neutral-700">
+    <hr class="border-neutral-400">
     <div class="flex justify-between items-end">
       <p class="text-black text-sm leading-tight w-2/3 line-clamp-2">
         {{ description }}

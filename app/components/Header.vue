@@ -201,7 +201,7 @@ onUnmounted(() => {
                 {{ cartStore.totalItems }}
               </span>
             </NuxtLink>
-            <NuxtLink to="/cuenta" class="hidden md:block shrink-0">
+            <NuxtLink to="/cuenta" class="hidden md:block shrink-0 ml-10">
               <img
                 src="https://avatar.iran.liara.run/public/1"
                 alt="Usuario"
