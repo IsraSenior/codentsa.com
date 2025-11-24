@@ -135,8 +135,16 @@ const formatExpiryDate = (value) => {
               <!-- Mastercard -->
               <div class="h-8 px-3 bg-white rounded border border-neutral-200 flex items-center justify-center">
                 <svg class="h-4" viewBox="0 0 48 32" fill="none">
-                  <circle cx="18" cy="16" r="14" fill="#EB001B" />
-                  <circle cx="30" cy="16" r="14" fill="#FF5F00" />
+                  <circle
+                    cx="18"
+                    cy="16"
+                    r="14"
+                    fill="#EB001B" />
+                  <circle
+                    cx="30"
+                    cy="16"
+                    r="14"
+                    fill="#FF5F00" />
                   <circle
                     cx="24"
                     cy="16"
@@ -149,7 +157,11 @@ const formatExpiryDate = (value) => {
               <!-- American Express -->
               <div class="h-8 px-3 bg-white rounded border border-neutral-200 flex items-center justify-center">
                 <svg class="h-4" viewBox="0 0 48 16" fill="none">
-                  <rect width="48" height="16" rx="2" fill="#006FCF" />
+                  <rect
+                    width="48"
+                    height="16"
+                    rx="2"
+                    fill="#006FCF" />
                   <text
                     x="24"
                     y="11"

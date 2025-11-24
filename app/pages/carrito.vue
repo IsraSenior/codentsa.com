@@ -106,8 +106,16 @@ const handleApplyPromo = (code) => {
           class="inline-flex items-center gap-3 px-8 py-4 bg-black text-white rounded-full font-body text-base hover:bg-neutral-800 transition-colors"
         >
           <span>Ver productos</span>
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </NuxtLink>
       </div>
@@ -118,8 +126,8 @@ const handleApplyPromo = (code) => {
         <div class="space-y-4">
           <CartItem
             v-for="item in cartItems"
-            :key="item.id"
             :id="item.id"
+            :key="item.id"
             :name="item.name"
             :brand="item.brand"
             :image="item.image"

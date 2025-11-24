@@ -272,142 +272,142 @@ onUnmounted(() => {
     <div ref="productDetailsRef">
       <Section class="pt-0!">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:items-start">
-        <!-- Left: Gallery -->
-        <div>
-          <ProductGallery :images="product.images" />
-        </div>
+          <!-- Left: Gallery -->
+          <div>
+            <ProductGallery :images="product.images" />
+          </div>
 
-        <!-- Right: Product Info -->
-         <div class="lg:sticky lg:top-28">
+          <!-- Right: Product Info -->
+          <div class="lg:sticky lg:top-28">
             <div>
-            <h1 class="font-title text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-4">
+              <h1 class="font-title text-3xl md:text-4xl lg:text-5xl text-black font-normal mb-4">
                 {{ product.name }}
-            </h1>
+              </h1>
     
-            <!-- Rating -->
-            <div class="flex items-center gap-2 mb-6">
+              <!-- Rating -->
+              <div class="flex items-center gap-2 mb-6">
                 <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                <path
+                  <path
                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                />
+                  />
                 </svg>
                 <span class="font-body text-base text-black font-medium">
-                {{ product.rating }}
+                  {{ product.rating }}
                 </span>
-            </div>
+              </div>
     
-            <!-- Description -->
-            <p class="font-body text-base text-neutral-700 mb-6">
+              <!-- Description -->
+              <p class="font-body text-base text-neutral-700 mb-6">
                 {{ product.description }}
-            </p>
+              </p>
     
-            <!-- Additional Files -->
-            <div class="mb-6">
+              <!-- Additional Files -->
+              <div class="mb-6">
                 <h3 class="font-title text-lg text-black font-normal mb-3">
-                Archivos adicionales:
+                  Archivos adicionales:
                 </h3>
                 <div class="space-y-2">
-                <button
+                  <button
                     class="font-body text-sm text-primary hover:underline"
                     @click="downloadTechSheet"
-                >
+                  >
                     Descargar ficha tecnica
-                </button>
-                <br>
-                <button
+                  </button>
+                  <br>
+                  <button
                     class="font-body text-sm text-primary hover:underline"
                     @click="scrollToDetails"
-                >
+                  >
                     Ver toda la informacion del producto
-                </button>
+                  </button>
                 </div>
-            </div>
+              </div>
 
-            <!-- Variants Accordion -->
-            <div class="mb-6">
+              <!-- Variants Accordion -->
+              <div class="mb-6">
                 <ProductVariantAccordion
-                title="Color"
-                :options="product.colors"
-                :selected="selectedColor"
-                @select="(value) => (selectedColor = value)"
+                  title="Color"
+                  :options="product.colors"
+                  :selected="selectedColor"
+                  @select="(value) => (selectedColor = value)"
                 />
     
                 <ProductVariantAccordion
-                title="Seleccione la talla"
-                :options="product.sizes"
-                :selected="selectedSize"
-                @select="(value) => (selectedSize = value)"
+                  title="Seleccione la talla"
+                  :options="product.sizes"
+                  :selected="selectedSize"
+                  @select="(value) => (selectedSize = value)"
                 />
     
                 <ProductVariantAccordion
-                title="Seleccione material"
-                :options="product.materials"
-                :selected="selectedMaterial"
-                @select="(value) => (selectedMaterial = value)"
+                  title="Seleccione material"
+                  :options="product.materials"
+                  :selected="selectedMaterial"
+                  @select="(value) => (selectedMaterial = value)"
                 />
-            </div>
+              </div>
 
-            <!-- Price and Quantity Selector -->
-            <div class="flex items-center gap-4 mb-6">
+              <!-- Price and Quantity Selector -->
+              <div class="flex items-center gap-4 mb-6">
                 <div class="flex-1">
-                <div class="flex items-baseline gap-3">
+                  <div class="flex items-baseline gap-3">
                     <span class="font-title text-3xl md:text-4xl text-black font-normal">
-                    {{ formatPrice(product.price) }}
+                      {{ formatPrice(product.price) }}
                     </span>
                     <span
-                    v-if="product.originalPrice"
-                    class="font-body text-lg text-neutral-500 line-through"
+                      v-if="product.originalPrice"
+                      class="font-body text-lg text-neutral-500 line-through"
                     >
-                    {{ formatPrice(product.originalPrice) }}
+                      {{ formatPrice(product.originalPrice) }}
                     </span>
-                </div>
+                  </div>
                 </div>
     
                 <div class="flex items-center gap-2">
-                <button
+                  <button
                     class="w-10 h-10 border border-neutral-300 rounded-lg flex items-center justify-center hover:border-primary transition-colors"
                     @click="decrementQuantity"
-                >
+                  >
                     <span class="text-xl text-black">-</span>
-                </button>
-                <span class="font-body text-lg text-black font-medium w-12 text-center">
+                  </button>
+                  <span class="font-body text-lg text-black font-medium w-12 text-center">
                     {{ quantity }}
-                </span>
-                <button
+                  </span>
+                  <button
                     class="w-10 h-10 border border-neutral-300 rounded-lg flex items-center justify-center hover:border-primary transition-colors"
                     @click="incrementQuantity"
-                >
+                  >
                     <span class="text-xl text-black">+</span>
-                </button>
+                  </button>
                 </div>
-            </div>
+              </div>
     
-            <!-- Action Buttons -->
-            <div class="space-y-3">
+              <!-- Action Buttons -->
+              <div class="space-y-3">
                 <button
-                class="w-full px-6 py-4 bg-black text-white rounded-lg font-body text-base hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
-                @click="addToCart"
+                  class="w-full px-6 py-4 bg-black text-white rounded-lg font-body text-base hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
+                  @click="addToCart"
                 >
-                <ShoppingCartIcon class="w-5 h-5" />
-                <span>Anadir al carrito</span>
+                  <ShoppingCartIcon class="w-5 h-5" />
+                  <span>Anadir al carrito</span>
                 </button>
 
                 <button
-                :class="[
-                  'w-full px-6 py-4 rounded-lg font-body text-base transition-all flex items-center justify-center gap-2',
-                  isFavorite
-                    ? 'bg-primary/10 border-2 border-primary text-primary hover:bg-primary/20'
-                    : 'border border-neutral-300 text-black hover:border-primary hover:text-primary'
-                ]"
-                @click="toggleFavorite"
+                  :class="[
+                    'w-full px-6 py-4 rounded-lg font-body text-base transition-all flex items-center justify-center gap-2',
+                    isFavorite
+                      ? 'bg-primary/10 border-2 border-primary text-primary hover:bg-primary/20'
+                      : 'border border-neutral-300 text-black hover:border-primary hover:text-primary'
+                  ]"
+                  @click="toggleFavorite"
                 >
-                <HeartIconSolid v-if="isFavorite" class="w-5 h-5" />
-                <HeartIcon v-else class="w-5 h-5" />
-                <span>{{ isFavorite ? 'En favoritos' : 'Anadir a lista de favoritos' }}</span>
+                  <HeartIconSolid v-if="isFavorite" class="w-5 h-5" />
+                  <HeartIcon v-else class="w-5 h-5" />
+                  <span>{{ isFavorite ? 'En favoritos' : 'Anadir a lista de favoritos' }}</span>
                 </button>
+              </div>
             </div>
-            </div>
-         </div>
+          </div>
         </div>
       </Section>
     </div>
@@ -503,29 +503,29 @@ onUnmounted(() => {
         <div class="flex items-center">
           <div>
             <h2 class="font-title text-3xl md:text-4xl text-black font-normal mb-3">
-            Datos tecnicos
-          </h2>
+              Datos tecnicos
+            </h2>
 
-          <p class="font-body text-base text-black mb-6">
-            Marca: {{ product.technicalSpecs.brand }}
-          </p>
+            <p class="font-body text-base text-black mb-6">
+              Marca: {{ product.technicalSpecs.brand }}
+            </p>
 
-          <ul class="space-y-3 mb-8">
-            <li
-              v-for="(spec, index) in product.technicalSpecs.specs"
-              :key="index"
-              class="font-body text-base text-neutral-700 flex items-start gap-2"
+            <ul class="space-y-3 mb-8">
+              <li
+                v-for="(spec, index) in product.technicalSpecs.specs"
+                :key="index"
+                class="font-body text-base text-neutral-700 flex items-start gap-2"
+              >
+                <span class="text-primary mt-1">•</span>
+                <span>{{ spec }}</span>
+              </li>
+            </ul>
+
+            <button
+              class="px-6 py-3 bg-black text-white rounded-full font-body text-sm md:text-base hover:bg-neutral-800 transition-colors"
             >
-              <span class="text-primary mt-1">•</span>
-              <span>{{ spec }}</span>
-            </li>
-          </ul>
-
-          <button
-            class="px-6 py-3 bg-black text-white rounded-full font-body text-sm md:text-base hover:bg-neutral-800 transition-colors"
-          >
-            Contactar a soporte
-          </button>
+              Contactar a soporte
+            </button>
           </div>
         </div>
       </div>
@@ -552,7 +552,11 @@ onUnmounted(() => {
       </div>
 
       <!-- Products Carousel -->
-      <BaseCarousel :items="similarProducts" :slides-per-view="4" :autoplay="false" :loop="false">
+      <BaseCarousel
+        :items="similarProducts"
+        :slides-per-view="4"
+        :autoplay="false"
+        :loop="false">
         <template #default="{ item }">
           <ProductCard
             :id="item.id"

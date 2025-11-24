@@ -108,8 +108,16 @@ const formattedTime = computed(() => {
       <!-- Verification Failed State -->
       <div v-else-if="verificationFailed" class="text-center py-16 md:py-24">
         <div class="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-error/10 rounded-full">
-          <svg class="w-12 h-12 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            class="w-12 h-12 text-error"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12" />
           </svg>
         </div>
         <h2 class="font-title text-2xl md:text-3xl text-black font-normal mb-4">

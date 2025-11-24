@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
 
     const {
-      Ds_SignatureVersion,
       Ds_MerchantParameters,
       Ds_Signature,
     } = body
@@ -54,7 +53,6 @@ export default defineEventHandler(async (event) => {
     const responseCode = response.Ds_Response || response.DS_RESPONSE
     const authorisationCode = response.Ds_AuthorisationCode || response.DS_AUTHORISATIONCODE
     const amount = response.Ds_Amount || response.DS_AMOUNT
-    const currency = response.Ds_Currency || response.DS_CURRENCY
     const cardNumber = response.Ds_Card_Number || response.DS_CARD_NUMBER
 
     // Parse response code

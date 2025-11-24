@@ -222,88 +222,88 @@ onUnmounted(() => {
         </div>
       </div>
 
-    <!-- Search Mega Menu -->
-    <Transition
-      enter-active-class="transition-all duration-300 ease-out"
-      enter-from-class="opacity-0 -translate-y-4"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition-all duration-200 ease-in"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 -translate-y-4"
-    >
-      <div v-if="isSearchOpen" class="absolute top-full left-0 right-0 bg-neutral-50 shadow-2xl z-40 border-t border-neutral-200">
-        <div class="container mx-auto px-4 py-8">
-          <div class="flex gap-8">
-            <!-- Categories Sidebar -->
-            <aside class="w-64 shrink-0">
-              <h3 class="text-black text-lg font-title font-medium mb-4">
-                Categorías principales
-              </h3>
-              <nav class="flex flex-col gap-2">
-                <NuxtLink
-                  v-for="category in categories"
-                  :key="category.id"
-                  :to="`/productos?categoria=${category.id}`"
-                  class="text-neutral-700 hover:text-primary text-base font-body py-2 transition-colors"
-                  @click="closeSearch"
-                >
-                  {{ category.name }}
-                </NuxtLink>
-              </nav>
-            </aside>
+      <!-- Search Mega Menu -->
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out"
+        enter-from-class="opacity-0 -translate-y-4"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition-all duration-200 ease-in"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 -translate-y-4"
+      >
+        <div v-if="isSearchOpen" class="absolute top-full left-0 right-0 bg-neutral-50 shadow-2xl z-40 border-t border-neutral-200">
+          <div class="container mx-auto px-4 py-8">
+            <div class="flex gap-8">
+              <!-- Categories Sidebar -->
+              <aside class="w-64 shrink-0">
+                <h3 class="text-black text-lg font-title font-medium mb-4">
+                  Categorías principales
+                </h3>
+                <nav class="flex flex-col gap-2">
+                  <NuxtLink
+                    v-for="category in categories"
+                    :key="category.id"
+                    :to="`/productos?categoria=${category.id}`"
+                    class="text-neutral-700 hover:text-primary text-base font-body py-2 transition-colors"
+                    @click="closeSearch"
+                  >
+                    {{ category.name }}
+                  </NuxtLink>
+                </nav>
+              </aside>
 
-            <!-- Products Grid -->
-            <div class="flex-1">
-              <!-- Products Found -->
-              <div v-if="filteredProducts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <ProductCard
-                  v-for="product in filteredProducts"
-                  :key="product.id"
-                  :title="product.title"
-                  :brand="product.brand"
-                  :image="product.image"
-                  :description="product.description"
-                  :original-price="product.originalPrice"
-                  :price="product.price"
-                  @click="closeSearch"
-                />
-              </div>
+              <!-- Products Grid -->
+              <div class="flex-1">
+                <!-- Products Found -->
+                <div v-if="filteredProducts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <ProductCard
+                    v-for="product in filteredProducts"
+                    :key="product.id"
+                    :title="product.title"
+                    :brand="product.brand"
+                    :image="product.image"
+                    :description="product.description"
+                    :original-price="product.originalPrice"
+                    :price="product.price"
+                    @click="closeSearch"
+                  />
+                </div>
 
-              <!-- No Results - Show Skeletons -->
-              <div v-else>
-                <p class="text-neutral-500 text-lg font-body mb-6 text-center">
-                  No se encontraron productos
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <ProductSkeleton v-for="i in 3" :key="`skeleton-${i}`" />
+                <!-- No Results - Show Skeletons -->
+                <div v-else>
+                  <p class="text-neutral-500 text-lg font-body mb-6 text-center">
+                    No se encontraron productos
+                  </p>
+                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <ProductSkeleton v-for="i in 3" :key="`skeleton-${i}`" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </Transition>
+
+      <!-- Overlay -->
+      <Transition
+        enter-active-class="transition-opacity duration-300"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition-opacity duration-200"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div
+          v-if="isSearchOpen"
+          class="fixed inset-0 bg-black/20 z-30"
+          @click="closeSearch"
+        />
+      </Transition>
+
+      <!-- Announcement Bar (Desktop Only, Home Page Only, No Scroll) -->
+      <div v-if="!isSearchOpen && isHomePage && !isScrolled" class="hidden md:block">
+        <AnnouncementBar />
       </div>
-    </Transition>
-
-    <!-- Overlay -->
-    <Transition
-      enter-active-class="transition-opacity duration-300"
-      enter-from-class="opacity-0"
-      enter-to-class="opacity-100"
-      leave-active-class="transition-opacity duration-200"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <div
-        v-if="isSearchOpen"
-        class="fixed inset-0 bg-black/20 z-30"
-        @click="closeSearch"
-      />
-    </Transition>
-
-    <!-- Announcement Bar (Desktop Only, Home Page Only, No Scroll) -->
-    <div v-if="!isSearchOpen && isHomePage && !isScrolled" class="hidden md:block">
-      <AnnouncementBar />
-    </div>
-  </header>
+    </header>
   </div>
 </template>

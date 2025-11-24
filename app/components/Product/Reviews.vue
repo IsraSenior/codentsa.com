@@ -81,18 +81,22 @@ const ratingDistribution = computed(() => {
             </div>
 
             <button
-            class="mt-6 px-6 py-3 bg-black text-white rounded-full font-body text-sm md:text-base hover:bg-neutral-800 transition-colors"
-            @click="emit('addReview')"
-          >
-            Añade tu comentario
-          </button>
+              class="mt-6 px-6 py-3 bg-black text-white rounded-full font-body text-sm md:text-base hover:bg-neutral-800 transition-colors"
+              @click="emit('addReview')"
+            >
+              Añade tu comentario
+            </button>
           </div>
         </div>
       </div>
 
       <!-- Right: Review Carousel -->
       <div v-if="reviews.length > 0" class="">
-        <BaseCarousel :items="reviews" :slides-per-view="1" :autoplay="false" :loop="false">
+        <BaseCarousel
+          :items="reviews"
+          :slides-per-view="1"
+          :autoplay="false"
+          :loop="false">
           <template #default="{ item }">
             <TestimonialsCard
               :product-name="productName"
