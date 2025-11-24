@@ -125,7 +125,7 @@ const nextSlide = () => {
       <SwiperSlide v-for="(item, index) in items" :key="index" class="!h-auto">
         <div class="h-full">
           <!-- Slot para contenido customizado -->
-          <slot :item="item" :index="index"></slot>
+          <slot :item="item" :index="index" />
         </div>
       </SwiperSlide>
     </Swiper>

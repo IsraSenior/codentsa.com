@@ -123,104 +123,104 @@ onUnmounted(() => {
       <!-- Main Header -->
       <div class="bg-neutral-50 relative z-50">
         <div class="container mx-auto px-5 lg:px-0 py-5">
-        <div class="flex items-center justify-between gap-4">
-          <!-- Logo -->
-          <NuxtLink to="/" class="shrink-0">
-            <Logo color="text-primary" />
-          </NuxtLink>
-
-          <!-- Normal State: Navigation Links -->
-          <nav v-if="!isSearchOpen" class="hidden md:flex items-center gap-6 flex-1 justify-center">
-            <NuxtLink
-              v-for="link in navigationLinks"
-              :key="link.path"
-              :to="link.path"
-              class="font-body font-normal text-base transition-all duration-200 underline-offset-4 cursor-pointer"
-              :class="route.path === link.path
-                ? 'text-primary underline'
-                : 'text-black hover:text-neutral-700 hover:underline'"
-            >
-              {{ link.name }}
+          <div class="flex items-center justify-between gap-4">
+            <!-- Logo -->
+            <NuxtLink to="/" class="shrink-0">
+              <Logo color="text-primary" />
             </NuxtLink>
-          </nav>
 
-          <!-- Search Open State: Search Input -->
-          <div v-if="isSearchOpen" class="flex-1 flex items-center gap-4 mx-8">
-            <div class="relative flex-1">
-              <MagnifyingGlassIcon class="w-5 h-5 text-neutral-500 absolute left-4 top-1/2 -translate-y-1/2" :stroke-width="2" />
-              <input
-                ref="searchInputRef"
-                v-model="searchQuery"
-                type="text"
-                placeholder="Buscar"
-                class="w-full pl-12 pr-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+            <!-- Normal State: Navigation Links -->
+            <nav v-if="!isSearchOpen" class="hidden md:flex items-center gap-6 flex-1 justify-center">
+              <NuxtLink
+                v-for="link in navigationLinks"
+                :key="link.path"
+                :to="link.path"
+                class="font-body font-normal text-base transition-all duration-200 underline-offset-4 cursor-pointer"
+                :class="route.path === link.path
+                  ? 'text-primary underline'
+                  : 'text-black hover:text-neutral-700 hover:underline'"
               >
+                {{ link.name }}
+              </NuxtLink>
+            </nav>
+
+            <!-- Search Open State: Search Input -->
+            <div v-if="isSearchOpen" class="flex-1 flex items-center gap-4 mx-8">
+              <div class="relative flex-1">
+                <MagnifyingGlassIcon class="w-5 h-5 text-neutral-500 absolute left-4 top-1/2 -translate-y-1/2" :stroke-width="2" />
+                <input
+                  ref="searchInputRef"
+                  v-model="searchQuery"
+                  type="text"
+                  placeholder="Buscar"
+                  class="w-full pl-12 pr-4 py-3 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
+                >
+              </div>
             </div>
-          </div>
 
-          <!-- Action Icons -->
-          <div class="flex items-center gap-2 shrink-0">
-            <!-- Search Icon (normal state) or Close button (search open) -->
-            <button
-              v-if="!isSearchOpen"
-              class="p-2 text-black hover:text-neutral-700 transition-colors"
-              @click="openSearch"
-            >
-              <MagnifyingGlassIcon class="w-6 h-6" :stroke-width="2" />
-            </button>
-            <button
-              v-else
-              class="p-2 text-black hover:text-neutral-700 transition-colors"
-              @click="closeSearch"
-            >
-              <XMarkIcon class="w-6 h-6" :stroke-width="2" />
-            </button>
+            <!-- Action Icons -->
+            <div class="flex items-center gap-2 shrink-0">
+              <!-- Search Icon (normal state) or Close button (search open) -->
+              <button
+                v-if="!isSearchOpen"
+                class="p-2 text-black hover:text-neutral-700 transition-colors"
+                @click="openSearch"
+              >
+                <MagnifyingGlassIcon class="w-6 h-6" :stroke-width="2" />
+              </button>
+              <button
+                v-else
+                class="p-2 text-black hover:text-neutral-700 transition-colors"
+                @click="closeSearch"
+              >
+                <XMarkIcon class="w-6 h-6" :stroke-width="2" />
+              </button>
 
-            <!-- Desktop Only Icons -->
-            <NuxtLink
-              to="/favoritos"
-              class="hidden md:block p-2 text-black hover:text-neutral-700 transition-colors relative isolate"
-            >
-              <HeartIcon class="w-6 h-6" :stroke-width="2" />
-              <span
-                v-if="favoritesStore.totalFavorites > 0"
-                class="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs font-body font-medium rounded-full flex items-center justify-center"
+              <!-- Desktop Only Icons -->
+              <NuxtLink
+                to="/favoritos"
+                class="hidden md:block p-2 text-black hover:text-neutral-700 transition-colors relative isolate"
               >
-                {{ favoritesStore.totalFavorites }}
-              </span>
-            </NuxtLink>
-            <NuxtLink
-              to="/carrito"
-              class="hidden md:block p-2 text-black hover:text-neutral-700 transition-colors relative isolate"
-            >
-              <ShoppingCartIcon class="w-6 h-6" :stroke-width="2" />
-              <span
-                v-if="cartStore.totalItems > 0"
-                class="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs font-body font-medium rounded-full flex items-center justify-center"
+                <HeartIcon class="w-6 h-6" :stroke-width="2" />
+                <span
+                  v-if="favoritesStore.totalFavorites > 0"
+                  class="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs font-body font-medium rounded-full flex items-center justify-center"
+                >
+                  {{ favoritesStore.totalFavorites }}
+                </span>
+              </NuxtLink>
+              <NuxtLink
+                to="/carrito"
+                class="hidden md:block p-2 text-black hover:text-neutral-700 transition-colors relative isolate"
               >
-                {{ cartStore.totalItems }}
-              </span>
-            </NuxtLink>
-            <NuxtLink to="/cuenta" class="hidden md:block shrink-0 ml-10">
-              <img
-                src="https://avatar.iran.liara.run/public/1"
-                alt="Usuario"
-                class="w-10 h-10 rounded-full border-2 border-primary"
-              >
-            </NuxtLink>
+                <ShoppingCartIcon class="w-6 h-6" :stroke-width="2" />
+                <span
+                  v-if="cartStore.totalItems > 0"
+                  class="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs font-body font-medium rounded-full flex items-center justify-center"
+                >
+                  {{ cartStore.totalItems }}
+                </span>
+              </NuxtLink>
+              <NuxtLink to="/cuenta" class="hidden md:block shrink-0 ml-10">
+                <img
+                  src="https://avatar.iran.liara.run/public/1"
+                  alt="Usuario"
+                  class="w-10 h-10 rounded-full border-2 border-primary"
+                >
+              </NuxtLink>
 
-            <!-- Mobile: Menu Icon -->
-            <button
-              v-if="!isSearchOpen"
-              class="md:hidden p-2 text-black hover:text-neutral-700 transition-colors"
-              @click="() => {}"
-            >
-              <Bars3Icon class="w-6 h-6" :stroke-width="2" />
-            </button>
+              <!-- Mobile: Menu Icon -->
+              <button
+                v-if="!isSearchOpen"
+                class="md:hidden p-2 text-black hover:text-neutral-700 transition-colors"
+                @click="() => {}"
+              >
+                <Bars3Icon class="w-6 h-6" :stroke-width="2" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
     <!-- Search Mega Menu -->
     <Transition

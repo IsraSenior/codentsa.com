@@ -14,9 +14,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['checkout', 'applyPromo'])
-
-const promoCode = ref('')
+const emit = defineEmits(['checkout'])
 
 const formatPrice = (price) => {
   return new Intl.NumberFormat('es-ES', {
@@ -26,12 +24,6 @@ const formatPrice = (price) => {
 }
 
 const total = computed(() => props.subtotal + props.shipping + props.tax)
-
-const handleApplyPromo = () => {
-  if (promoCode.value.trim()) {
-    emit('applyPromo', promoCode.value)
-  }
-}
 </script>
 
 <template>
@@ -58,21 +50,6 @@ const handleApplyPromo = () => {
       <div class="flex items-center justify-between">
         <span class="font-body text-base text-black">Tax</span>
         <span class="font-body text-base text-black font-medium">{{ formatPrice(tax) }}</span>
-      </div>
-    </div>
-
-    <!-- Promo Code -->
-    <div class="mb-6">
-      <label class="font-body text-sm text-neutral-600 mb-2 block">
-        Código promocional
-      </label>
-      <div class="flex gap-2">
-        <input
-          v-model="promoCode"
-          type="text"
-          placeholder=""
-          class="flex-1 px-4 py-2 border border-neutral-300 rounded-lg font-body text-base focus:outline-none focus:border-primary transition-colors"
-        >
       </div>
     </div>
 
