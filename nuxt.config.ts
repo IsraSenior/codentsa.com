@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     plugins: [tailwindcss()],
   },
 
-  modules: ['@pinia/nuxt', 'nuxt-gtag', 'nuxt-umami'],
+  modules: ['@pinia/nuxt', 'nuxt-gtag', 'nuxt-umami', '@nuxt/eslint'],
 
   app: {
     pageTransition: {

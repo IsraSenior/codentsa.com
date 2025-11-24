@@ -1,15 +1,6 @@
-import { createConfigForNuxt } from '@nuxt/eslint'
+import withNuxt from './.nuxt/eslint.config.mjs'
 
-export default createConfigForNuxt({
-  features: {
-    stylistic: {
-      semi: false,
-      quotes: 'single',
-      indent: 2,
-      commaDangle: 'only-multiline',
-    },
-  },
-}).override('nuxt/vue/rules', {
+export default withNuxt({
   rules: {
     'vue/multi-word-component-names': 'off',
     'vue/html-indent': ['error', 2],
