@@ -1,0 +1,93 @@
+version: '3.9'
+
+# =============================================================================
+# Codentsa.es - Development Overrides
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # Caddy - Development (no HTTPS)
+  # ---------------------------------------------------------------------------
+  caddy:
+    volumes:
+      - ./caddy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
+    ports:
+      - "80:80"
+      # No HTTPS ports in dev
+
+  # ---------------------------------------------------------------------------
+  # Nuxt - Development with Hot Reload
+  # ---------------------------------------------------------------------------
+  nuxt:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      target: base # Use base stage for development
+    command: ["pnpm", "run", "dev", "--host", "0.0.0.0"]
+    environment:
+      - NODE_ENV=development
+      - NUXT_PUBLIC_BASE_URL=http://localhost
+      - NUXT_PUBLIC_DIRECTUS_URL=http://localhost:8055
+      - NUXT_PUBLIC_UMAMI_HOST=http://localhost:3001
+    volumes:
+      # Mount source code for hot reload
+      - ..:/app
+      - /app/node_modules
+      - /app/.nuxt
+      - /app/.output
+    ports:
+      - "3000:3000" # Direct access for debugging
+      - "24678:24678" # Vite HMR
+
+  # ---------------------------------------------------------------------------
+  # Directus - Development
+  # ---------------------------------------------------------------------------
+  directus:
+    environment:
+      - LOG_LEVEL=debug
+      - REFRESH_TOKEN_COOKIE_SECURE=false
+    ports:
+      - "8055:8055" # Direct access for debugging
+
+  # ---------------------------------------------------------------------------
+  # Umami - Development
+  # ---------------------------------------------------------------------------
+  umami:
+    ports:
+      - "3001:3000" # Different port to avoid conflict with Nuxt
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Directus - Development
+  # ---------------------------------------------------------------------------
+  postgres_directus:
+    ports:
+      - "5432:5432" # Expose for DB tools
+    environment:
+      - POSTGRES_PASSWORD=${DIRECTUS_DB_PASSWORD:-dev_password}
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Umami - Development
+  # ---------------------------------------------------------------------------
+  postgres_umami:
+    ports:
+      - "5433:5432" # Different port to avoid conflict
+    environment:
+      - POSTGRES_PASSWORD=${UMAMI_DB_PASSWORD:-dev_password}
+
+  # ---------------------------------------------------------------------------
+  # Backup - Disabled in Development
+  # ---------------------------------------------------------------------------
+  backup:
+    profiles:
+      - production # Only run in production profile
+
+# =============================================================================
+# Networks - More permissive in dev
+# =============================================================================
+networks:
+  codentsa_internal:
+    internal: false # Allow external access in dev
+
+  codentsa_database:
+    internal: false # Allow direct DB access in dev

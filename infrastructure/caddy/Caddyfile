@@ -1,0 +1,308 @@
+# =============================================================================
+# Codentsa.es - Production Caddy Configuration
+# Automatic HTTPS with Let's Encrypt
+# =============================================================================
+
+{
+	# Global options
+	email isenior@neskeep.com
+
+	# Enable HTTP/3
+	servers {
+		protocol {
+			experimental_http3
+		}
+	}
+
+	# JSON structured logging
+	log {
+		format json
+		output file /var/log/caddy/access.log
+	}
+}
+
+# =============================================================================
+# Main Site - codentsa.es
+# =============================================================================
+codentsa.es, www.codentsa.es {
+	# Redirect www to apex
+	@www host www.codentsa.es
+	handle @www {
+		redir https://codentsa.es{uri} permanent
+	}
+
+	# Logging
+	log {
+		output file /var/log/caddy/codentsa.log {
+			roll_size 100mb
+			roll_keep 5
+			roll_keep_for 168h
+		}
+		format json
+	}
+
+	# Security headers
+	header {
+		# HSTS with preload
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+		# Content Security Policy
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://analytics.codentsa.es https://www.googletagmanager.com https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://admin.codentsa.es https://analytics.codentsa.es https://www.google-analytics.com https://region1.google-analytics.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+
+		# XSS Protection
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		X-XSS-Protection "1; mode=block"
+
+		# Referrer Policy
+		Referrer-Policy "strict-origin-when-cross-origin"
+
+		# Permissions Policy
+		Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+
+		# Remove server info
+		-Server
+		-X-Powered-By
+	}
+
+	# Rate limiting - Frontend
+	rate_limit {
+		zone frontend {
+			key {remote_host}
+			events 100
+			window 1m
+		}
+	}
+
+	# Compression
+	encode gzip zstd
+
+	# Health check endpoint
+	handle /api/health {
+		reverse_proxy nuxt:3000
+	}
+
+	# Main application
+	handle {
+		reverse_proxy nuxt:3000 {
+			# Health check
+			health_uri /api/health
+			health_interval 30s
+			health_timeout 10s
+
+			# Load balancing (for zero-downtime deploys)
+			lb_policy least_conn
+
+			# Timeouts
+			transport http {
+				dial_timeout 5s
+				response_header_timeout 30s
+			}
+		}
+	}
+}
+
+# =============================================================================
+# Admin Panel - admin.codentsa.es
+# =============================================================================
+admin.codentsa.es {
+	# Logging
+	log {
+		output file /var/log/caddy/admin.log {
+			roll_size 100mb
+			roll_keep 5
+			roll_keep_for 168h
+		}
+		format json
+	}
+
+	# Security headers
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self';"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+		-X-Powered-By
+	}
+
+	# CORS headers for API
+	@api {
+		path /items/* /graphql /auth/* /users/* /files/* /assets/* /collections/* /fields/* /relations/* /server/*
+	}
+	header @api {
+		Access-Control-Allow-Origin "https://codentsa.es"
+		Access-Control-Allow-Methods "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+		Access-Control-Allow-Headers "Content-Type, Authorization"
+		Access-Control-Allow-Credentials "true"
+		Access-Control-Max-Age "86400"
+	}
+
+	# Handle preflight requests
+	@options {
+		method OPTIONS
+	}
+	respond @options 204
+
+	# Rate limiting - Auth endpoints (very restrictive)
+	@auth {
+		path /auth/login* /auth/refresh* /auth/password/*
+	}
+	rate_limit @auth {
+		zone directus_auth {
+			key {remote_host}
+			events 10
+			window 1m
+		}
+	}
+
+	# Rate limiting - API general
+	@api_general {
+		path /items/* /graphql
+	}
+	rate_limit @api_general {
+		zone directus_api {
+			key {remote_host}
+			events 60
+			window 1m
+		}
+	}
+
+	# Rate limiting - Assets (more permissive)
+	@assets {
+		path /assets/*
+	}
+	rate_limit @assets {
+		zone directus_assets {
+			key {remote_host}
+			events 200
+			window 1m
+		}
+	}
+
+	# Compression
+	encode gzip zstd
+
+	# Health check
+	handle /server/health {
+		reverse_proxy directus:8055
+	}
+
+	# Directus application
+	handle {
+		reverse_proxy directus:8055 {
+			# Health check
+			health_uri /server/health
+			health_interval 30s
+			health_timeout 10s
+
+			# Timeouts
+			transport http {
+				dial_timeout 5s
+				response_header_timeout 60s
+				read_timeout 120s
+			}
+		}
+	}
+}
+
+# =============================================================================
+# Analytics - analytics.codentsa.es
+# =============================================================================
+analytics.codentsa.es {
+	# Logging
+	log {
+		output file /var/log/caddy/analytics.log {
+			roll_size 100mb
+			roll_keep 5
+			roll_keep_for 168h
+		}
+		format json
+	}
+
+	# Security headers
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		X-XSS-Protection "1; mode=block"
+		Referrer-Policy "no-referrer"
+		-Server
+		-X-Powered-By
+	}
+
+	# CORS for tracking script
+	@tracker {
+		path /metrics.js /script.js
+	}
+	header @tracker {
+		Access-Control-Allow-Origin "*"
+		Access-Control-Allow-Methods "GET"
+		Cache-Control "public, max-age=3600"
+	}
+
+	# CORS for API endpoints
+	@api {
+		path /api/*
+	}
+	header @api {
+		Access-Control-Allow-Origin "https://codentsa.es"
+		Access-Control-Allow-Methods "GET, POST, OPTIONS"
+		Access-Control-Allow-Headers "Content-Type, Authorization"
+		Access-Control-Allow-Credentials "true"
+	}
+
+	# Handle preflight requests
+	@options {
+		method OPTIONS
+	}
+	respond @options 204
+
+	# Rate limiting - Tracking (very permissive)
+	@tracking {
+		path /api/send /api/collect
+	}
+	rate_limit @tracking {
+		zone umami_tracking {
+			key {remote_host}
+			events 500
+			window 1m
+		}
+	}
+
+	# Rate limiting - Dashboard
+	rate_limit {
+		zone umami_dashboard {
+			key {remote_host}
+			events 100
+			window 1m
+		}
+	}
+
+	# Compression
+	encode gzip zstd
+
+	# Health check
+	handle /api/heartbeat {
+		reverse_proxy umami:3000
+	}
+
+	# Umami application
+	handle {
+		reverse_proxy umami:3000 {
+			# Health check
+			health_uri /api/heartbeat
+			health_interval 30s
+			health_timeout 10s
+
+			# Timeouts
+			transport http {
+				dial_timeout 5s
+				response_header_timeout 30s
+			}
+		}
+	}
+}

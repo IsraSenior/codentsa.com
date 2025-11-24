@@ -1,0 +1,66 @@
+# =============================================================================
+# Codentsa.es - Development Caddy Configuration
+# HTTP only (no HTTPS)
+# =============================================================================
+
+{
+	# Disable automatic HTTPS
+	auto_https off
+
+	# Debug logging
+	log {
+		level DEBUG
+	}
+}
+
+# =============================================================================
+# Main Site - localhost
+# =============================================================================
+:80 {
+	# Logging
+	log {
+		output stdout
+		format console
+		level DEBUG
+	}
+
+	# Host-based routing
+	@main host localhost codentsa.local
+	handle @main {
+		reverse_proxy nuxt:3000
+	}
+
+	@admin host admin.codentsa.local localhost:8055
+	handle @admin {
+		reverse_proxy directus:8055
+	}
+
+	@analytics host analytics.codentsa.local localhost:3001
+	handle @analytics {
+		reverse_proxy umami:3000
+	}
+
+	# Default handler
+	handle {
+		reverse_proxy nuxt:3000
+	}
+}
+
+# =============================================================================
+# Direct service access (for development)
+# =============================================================================
+:8055 {
+	log {
+		output stdout
+		format console
+	}
+	reverse_proxy directus:8055
+}
+
+:3001 {
+	log {
+		output stdout
+		format console
+	}
+	reverse_proxy umami:3000
+}

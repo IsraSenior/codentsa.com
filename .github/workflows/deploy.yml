@@ -1,0 +1,197 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run linter
+        run: pnpm lint
+
+  build:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: lint
+    permissions:
+      contents: read
+      packages: write
+
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NUXT_PUBLIC_BASE_URL=${{ secrets.NUXT_PUBLIC_BASE_URL }}
+            NUXT_PUBLIC_DIRECTUS_URL=${{ secrets.NUXT_PUBLIC_DIRECTUS_URL }}
+            NUXT_PUBLIC_UMAMI_HOST=${{ secrets.NUXT_PUBLIC_UMAMI_HOST }}
+            NUXT_PUBLIC_UMAMI_ID=${{ secrets.NUXT_PUBLIC_UMAMI_ID }}
+            NUXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ secrets.NUXT_PUBLIC_GOOGLE_ANALYTICS_ID }}
+            NUXT_PUBLIC_META_PIXEL_ID=${{ secrets.NUXT_PUBLIC_META_PIXEL_ID }}
+
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: production
+      url: https://codentsa.es
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Copy deployment files
+        run: |
+          scp -i ~/.ssh/deploy_key -r infrastructure/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.DEPLOY_PATH }}/
+
+      - name: Deploy with zero-downtime
+        run: |
+          ssh -i ~/.ssh/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+            cd ${{ secrets.DEPLOY_PATH }}/infrastructure
+
+            # Create backup before deploy
+            ./scripts/backup/scripts/backup-manual.sh pre-deploy-$(date +%Y%m%d-%H%M%S)
+
+            # Pull new image
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker pull ${{ needs.build.outputs.image-tag }}
+
+            # Zero-downtime deployment
+            ./scripts/deploy.sh ${{ needs.build.outputs.image-tag }}
+
+            # Cleanup old images
+            docker image prune -f
+          ENDSSH
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
+
+  verify:
+    name: Verify Deployment
+    runs-on: ubuntu-latest
+    needs: deploy
+
+    steps:
+      - name: Check main site health
+        run: |
+          for i in {1..5}; do
+            if curl -f -s -o /dev/null -w "%{http_code}" https://codentsa.es/api/health | grep -q "200"; then
+              echo "✅ Main site is healthy"
+              exit 0
+            fi
+            echo "Attempt $i failed, waiting 10s..."
+            sleep 10
+          done
+          echo "❌ Main site health check failed"
+          exit 1
+
+      - name: Check Directus health
+        run: |
+          if curl -f -s -o /dev/null -w "%{http_code}" https://admin.codentsa.es/server/health | grep -q "200"; then
+            echo "✅ Directus is healthy"
+          else
+            echo "⚠️ Directus health check failed"
+          fi
+
+      - name: Check Umami health
+        run: |
+          if curl -f -s -o /dev/null -w "%{http_code}" https://analytics.codentsa.es/api/heartbeat | grep -q "200"; then
+            echo "✅ Umami is healthy"
+          else
+            echo "⚠️ Umami health check failed"
+          fi
+
+      - name: Send success notification
+        if: success()
+        run: |
+          curl -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "from": "Codentsa Deploy <noreply@codentsa.es>",
+              "to": ["${{ secrets.NOTIFICATION_EMAIL }}"],
+              "subject": "✅ Deployment Successful - codentsa.es",
+              "html": "<h2>Deployment Completed Successfully</h2><p><strong>Commit:</strong> ${{ github.sha }}</p><p><strong>Branch:</strong> ${{ github.ref_name }}</p><p><strong>Time:</strong> ${{ github.event.head_commit.timestamp }}</p><p><strong>URL:</strong> <a href=\"https://codentsa.es\">https://codentsa.es</a></p>"
+            }'
+
+      - name: Send failure notification
+        if: failure()
+        run: |
+          curl -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer ${{ secrets.RESEND_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "from": "Codentsa Deploy <noreply@codentsa.es>",
+              "to": ["${{ secrets.NOTIFICATION_EMAIL }}"],
+              "subject": "❌ Deployment Failed - codentsa.es",
+              "html": "<h2>Deployment Failed</h2><p><strong>Commit:</strong> ${{ github.sha }}</p><p><strong>Branch:</strong> ${{ github.ref_name }}</p><p><strong>Time:</strong> ${{ github.event.head_commit.timestamp }}</p><p><strong>Workflow:</strong> <a href=\"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\">View Logs</a></p>"
+            }'

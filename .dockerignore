@@ -1,0 +1,67 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.output
+.nuxt
+dist
+.vercel
+.netlify
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE and editor files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Infrastructure (not needed in Docker image)
+infrastructure/
+.github/
+
+# Tests
+test/
+tests/
+__tests__
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+coverage/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache directories
+.cache
+.temp
+.tmp
+
+# OS files
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
