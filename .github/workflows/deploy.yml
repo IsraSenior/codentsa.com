@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: production
+      name: Deploy
       url: https://codentsa.es
 
     steps:
@@ -104,17 +104,17 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
 
       - name: Copy deployment files
         run: |
-          scp -i ~/.ssh/deploy_key -r infrastructure/ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.DEPLOY_PATH }}/
+          scp -i ~/.ssh/deploy_key -r infrastructure/ ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }}:${{ secrets.DEPLOY_PATH }}/
 
       - name: Deploy with zero-downtime
         run: |
-          ssh -i ~/.ssh/deploy_key ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }} << 'ENDSSH'
             cd ${{ secrets.DEPLOY_PATH }}/infrastructure
 
             # Create backup before deploy
