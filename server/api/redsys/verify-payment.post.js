@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
 
     const {
-      Ds_SignatureVersion,
       Ds_MerchantParameters,
       Ds_Signature,
     } = body

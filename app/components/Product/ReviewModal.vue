@@ -1,7 +1,7 @@
 <script setup>
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
-const props = defineProps({
+defineProps({
   isOpen: {
     type: Boolean,
     default: false,

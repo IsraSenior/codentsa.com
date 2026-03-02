@@ -6,16 +6,16 @@
     <div class="flex justify-between items-start">
       <div class="flex-1">
         <!-- Title skeleton -->
-        <div class="h-7 bg-neutral-300 rounded w-3/4 mb-2"></div>
+        <div class="h-7 bg-neutral-300 rounded w-3/4 mb-2"/>
         <!-- Brand skeleton -->
-        <div class="h-4 bg-neutral-300 rounded w-1/2"></div>
+        <div class="h-4 bg-neutral-300 rounded w-1/2"/>
       </div>
       <!-- Heart icon skeleton -->
-      <div class="w-8 h-8 bg-neutral-300 rounded-full"></div>
+      <div class="w-8 h-8 bg-neutral-300 rounded-full"/>
     </div>
 
     <!-- Image skeleton -->
-    <div class="aspect-square w-full bg-neutral-300 rounded-lg"></div>
+    <div class="aspect-square w-full bg-neutral-300 rounded-lg"/>
 
     <!-- Divider -->
     <hr class="border-neutral-300">
@@ -24,14 +24,14 @@
     <div class="flex justify-between items-end">
       <div class="w-2/3 space-y-2">
         <!-- Description lines -->
-        <div class="h-4 bg-neutral-300 rounded w-full"></div>
-        <div class="h-4 bg-neutral-300 rounded w-4/5"></div>
+        <div class="h-4 bg-neutral-300 rounded w-full"/>
+        <div class="h-4 bg-neutral-300 rounded w-4/5"/>
       </div>
       <div class="text-right space-y-1">
         <!-- Original price -->
-        <div class="h-4 bg-neutral-300 rounded w-16"></div>
+        <div class="h-4 bg-neutral-300 rounded w-16"/>
         <!-- Price -->
-        <div class="h-6 bg-neutral-300 rounded w-20"></div>
+        <div class="h-6 bg-neutral-300 rounded w-20"/>
       </div>
     </div>
   </div>

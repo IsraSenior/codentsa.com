@@ -1,0 +1,15 @@
+# =============================================================================
+# Backup Cron Schedule
+# =============================================================================
+# Format: minute hour day month weekday command
+# Timezone: Europe/Madrid (set in Dockerfile)
+# =============================================================================
+
+# Daily backup at 3:00 AM
+0 3 * * * /scripts/backup-daily.sh >> /var/log/backup.log 2>&1
+
+# Daily cleanup at 6:00 AM (removes backups older than 7 days)
+0 6 * * * /scripts/cleanup-backups.sh >> /var/log/backup.log 2>&1
+
+# Health check marker (every 5 minutes)
+*/5 * * * * touch /tmp/backup-healthy

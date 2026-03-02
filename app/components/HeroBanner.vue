@@ -67,7 +67,7 @@ const currentSlideData = computed(() => props.slides[currentSlide.value])
         :key="currentSlide"
         class="absolute inset-0 transition-colors duration-700"
         :class="currentSlideData.bgColor"
-      ></div>
+      />
     </Transition>
 
     <!-- Background Image -->

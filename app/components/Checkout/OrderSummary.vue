@@ -27,9 +27,6 @@ const formatPrice = (price) => {
 
 const total = computed(() => props.subtotal + props.shipping + props.tax)
 
-const totalItems = computed(() => {
-  return props.items.reduce((sum, item) => sum + item.quantity, 0)
-})
 </script>
 
 <template>

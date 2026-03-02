@@ -50,7 +50,11 @@ const contactOptions = [
         >
           <!-- Icon -->
           <div class="mb-6">
-            <svg class="w-16 h-16 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              class="w-16 h-16 text-black"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"

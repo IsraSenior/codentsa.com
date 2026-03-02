@@ -65,11 +65,6 @@ const handleCardClick = () => {
   emit('click', { title: props.title, price: props.price })
 }
 
-// Computed para el descuento
-const discountPercentage = computed(() => {
-  if (!props.originalPrice) return null
-  return Math.round(((props.originalPrice - props.price) / props.originalPrice) * 100)
-})
 </script>
 
 <template>
@@ -116,6 +111,6 @@ const discountPercentage = computed(() => {
       </div>
     </div>
 
-    <NuxtLink :to="`/productos/${id}`" class="absolute inset-0 z-10"></NuxtLink>
+    <NuxtLink :to="`/productos/${id}`" class="absolute inset-0 z-10"/>
   </div>
 </template>

@@ -57,7 +57,7 @@ const handleClick = () => {
       <h3
         class="text-neutral-50 text-xl leading-tight mb-1 font-body"
         v-html="title"
-      ></h3>
+      />
       <p class="text-neutral-50 text-sm font-body">
         {{ description }}
       </p>

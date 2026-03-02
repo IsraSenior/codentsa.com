@@ -1,0 +1,359 @@
+version: '3.9'
+
+# =============================================================================
+# Codentsa.es - Production Stack
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # Caddy - Reverse Proxy with Automatic HTTPS
+  # ---------------------------------------------------------------------------
+  caddy:
+    image: caddy:2-alpine
+    container_name: codentsa_caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp" # HTTP/3
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - codentsa_proxy
+    depends_on:
+      - nuxt
+      - directus
+      - umami
+    healthcheck:
+      test: ["CMD", "caddy", "version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Nuxt - Frontend Application
+  # ---------------------------------------------------------------------------
+  nuxt:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        NUXT_PUBLIC_BASE_URL: ${NUXT_PUBLIC_BASE_URL}
+        NUXT_PUBLIC_DIRECTUS_URL: ${NUXT_PUBLIC_DIRECTUS_URL}
+        NUXT_PUBLIC_UMAMI_HOST: ${NUXT_PUBLIC_UMAMI_HOST}
+        NUXT_PUBLIC_UMAMI_ID: ${NUXT_PUBLIC_UMAMI_ID}
+        NUXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${NUXT_PUBLIC_GOOGLE_ANALYTICS_ID:-}
+        NUXT_PUBLIC_META_PIXEL_ID: ${NUXT_PUBLIC_META_PIXEL_ID:-}
+    container_name: codentsa_nuxt
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - TZ=${TZ:-Europe/Madrid}
+      - NUXT_PUBLIC_BASE_URL=${NUXT_PUBLIC_BASE_URL}
+      - NUXT_PUBLIC_DIRECTUS_URL=${NUXT_PUBLIC_DIRECTUS_URL}
+      - NUXT_PUBLIC_UMAMI_HOST=${NUXT_PUBLIC_UMAMI_HOST}
+      - NUXT_PUBLIC_UMAMI_ID=${NUXT_PUBLIC_UMAMI_ID}
+      - NUXT_PUBLIC_GOOGLE_ANALYTICS_ID=${NUXT_PUBLIC_GOOGLE_ANALYTICS_ID:-}
+      - NUXT_PUBLIC_META_PIXEL_ID=${NUXT_PUBLIC_META_PIXEL_ID:-}
+    networks:
+      - codentsa_proxy
+      - codentsa_internal
+    depends_on:
+      directus:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ---------------------------------------------------------------------------
+  # Directus - Headless CMS
+  # ---------------------------------------------------------------------------
+  directus:
+    image: directus/directus:11
+    container_name: codentsa_directus
+    restart: unless-stopped
+    environment:
+      # General
+      PUBLIC_URL: ${DIRECTUS_PUBLIC_URL}
+      LOG_LEVEL: info
+      TZ: ${TZ:-Europe/Madrid}
+
+      # Database
+      DB_CLIENT: ${DIRECTUS_DB_CLIENT}
+      DB_HOST: ${DIRECTUS_DB_HOST}
+      DB_PORT: ${DIRECTUS_DB_PORT}
+      DB_DATABASE: ${DIRECTUS_DB_NAME}
+      DB_USER: ${DIRECTUS_DB_USER}
+      DB_PASSWORD: ${DIRECTUS_DB_PASSWORD}
+      DB_SSL: "false"
+
+      # Security
+      SECRET: ${DIRECTUS_SECRET}
+      KEY: ${DIRECTUS_KEY}
+      ACCESS_TOKEN_TTL: 15m
+      REFRESH_TOKEN_TTL: 7d
+      REFRESH_TOKEN_COOKIE_SECURE: "true"
+      REFRESH_TOKEN_COOKIE_SAME_SITE: lax
+
+      # CORS
+      CORS_ENABLED: ${CORS_ENABLED:-true}
+      CORS_ORIGIN: ${CORS_ORIGIN}
+
+      # Admin
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD}
+
+      # Email (Resend SMTP)
+      EMAIL_FROM: ${EMAIL_FROM}
+      EMAIL_TRANSPORT: ${EMAIL_TRANSPORT}
+      EMAIL_SMTP_HOST: ${EMAIL_SMTP_HOST}
+      EMAIL_SMTP_PORT: ${EMAIL_SMTP_PORT}
+      EMAIL_SMTP_USER: ${EMAIL_SMTP_USER}
+      EMAIL_SMTP_PASSWORD: ${EMAIL_SMTP_PASSWORD}
+      EMAIL_SMTP_SECURE: ${EMAIL_SMTP_SECURE:-true}
+
+      # Rate Limiting
+      RATE_LIMITER_ENABLED: "true"
+      RATE_LIMITER_POINTS: 60
+      RATE_LIMITER_DURATION: 60
+
+      # File Storage
+      STORAGE_LOCATIONS: local
+      STORAGE_LOCAL_DRIVER: local
+      STORAGE_LOCAL_ROOT: ./uploads
+
+      # Assets
+      ASSETS_CACHE_TTL: 7d
+      ASSETS_TRANSFORM_MAX_CONCURRENT: 4
+
+    volumes:
+      - directus_uploads:/directus/uploads
+      - directus_extensions:/directus/extensions
+    networks:
+      - codentsa_proxy
+      - codentsa_internal
+      - codentsa_database
+    depends_on:
+      postgres_directus:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8055/server/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ---------------------------------------------------------------------------
+  # Umami - Analytics
+  # ---------------------------------------------------------------------------
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    container_name: codentsa_umami
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${UMAMI_DB_USER}:${UMAMI_DB_PASSWORD}@${UMAMI_DB_HOST}:${UMAMI_DB_PORT}/${UMAMI_DB_NAME}
+      DATABASE_TYPE: postgresql
+      APP_SECRET: ${UMAMI_APP_SECRET}
+      TRACKER_SCRIPT_NAME: ${UMAMI_TRACKER_NAME:-metrics.js}
+      DISABLE_TELEMETRY: "1"
+      TZ: ${TZ:-Europe/Madrid}
+    networks:
+      - codentsa_proxy
+      - codentsa_internal
+      - codentsa_database
+    depends_on:
+      postgres_umami:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL - Directus Database
+  # ---------------------------------------------------------------------------
+  postgres_directus:
+    image: postgres:16-alpine
+    container_name: codentsa_postgres_directus
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DIRECTUS_DB_NAME}
+      POSTGRES_USER: ${DIRECTUS_DB_USER}
+      POSTGRES_PASSWORD: ${DIRECTUS_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256 --auth-local=scram-sha-256
+      TZ: ${TZ:-Europe/Madrid}
+      PGTZ: ${TZ:-Europe/Madrid}
+    volumes:
+      - postgres_directus:/var/lib/postgresql/data
+      - ./scripts/postgres/directus-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - codentsa_database
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_buffers=256MB"
+      - "-c"
+      - "max_connections=200"
+      - "-c"
+      - "effective_cache_size=1GB"
+      - "-c"
+      - "maintenance_work_mem=64MB"
+      - "-c"
+      - "checkpoint_completion_target=0.9"
+      - "-c"
+      - "wal_buffers=16MB"
+      - "-c"
+      - "default_statistics_target=100"
+      - "-c"
+      - "random_page_cost=1.1"
+      - "-c"
+      - "effective_io_concurrency=200"
+      - "-c"
+      - "work_mem=1310kB"
+      - "-c"
+      - "min_wal_size=1GB"
+      - "-c"
+      - "max_wal_size=4GB"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DIRECTUS_DB_USER} -d ${DIRECTUS_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL - Umami Database
+  # ---------------------------------------------------------------------------
+  postgres_umami:
+    image: postgres:16-alpine
+    container_name: codentsa_postgres_umami
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${UMAMI_DB_NAME}
+      POSTGRES_USER: ${UMAMI_DB_USER}
+      POSTGRES_PASSWORD: ${UMAMI_DB_PASSWORD}
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256 --auth-local=scram-sha-256
+      TZ: ${TZ:-Europe/Madrid}
+      PGTZ: ${TZ:-Europe/Madrid}
+    volumes:
+      - postgres_umami:/var/lib/postgresql/data
+      - ./scripts/postgres/umami-init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - codentsa_database
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_buffers=128MB"
+      - "-c"
+      - "max_connections=100"
+      - "-c"
+      - "effective_cache_size=512MB"
+      - "-c"
+      - "maintenance_work_mem=32MB"
+      - "-c"
+      - "checkpoint_completion_target=0.9"
+      - "-c"
+      - "wal_buffers=8MB"
+      - "-c"
+      - "default_statistics_target=100"
+      - "-c"
+      - "random_page_cost=1.1"
+      - "-c"
+      - "effective_io_concurrency=200"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${UMAMI_DB_USER} -d ${UMAMI_DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ---------------------------------------------------------------------------
+  # Backup - Automated Backup Service
+  # ---------------------------------------------------------------------------
+  backup:
+    build:
+      context: ./scripts/backup
+      dockerfile: Dockerfile
+    container_name: codentsa_backup
+    restart: unless-stopped
+    environment:
+      # Timezone
+      TZ: ${TZ:-Europe/Madrid}
+
+      # PostgreSQL - Directus
+      DIRECTUS_DB_HOST: ${DIRECTUS_DB_HOST}
+      DIRECTUS_DB_PORT: ${DIRECTUS_DB_PORT}
+      DIRECTUS_DB_NAME: ${DIRECTUS_DB_NAME}
+      DIRECTUS_DB_USER: ${DIRECTUS_DB_USER}
+      DIRECTUS_DB_PASSWORD: ${DIRECTUS_DB_PASSWORD}
+
+      # PostgreSQL - Umami
+      UMAMI_DB_HOST: ${UMAMI_DB_HOST}
+      UMAMI_DB_PORT: ${UMAMI_DB_PORT}
+      UMAMI_DB_NAME: ${UMAMI_DB_NAME}
+      UMAMI_DB_USER: ${UMAMI_DB_USER}
+      UMAMI_DB_PASSWORD: ${UMAMI_DB_PASSWORD}
+
+      # Backup configuration
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-7}
+
+      # Notifications
+      NOTIFICATION_TYPE: ${NOTIFICATION_TYPE:-resend}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      NOTIFICATION_EMAIL: ${NOTIFICATION_EMAIL}
+    volumes:
+      - backups:/backups
+      - directus_uploads:/data/directus_uploads:ro
+      - ./caddy/Caddyfile:/data/caddy_config/Caddyfile:ro
+    networks:
+      - codentsa_database
+    depends_on:
+      - postgres_directus
+      - postgres_umami
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  codentsa_proxy:
+    name: codentsa_proxy
+    driver: bridge
+
+  codentsa_internal:
+    name: codentsa_internal
+    driver: bridge
+    internal: false
+
+  codentsa_database:
+    name: codentsa_database
+    driver: bridge
+    internal: true
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  caddy_data:
+    name: codentsa_caddy_data
+  caddy_config:
+    name: codentsa_caddy_config
+  directus_uploads:
+    name: codentsa_directus_uploads
+  directus_extensions:
+    name: codentsa_directus_extensions
+  postgres_directus:
+    name: codentsa_postgres_directus
+  postgres_umami:
+    name: codentsa_postgres_umami
+  backups:
+    name: codentsa_backups
