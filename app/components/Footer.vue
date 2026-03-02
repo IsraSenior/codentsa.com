@@ -64,7 +64,7 @@ const legalLinks = [
 
         <!-- Copyright -->
         <p class="text-black text-sm md:text-base text-center w-full">
-          © {{ currentYear }} Gedesa. All rights reserved.
+          © {{ currentYear }} CODENTSA S.A. Todos los derechos reservados.
         </p>
       </div>
 

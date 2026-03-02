@@ -1,389 +1,142 @@
-# Codentsa - E-commerce de Instrumental Odontológico
+# CLAUDE.md
 
-## Contexto del Proyecto
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Codentsa es una plataforma de comercio electrónico especializada en la venta de instrumental odontológico de alto nivel para el mercado español. El proyecto está diseñado con un enfoque en la calidad, rendimiento y experiencia de usuario, utilizando tecnologías modernas para garantizar escalabilidad y mantenibilidad.
+## Comandos de Desarrollo
 
-## Stack Tecnológico
-
-### Frontend Framework
-- **Nuxt 4.2.1** - Framework Vue.js full-stack con SSR/SSG
-- **Vue 3.5.24** - Framework JavaScript reactivo
-- **Vue Router 4.6.3** - Sistema de enrutamiento
-
-### Estilos
-- **Tailwind CSS 4.1.17** - Framework CSS utility-first (v4 con Vite plugin)
-- **@tailwindcss/vite 4.1.17** - Plugin de Vite para Tailwind v4
-
-### Estado Global
-- **Pinia 3.0.4** - Store management (reemplazo oficial de Vuex)
-- **@pinia/nuxt 0.11.3** - Módulo de Nuxt para Pinia
-
-### Iconografía
-- **Heroicons 2.2.0** - Librería de iconos SVG de Tailwind Labs
-
-### Analytics & Tracking
-- **nuxt-gtag 4.1.0** - Google Analytics 4 para Nuxt
-- **Meta Pixel** - Facebook/Instagram tracking (configurado vía runtimeConfig)
-
-### Code Quality
-- **ESLint 9.39.1** - Linter para JavaScript/Vue
-- **@nuxt/eslint 1.10.0** - Configuración de ESLint para Nuxt
-- **Prettier 3.6.2** - Formateador de código
-- **EditorConfig** - Consistencia entre editores
-
-### CMS & Backend (Pendiente)
-- **Directus** - Headless CMS para gestión de contenido y productos
-
-### Pagos (Pendiente)
-- **Redsys** - Pasarela de pagos principal (estándar en España)
-- **Métodos manuales** - Transferencia bancaria, contra reembolso, etc.
-
-## Decisiones Arquitectónicas
-
-### 1. Tailwind CSS v4 con @theme
-Se utiliza la nueva sintaxis de Tailwind v4 con la directiva `@theme` para definir variables CSS personalizadas. Esto permite una integración más nativa con CSS moderno y mejor rendimiento.
-
-**Ventajas:**
-- Menor tamaño de bundle
-- Variables CSS nativas
-- Mejor integración con herramientas de desarrollo
-- Más flexible y mantenible
-
-### 2. Estructura de Componentes Flat
-Se mantiene una estructura plana de componentes en lugar de anidación profunda. Esto facilita la búsqueda y reduce la complejidad de imports.
-
-**Estrategia:**
-1. Componentes UI base primero (buttons, inputs, titles, texts)
-2. Componentes complejos después (cards, secciones, layouts)
-3. Componentes específicos de página al final
-
-### 3. Pinia con Stores por Contexto
-Los stores se organizan por contexto funcional:
-- `stores/index.js` - Store principal/productos
-- `stores/navigation.js` - Estado de navegación/menú
-- `stores/cart.js` - Carrito de compras
-- `stores/user.js` - Sesión y datos de usuario
-
-### 4. Auto-imports de Nuxt
-Se aprovechan los auto-imports de Nuxt 4 para:
-- Componentes
-- Composables
-- Utilidades
-- Stores de Pinia
-
-### 5. Variables de Entorno Seguras
-Configuración mediante `runtimeConfig` en Nuxt:
-- **Private keys** (server-side): Directus, Redsys credentials
-- **Public keys** (client-side): Analytics IDs, configuración pública
-
-### 6. TypeScript vs JavaScript
-El proyecto utiliza **JavaScript** en lugar de TypeScript para simplificar el desarrollo y reducir la curva de aprendizaje del equipo. Nuxt 4 proporciona type checking automático sin necesidad de escribir tipos explícitos.
-
-## Sistema de Diseño
-
-### Tipografías
-- **Figtree** - Títulos y encabezados (Google Fonts)
-  - Variable font: 300-900
-  - Incluye versiones italic
-  - Clase Tailwind: `font-title`
-
-- **Blauer Nue** - Textos, párrafos, botones (Custom font)
-  - 8 pesos: Thin (100) → Heavy (900)
-  - Incluye versiones italic de todos los pesos
-  - Clase Tailwind: `font-body`
-
-### Paleta de Colores
-
-#### Primarios (Escala estandarizada 50-900)
-- `primary-50`: #FEF2F3
-- `primary-100`: #FDE5E7
-- `primary-200`: #FBCED3
-- `primary-300`: #F7A7B0
-- `primary-400`: #F27587
-- `primary-500`: #E71D35 (Default)
-- `primary-600`: #D01729
-- `primary-700`: #A0091E
-- `primary-800`: #87071A
-- `primary-900`: #780716
-
-#### Secundarios (Escala estandarizada 50-900)
-- `secondary-50`: #EFF6FF
-- `secondary-100`: #DBEAFE
-- `secondary-200`: #BFDBFE
-- `secondary-300`: #93C5FD
-- `secondary-400`: #60A5FA
-- `secondary-500`: #2463EB (Default)
-- `secondary-600`: #1D4ED8
-- `secondary-700`: #163B8D
-- `secondary-800`: #1E3A8A
-- `secondary-900`: #07142F
-
-#### Neutros (Escala estandarizada 0-900)
-- `neutral-0`: #FFFFFF
-- `neutral-50`: #F7FCFC
-- `neutral-100`: #EFF9FA
-- `neutral-200`: #E0F3F5
-- `neutral-300`: #D0ECF0
-- `neutral-400`: #B1E0E6
-- `neutral-500`: #57888E
-- `neutral-600`: #487A80
-- `neutral-700`: #396B71
-- `neutral-800`: #2A5157
-- `neutral-900`: #162526
-
-#### Sistema (Solo default - usar opacidades para variantes)
-- `success`: #22C393
-- `warning`: #FCCC4F
-- `error`: #F04343
-
-### Uso en Tailwind
-```html
-<!-- Colores con escala completa -->
-<div class="bg-primary-500 hover:bg-primary-700 text-white">Primary button</div>
-<div class="bg-primary-50 text-primary-900">Light background with dark text</div>
-<div class="text-secondary-600">Secondary text</div>
-
-<!-- Sistema de colores con opacidades -->
-<div class="bg-success/10 text-success border border-success/30">Success light</div>
-<div class="bg-warning text-white">Warning default</div>
-<div class="bg-error/20 text-error-900">Error with opacity</div>
-
-<!-- Tipografías -->
-<h1 class="font-title text-4xl font-bold">Título Principal</h1>
-<p class="font-body text-base">Texto de párrafo</p>
-<button class="font-body font-semibold">Botón</button>
-```
-
-## Estándares de Código
-
-### Prettier
-- 2 espacios de indentación
-- Comillas simples ('') para strings
-- Sin punto y coma (estilo Vue)
-- Trailing comma en objetos/arrays multilínea
-- Print width: 100 caracteres
-
-### ESLint
-- Configuración base de @nuxt/eslint
-- Reglas de stylistic integradas
-- `vue/multi-word-component-names`: desactivada
-- Indentación Vue HTML: 2 espacios
-- Max 3 atributos por línea en single-line, 1 en multiline
-
-### Scripts NPM
 ```bash
 pnpm dev          # Servidor de desarrollo
-pnpm build        # Build de producción
-pnpm generate     # Generar sitio estático
+pnpm build        # Build de produccion
+pnpm generate     # Generar sitio estatico
 pnpm preview      # Preview del build
 pnpm lint         # Ejecutar ESLint
-pnpm lint:fix     # Ejecutar ESLint y auto-fix
+pnpm lint:fix     # ESLint con auto-fix
 pnpm format       # Formatear con Prettier
 ```
 
-## Estructura del Proyecto
+## Arquitectura
 
+- **Stack**: Nuxt 4 + Vue 3 + Tailwind CSS v4 + Pinia, JavaScript (no TypeScript)
+- **Frontend**: `app/` (pages, components, composables, stores, assets)
+- **Backend**: `server/api/` (Nitro server routes)
+- **Estado**: Pinia stores en `app/stores/` (products, cart, favorites, toast)
+- **Productos**: hardcoded en `stores/products.js` (preparado para Directus)
+- **Persistencia**: cart y favorites en localStorage
+- **Pagos**: `server/api/redsys/` con HMAC-SHA256 (create-payment, verify-payment, notification)
+- **CMS**: Directus via `composables/useDirectus.js` + `server/utils/directus.js`
+- **Analytics**: nuxt-gtag (GA4) + nuxt-umami + Meta Pixel (runtimeConfig)
+
+## Flujo de Datos
+
+- **Productos**: `useProductsStore()` -> componentes (filtrado por URL query params: categoria, precio, material, marca, orden, pagina)
+- **Carrito**: `useCartStore().addItem()` -> localStorage -> calculos reactivos (subtotal, envio 15€, IVA 21%)
+- **Pagos**: `checkout.vue` -> `/api/redsys/create-payment` -> Redsys redirect -> `/api/redsys/notification` webhook
+- **Directus**: `useDirectus()` composable para cliente, `server/utils/directus.js` para servidor
+
+## Tokens de Diseno
+
+### Tipografias
+
+| Clase Tailwind | Fuente | Origen | Pesos |
+|---|---|---|---|
+| `font-title` | Figtree | Google Fonts | 300-900 (variable) |
+| `font-body` | Blauer Nue | `app/assets/css/fonts.css` | 100-900 (8 pesos + italics) |
+
+### Colores
+
+> `--color-*: initial` resetea todos los colores de Tailwind. Solo existen los definidos aqui.
+
+**Primary (rojo):**
+| Token | Hex |
+|---|---|
+| `primary-50` | #fef2f3 |
+| `primary-100` | #fde5e7 |
+| `primary-200` | #fbced3 |
+| `primary-300` | #f7a7b0 |
+| `primary-400` | #f27587 |
+| `primary-500` / `primary` | #e71d35 |
+| `primary-600` | #d01729 |
+| `primary-700` | #a0091e |
+| `primary-800` | #87071a |
+| `primary-900` | #780716 |
+
+**Secondary (azul):**
+| Token | Hex |
+|---|---|
+| `secondary-50` | #eff6ff |
+| `secondary-100` | #dbeafe |
+| `secondary-200` | #bfdbfe |
+| `secondary-300` | #93c5fd |
+| `secondary-400` | #60a5fa |
+| `secondary-500` / `secondary` | #2463eb |
+| `secondary-600` | #1d4ed8 |
+| `secondary-700` | #163b8d |
+| `secondary-800` | #1e3a8a |
+| `secondary-900` | #07142f |
+
+**Neutral (gris-teal):**
+| Token | Hex |
+|---|---|
+| `neutral-0` / `white` | #ffffff |
+| `neutral-50` | #f7fcfc |
+| `neutral-100` | #eff9fa |
+| `neutral-200` | #e0f3f5 |
+| `neutral-300` | #d0ecf0 |
+| `neutral-400` | #b1e0e6 |
+| `neutral-500` | #57888e |
+| `neutral-600` | #487a80 |
+| `neutral-700` | #396b71 |
+| `neutral-800` | #2a5157 |
+| `neutral-900` / `black` | #162526 |
+
+**Sistema (sin escala, usar opacidades para variantes):**
+| Token | Hex |
+|---|---|
+| `success` | #22c393 |
+| `warning` | #fccc4f |
+| `error` | #f04343 |
+
+### Uso de Tokens
+
+```html
+bg-primary-500  text-secondary-700  border-neutral-300
+bg-success/10  text-error  border-warning/30
+font-title font-bold  font-body font-medium
 ```
-/codentsa.com/
-├── app/
-│   ├── app.vue                 # Componente raíz
-│   ├── assets/
-│   │   ├── css/
-│   │   │   └── main.css        # Estilos globales + Tailwind config
-│   │   └── fonts/
-│   │       └── blauer-nue/     # Fuente Blauer Nue (18 archivos)
-│   ├── components/
-│   │   ├── Footer.vue
-│   │   ├── Header.vue
-│   │   └── Logo.vue            # Logo SVG de Codentsa
-│   ├── composables/            # Lógica reutilizable
-│   ├── layouts/
-│   │   └── default.vue         # Layout principal
-│   ├── pages/
-│   │   └── index.vue           # Página de inicio
-│   ├── stores/                 # Pinia stores
-│   └── utils/                  # Utilidades y helpers
-├── docs/                       # Documentación detallada
-├── public/                     # Archivos estáticos
-├── .editorconfig
-├── .prettierrc
-├── .prettierignore
-├── eslint.config.js
-├── nuxt.config.ts
-├── package.json
-├── pnpm-lock.yaml
-└── CLAUDE.md                   # Este archivo
-```
 
-## Workflow de Git
+## Agentes Especializados (OBLIGATORIO)
 
-### Commits
-- Seguir conventional commits: `feat:`, `fix:`, `chore:`, `docs:`
-- Commits descriptivos y atómicos
-- Incluir footer con Claude Code attribution
-- **NO PUSH** - Todos los commits son locales hasta indicación contraria
+**SIEMPRE usar el agente especializado del proyecto cuando la tarea coincida con su descripcion.** No resolver manualmente lo que un agente puede hacer mejor:
 
-### Ejemplo de commit message
-```
-feat: add product card component
+| Agente | Usar para |
+|---|---|
+| `nuxt-ui-engineer` | Componentes Vue, estilos Tailwind, validacion visual con Playwright |
+| `nuxt-logic-architect` | Composables, services, server routes, integracion CMS/APIs |
+| `nuxt-seo-architect` | Meta tags, structured data, sitemap, robots.txt, indexacion |
+| `email-template-engineer` | Templates de email transaccional con Resend |
+| `puppeteer-pdf-engineer` | Generacion de PDFs con Puppeteer en Nuxt |
+| `web-scraping-architect` | Extraccion estructurada de datos de sitios externos |
+| `context-steward` | Actualizar documentacion (CLAUDE.md, README) tras cambios arquitectonicos |
 
-- Create reusable ProductCard component
-- Add image, title, price, and CTA
-- Implement hover states with Tailwind
-- Add responsive layout
+## Componentes y Paginas
 
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
+**Componentes** (estructura flat por dominio): Product/, Cart/, Checkout/, Toast/, Bento/, Brand/, Staff/, FAQ/, Form/, Legal/
+- Auto-imports de Nuxt activos para componentes, composables y utils
 
-Co-Authored-By: Claude <noreply@anthropic.com>
-```
+**Paginas principales:**
+- `/` - Homepage
+- `/productos` - Catalogo con filtros (query params)
+- `/productos/[id]` - Detalle de producto
+- `/carrito` - Carrito de compras
+- `/checkout` - Proceso de pago
+- `/checkout-success` y `/checkout-error` - Resultado del pago
+- `/favoritos`, `/cuenta`, `/ofertas`, `/quienes-somos`
+- Paginas legales: aviso-legal, terminos-condiciones, politicas-privacidad, cambios-devoluciones, soporte-tecnico
 
-## Roadmap de Desarrollo
+## Convenciones de Codigo
 
-### Fase 1: Setup Inicial ✅
-- [x] Configurar Prettier y ESLint
-- [x] Configurar sistema de colores en Tailwind
-- [x] Configurar tipografías (Figtree + Blauer Nue)
-- [x] Instalar dependencias (Heroicons, Pinia, Analytics)
-- [x] Configurar módulos de Nuxt
-- [x] Crear documentación inicial
-
-### Fase 2: Componentes UI Base (Pendiente)
-- [ ] Button component (primary, secondary, outline, ghost)
-- [ ] Input component (text, email, tel, etc.)
-- [ ] Select component
-- [ ] Textarea component
-- [ ] Checkbox y Radio components
-- [ ] Typography components (H1-H6, Paragraph, etc.)
-- [ ] Badge/Tag component
-- [ ] Card base component
-
-### Fase 3: Componentes Complejos (Pendiente)
-- [ ] ProductCard component
-- [ ] SearchBar component
-- [ ] Navigation/Menu components
-- [ ] Footer sections
-- [ ] Breadcrumb component
-- [ ] Pagination component
-- [ ] Modal/Dialog component
-- [ ] Toast notifications
-
-### Fase 4: Páginas (Pendiente)
-- [ ] Homepage
-- [ ] Catálogo de productos
-- [ ] Detalle de producto
-- [ ] Carrito de compras
-- [ ] Checkout
-- [ ] Confirmación de pedido
-- [ ] Mi cuenta
-- [ ] Login/Registro
-
-### Fase 5: Integración Directus (Pendiente)
-- [ ] Configurar SDK de Directus
-- [ ] Crear colecciones en Directus
-- [ ] Implementar API endpoints
-- [ ] Sincronizar productos
-- [ ] Gestión de imágenes
-- [ ] SEO metadata
-
-### Fase 6: Pagos & Checkout (Pendiente)
-- [ ] Integración Redsys
-- [ ] Métodos de pago manuales
-- [ ] Validación de formularios
-- [ ] Proceso de checkout
-- [ ] Emails transaccionales
-
-### Fase 7: SEO & Performance (Pendiente)
-- [ ] Meta tags dinámicos
-- [ ] Structured data (JSON-LD)
-- [ ] Sitemap XML
-- [ ] Robots.txt
-- [ ] Optimización de imágenes
-- [ ] Lazy loading
-- [ ] PWA capabilities
-
-### Fase 8: Analytics & Testing (Pendiente)
-- [ ] Configurar Google Analytics events
-- [ ] Configurar Meta Pixel events
-- [ ] Testing E2E
-- [ ] Testing unitario de componentes
-- [ ] Lighthouse audit
-
-## Integraciones Futuras
-
-### Directus CMS
-**Documentación**: `/docs/directus-integration.md`
-
-Headless CMS para gestión de:
-- Productos e inventario
-- Categorías y atributos
-- Contenido estático (About, FAQs, etc.)
-- Blog/Noticias
-- Configuración del sitio
-
-### Redsys Payment Gateway
-**Documentación**: `/docs/redsys-integration.md`
-
-Pasarela de pagos líder en España:
-- Tarjetas de crédito/débito
-- Bizum
-- Integración segura con HMAC-SHA256
-- Entorno de pruebas y producción
-
-### Google Analytics 4
-**Documentación**: `/docs/analytics.md`
-
-Tracking de:
-- Pageviews
-- Events (add_to_cart, purchase, etc.)
-- User behavior
-- Conversions
-
-### Meta Pixel
-**Documentación**: `/docs/analytics.md`
-
-Tracking para Facebook/Instagram:
-- ViewContent
-- AddToCart
-- Purchase
-- Custom conversions
-
-## Notas Importantes
-
-### Seguridad
-- Nunca commitear archivos `.env`
-- Usar `.env.example` como template
-- Variables sensibles solo en runtimeConfig privado
-- Validar inputs en servidor y cliente
-- Sanitizar datos de usuario
-
-### Performance
-- Lazy loading de componentes pesados
-- Optimización de imágenes (WebP, AVIF)
-- Code splitting automático de Nuxt
-- Usar `<NuxtImg>` para imágenes optimizadas
-- Implementar caching estratégico
-
-### Accesibilidad
-- Usar HTML semántico
-- ARIA labels cuando sea necesario
-- Contraste de colores según WCAG 2.1
-- Navegación por teclado
-- Textos alternativos en imágenes
-
-### SEO
-- Meta tags descriptivos
-- Structured data
-- URLs amigables
-- Sitemap actualizado
-- Canonical URLs
-
-## Contacto y Soporte
-
-Para dudas o sugerencias sobre el proyecto, revisar la documentación en `/docs/` o consultar este archivo para contexto general.
-
----
-
-**Última actualización**: 2025-11-10
-**Versión de Nuxt**: 4.2.1
-**Versión de Tailwind**: 4.1.17
+- **Prettier**: sin semicolons, comillas simples, 2 espacios, trailing comma, width 100
+- **ESLint**: `@nuxt/eslint` base, `vue/multi-word-component-names` desactivada
+- **Commits**: conventional commits (`feat:`, `fix:`, `chore:`, `docs:`), NO push automatico
+- **Footer de commits**: `Co-Authored-By: Claude <noreply@anthropic.com>`
+- **Seguridad**: nunca commitear `.env`, variables sensibles solo en runtimeConfig privado
