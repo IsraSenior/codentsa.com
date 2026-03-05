@@ -84,10 +84,10 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. CLAUDE.md accurately documents the new component structure (ui/layout/features)
   2. CLAUDE.md references match actual file paths and available commands after dependency updates
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 05-01: TBD
+- [ ] 05-01-PLAN.md — Update .claude/rules/ files with accurate Nuxt version and component hierarchy
 
 ## Progress
 
@@ -100,4 +100,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Docs Cleanup | 1/1 | Complete   | 2026-03-05 |
 | 3. Claude Config | 0/1 | Planning complete | - |
 | 4. Components Reorg | 1/1 | Complete   | 2026-03-05 |
-| 5. Final Validation | 0/? | Not started | - |
+| 5. Final Validation | 0/1 | Planning complete | - |
