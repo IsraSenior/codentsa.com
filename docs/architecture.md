@@ -1,485 +1,131 @@
 # Arquitectura del Proyecto
 
-## Visión General
+## Vision General
 
-Codentsa está construido como una aplicación Nuxt 4 moderna con arquitectura modular, separación de responsabilidades y énfasis en la reutilización de código.
+Codentsa es una aplicacion e-commerce de instrumental dental construida con Nuxt 4.3.1, Vue 3.5.29, Tailwind CSS v4 y Pinia. Utiliza JavaScript (no TypeScript) en toda la capa de aplicacion, con una unica excepcion en un endpoint de salud del servidor.
+
+## Stack Tecnologico
+
+| Capa | Tecnologia | Version |
+|------|-----------|---------|
+| Framework | Nuxt | 4.3.1 |
+| UI | Vue | 3.5.29 |
+| Estilos | Tailwind CSS | 4.2.1 |
+| Estado | Pinia | 3.0.4 |
+| CMS | Directus (SDK) | 20.3.0 |
+| Pagos | Redsys (HMAC-SHA256) | - |
+| Carousel | Swiper | 12.1.2 |
+| Iconos | @heroicons/vue | 2.2.0 |
+| Analytics | nuxt-gtag (GA4), nuxt-umami, Meta Pixel | - |
+| Linting | ESLint (@nuxt/eslint) + Prettier | 9.x / 3.8.x |
 
 ## Estructura de Directorios
 
 ```
-/codentsa.com/
-├── app/                          # Aplicación principal
-│   ├── app.vue                   # Componente raíz
-│   ├── assets/                   # Assets estáticos procesados
+codentsa.com/
+├── app/                              # Aplicacion principal (Nuxt 4 app dir)
+│   ├── app.vue                       # Componente raiz
+│   ├── assets/
 │   │   ├── css/
-│   │   │   └── main.css          # Estilos globales + Tailwind
-│   │   └── fonts/                # Fuentes personalizadas
-│   │       └── blauer-nue/
-│   ├── components/               # Componentes Vue reutilizables
-│   │   ├── ui/                   # Componentes UI base
-│   │   ├── product/              # Componentes de productos
-│   │   ├── cart/                 # Componentes del carrito
-│   │   └── layout/               # Componentes de layout
-│   ├── composables/              # Composables de Vue
-│   │   ├── useCart.js
-│   │   ├── useProduct.js
-│   │   └── useAuth.js
-│   ├── layouts/                  # Layouts de página
-│   │   ├── default.vue
-│   │   └── checkout.vue
-│   ├── pages/                    # Páginas (file-based routing)
-│   │   ├── index.vue
-│   │   ├── products/
-│   │   ├── cart.vue
-│   │   └── checkout/
-│   ├── stores/                   # Pinia stores
-│   │   ├── index.js              # Store principal
-│   │   ├── navigation.js
-│   │   ├── cart.js
-│   │   └── user.js
-│   ├── utils/                    # Utilidades y helpers
-│   │   ├── format.js
-│   │   ├── validation.js
-│   │   └── constants.js
-│   └── middleware/               # Middleware de Nuxt
-│       ├── auth.js
-│       └── analytics.js
-├── docs/                         # Documentación
-├── public/                       # Assets estáticos (no procesados)
-│   ├── favicon.ico
-│   └── robots.txt
-├── server/                       # Server routes (API)
+│   │   │   ├── main.css              # Estilos globales + Tailwind v4
+│   │   │   └── fonts.css             # Definiciones @font-face Blauer Nue
+│   │   └── fonts/
+│   │       └── blauer-nue/           # Fuente custom (8 pesos + italics)
+│   ├── components/                   # 42 componentes Vue (flat-by-domain)
+│   │   ├── AnnouncementBar.vue
+│   │   ├── BaseCarousel.vue
+│   │   ├── Breadcrumbs.vue
+│   │   ├── Button.vue
+│   │   ├── Footer.vue
+│   │   ├── Header.vue
+│   │   ├── HeroBanner.vue
+│   │   ├── Logo.vue
+│   │   ├── OfferPopup.vue
+│   │   ├── Pagination.vue
+│   │   ├── Section.vue
+│   │   ├── Bento/                    # Bento grid sections
+│   │   ├── Brand/                    # Brand cards
+│   │   ├── Cart/                     # Carrito (Item, ItemSkeleton, Summary)
+│   │   ├── Checkout/                 # Checkout (5 componentes)
+│   │   ├── FAQ/                      # FAQ (Accordion, Skeleton)
+│   │   ├── Form/                     # Formularios (DateInput)
+│   │   ├── Legal/                    # Legal (Page)
+│   │   ├── Product/                  # Productos (12 componentes)
+│   │   ├── Staff/                    # Equipo (Card)
+│   │   ├── Testimonials/             # Testimonios (Card)
+│   │   └── Toast/                    # Notificaciones (Container, Index)
+│   ├── composables/
+│   │   └── useDirectus.js            # Cliente Directus (client-side)
+│   ├── layouts/
+│   │   └── default.vue               # Layout unico: Header + Breadcrumbs + NuxtPage + Footer + Toast
+│   ├── pages/                        # File-based routing
+│   │   ├── index.vue                 # Homepage
+│   │   ├── productos/
+│   │   │   ├── index.vue             # Catalogo con filtros (query params)
+│   │   │   └── [id].vue              # Detalle de producto
+│   │   ├── carrito.vue
+│   │   ├── checkout.vue
+│   │   ├── checkout-success.vue
+│   │   ├── checkout-error.vue
+│   │   ├── favoritos.vue
+│   │   ├── cuenta.vue
+│   │   ├── ofertas.vue
+│   │   ├── quienes-somos.vue
+│   │   ├── aviso-legal.vue
+│   │   ├── terminos-condiciones.vue
+│   │   ├── politicas-privacidad.vue
+│   │   ├── cambios-devoluciones.vue
+│   │   └── soporte-tecnico.vue
+│   └── stores/                       # Pinia stores
+│       ├── products.js               # Catalogo de productos (hardcoded, preparado para Directus)
+│       ├── cart.js                    # Carrito con persistencia localStorage
+│       ├── favorites.js              # Favoritos con persistencia localStorage
+│       └── toast.js                  # Sistema de notificaciones toast
+├── server/                           # Nitro server
 │   ├── api/
-│   └── middleware/
-└── [config files]
+│   │   ├── health.ts                 # Health check endpoint (unico archivo TS)
+│   │   ├── verify-maintenance-access.post.js  # Verificacion de acceso en mantenimiento
+│   │   └── redsys/                   # Integracion de pagos Redsys
+│   │       ├── create-payment.post.js    # Genera formulario de pago
+│   │       ├── verify-payment.post.js    # Verifica resultado del pago
+│   │       └── notification.post.js      # Webhook de notificacion Redsys
+│   └── utils/
+│       ├── directus.js               # Cliente Directus server-side (con token auth)
+│       └── redsys.js                 # Utilidades Redsys (HMAC-SHA256)
+├── public/                           # Assets estaticos
+│   ├── clients-logos/                # Logos de clientes
+│   └── ...
+├── nuxt.config.ts                    # Configuracion Nuxt
+├── package.json
+└── eslint.config.mjs
 ```
 
-## Patrones Arquitectónicos
+## Flujos de Datos
 
-### 1. Composables (Lógica Reutilizable)
+### Productos
 
-Los composables encapsulan lógica reutilizable siguiendo el patrón de Composition API.
+Los productos estan hardcoded en `app/stores/products.js` (preparado para migracion futura a Directus). El store `useProductsStore()` expone los datos a los componentes. El filtrado se realiza mediante URL query params en la pagina de catalogo: categoria, precio, material, marca, orden y pagina.
 
-**Ejemplo: useCart.js**
-```javascript
-export const useCart = () => {
-  const cartStore = useCartStore()
+### Carrito
 
-  const addToCart = (product, quantity = 1) => {
-    cartStore.addItem(product, quantity)
-  }
+`useCartStore().addItem()` persiste en localStorage. Los calculos reactivos incluyen subtotal, envio (15 EUR) e IVA (21%). El flujo completo: `checkout.vue` -> `/api/redsys/create-payment` -> redirect a Redsys -> `/api/redsys/notification` webhook.
 
-  const removeFromCart = (productId) => {
-    cartStore.removeItem(productId)
-  }
+### Favoritos
 
-  const totalItems = computed(() => cartStore.items.length)
-  const totalPrice = computed(() => cartStore.total)
+`useFavoritesStore()` persiste en localStorage de forma similar al carrito.
 
-  return {
-    addToCart,
-    removeFromCart,
-    totalItems,
-    totalPrice,
-  }
-}
-```
+## Configuracion Nuxt
 
-**Uso en componente:**
-```vue
-<script setup>
-const { addToCart, totalItems } = useCart()
-</script>
-```
+Modulos activos: `@pinia/nuxt`, `nuxt-gtag`, `nuxt-umami`, `@nuxt/eslint`.
 
-### 2. Pinia Stores (Estado Global)
+Tailwind CSS v4 se integra via plugin Vite (`@tailwindcss/vite`) en lugar de modulo Nuxt.
 
-Organización por contexto funcional:
-
-#### stores/index.js - Store Principal
-```javascript
-import { defineStore } from 'pinia'
-
-export const useMainStore = defineStore('main', {
-  state: () => ({
-    products: [],
-    categories: [],
-    loading: false,
-  }),
-
-  getters: {
-    featuredProducts: (state) => state.products.filter(p => p.featured),
-  },
-
-  actions: {
-    async fetchProducts() {
-      this.loading = true
-      try {
-        // Fetch from API
-      } finally {
-        this.loading = false
-      }
-    },
-  },
-})
-```
-
-#### stores/navigation.js - Navegación
-```javascript
-export const useNavigationStore = defineStore('navigation', {
-  state: () => ({
-    mobileMenuOpen: false,
-    searchOpen: false,
-  }),
-
-  actions: {
-    toggleMobileMenu() {
-      this.mobileMenuOpen = !this.mobileMenuOpen
-    },
-    closeAllMenus() {
-      this.mobileMenuOpen = false
-      this.searchOpen = false
-    },
-  },
-})
-```
-
-#### stores/cart.js - Carrito
-```javascript
-export const useCartStore = defineStore('cart', {
-  state: () => ({
-    items: [],
-  }),
-
-  getters: {
-    total: (state) => {
-      return state.items.reduce((sum, item) => {
-        return sum + (item.price * item.quantity)
-      }, 0)
-    },
-    itemCount: (state) => state.items.length,
-  },
-
-  actions: {
-    addItem(product, quantity) {
-      const existingItem = this.items.find(i => i.id === product.id)
-      if (existingItem) {
-        existingItem.quantity += quantity
-      } else {
-        this.items.push({ ...product, quantity })
-      }
-    },
-    removeItem(productId) {
-      this.items = this.items.filter(i => i.id !== productId)
-    },
-    clearCart() {
-      this.items = []
-    },
-  },
-
-  persist: true, // Persistir en localStorage
-})
-```
-
-#### stores/user.js - Usuario
-```javascript
-export const useUserStore = defineStore('user', {
-  state: () => ({
-    user: null,
-    isAuthenticated: false,
-  }),
-
-  actions: {
-    setUser(userData) {
-      this.user = userData
-      this.isAuthenticated = true
-    },
-    logout() {
-      this.user = null
-      this.isAuthenticated = false
-    },
-  },
-})
-```
-
-### 3. Componentes UI Base
-
-Filosofía: **Atomic Design simplificado**
-
-#### Nivel 1: Componentes Atómicos
-Elementos básicos no divisibles:
-- `Button.vue`
-- `Input.vue`
-- `Badge.vue`
-- `Icon.vue`
-
-#### Nivel 2: Componentes Moleculares
-Combinación de átomos:
-- `SearchBar.vue` (Input + Button + Icon)
-- `ProductCard.vue` (Image + Title + Price + Button)
-- `FormField.vue` (Label + Input + Error)
-
-#### Nivel 3: Componentes Organizacionales
-Secciones completas:
-- `ProductGrid.vue`
-- `CheckoutForm.vue`
-- `Navigation.vue`
-
-### 4. Layouts
-
-Layouts reutilizables para diferentes tipos de páginas:
-
-**layouts/default.vue**
-```vue
-<template>
-  <div class="min-h-screen flex flex-col">
-    <Header />
-    <main class="flex-1">
-      <slot />
-    </main>
-    <Footer />
-  </div>
-</template>
-```
-
-**layouts/checkout.vue**
-```vue
-<template>
-  <div class="min-h-screen bg-neutral-50">
-    <HeaderMinimal />
-    <main class="container mx-auto py-8">
-      <slot />
-    </main>
-  </div>
-</template>
-```
-
-### 5. File-based Routing
-
-Nuxt genera rutas automáticamente desde `/pages`:
-
-```
-pages/
-├── index.vue                     → /
-├── products/
-│   ├── index.vue                 → /products
-│   ├── [slug].vue                → /products/:slug
-│   └── category/
-│       └── [category].vue        → /products/category/:category
-├── cart.vue                      → /cart
-├── checkout/
-│   ├── index.vue                 → /checkout
-│   ├── shipping.vue              → /checkout/shipping
-│   └── payment.vue               → /checkout/payment
-└── account/
-    ├── index.vue                 → /account
-    ├── orders.vue                → /account/orders
-    └── settings.vue              → /account/settings
-```
-
-### 6. Server Routes (API)
-
-API endpoints en `/server/api`:
-
-```javascript
-// server/api/products/[id].get.js
-export default defineEventHandler(async (event) => {
-  const id = getRouterParam(event, 'id')
-  const config = useRuntimeConfig()
-
-  // Fetch from Directus
-  const product = await $fetch(
-    `${config.directus.url}/items/products/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${config.directus.token}`
-      }
-    }
-  )
-
-  return product
-})
-```
+Variables de entorno sensibles (tokens de Directus, claves Redsys) se configuran exclusivamente via `runtimeConfig` privado, nunca expuestas al cliente.
 
 ## Auto-imports
 
-Nuxt 4 importa automáticamente:
-
-### Componentes
-```vue
-<!-- No necesitas import -->
-<template>
-  <Button>Click me</Button>
-  <ProductCard :product="product" />
-</template>
-```
-
-### Composables
-```vue
-<script setup>
-// Auto-importado de composables/useCart.js
-const { addToCart } = useCart()
-
-// Auto-importado de stores/cart.js
-const cartStore = useCartStore()
-</script>
-```
-
-### Utilidades de Vue y Nuxt
-```javascript
-// Todas auto-importadas
-const route = useRoute()
-const router = useRouter()
-const config = useRuntimeConfig()
-const { data } = await useFetch('/api/products')
-const count = ref(0)
-const double = computed(() => count.value * 2)
-```
-
-## Data Fetching
-
-### useFetch (SSR-friendly)
-```vue
-<script setup>
-const { data: products, pending, error } = await useFetch('/api/products')
-</script>
-```
-
-### useAsyncData (Más control)
-```vue
-<script setup>
-const { data: product } = await useAsyncData(
-  'product-detail',
-  () => $fetch(`/api/products/${route.params.id}`)
-)
-</script>
-```
-
-### $fetch (Client-side)
-```vue
-<script setup>
-const searchProducts = async (query) => {
-  const results = await $fetch('/api/products/search', {
-    params: { q: query }
-  })
-  return results
-}
-</script>
-```
-
-## Middleware
-
-### Route Middleware
-```javascript
-// middleware/auth.js
-export default defineNuxtRouteMiddleware((to, from) => {
-  const userStore = useUserStore()
-
-  if (!userStore.isAuthenticated) {
-    return navigateTo('/login')
-  }
-})
-```
-
-**Uso en página:**
-```vue
-<script setup>
-definePageMeta({
-  middleware: 'auth'
-})
-</script>
-```
-
-## Mejores Prácticas
-
-### 1. Naming Conventions
-- **Componentes**: PascalCase (`ProductCard.vue`)
-- **Composables**: camelCase con prefijo use (`useCart.js`)
-- **Stores**: camelCase con sufijo Store (`cartStore`)
-- **Utilidades**: camelCase (`formatPrice.js`)
-
-### 2. Estructura de Componentes
-```vue
-<script setup>
-// 1. Imports (si es necesario override auto-import)
-// 2. Props
-const props = defineProps({
-  product: Object
-})
-
-// 3. Emits
-const emit = defineEmits(['add-to-cart'])
-
-// 4. Composables y stores
-const { addToCart } = useCart()
-
-// 5. State local
-const quantity = ref(1)
-
-// 6. Computed
-const totalPrice = computed(() => props.product.price * quantity.value)
-
-// 7. Methods
-const handleAddToCart = () => {
-  addToCart(props.product, quantity.value)
-  emit('add-to-cart')
-}
-
-// 8. Lifecycle hooks
-onMounted(() => {
-  // ...
-})
-</script>
-
-<template>
-  <!-- Template -->
-</template>
-
-<style scoped>
-/* Solo si necesitas estilos específicos */
-</style>
-```
-
-### 3. Gestión de Estado
-- **Local**: `ref()`, `reactive()` para estado del componente
-- **Compartido**: Composables para lógica compartida
-- **Global**: Pinia stores para estado de la aplicación
-
-### 4. Performance
-- Lazy loading de componentes pesados
-- `<ClientOnly>` para componentes client-only
-- Prefetch de rutas críticas
-- Optimización de imágenes con `<NuxtImg>`
-
-## Integraciones
-
-### Directus CMS
-```javascript
-// utils/directus.js
-import { createDirectus, rest } from '@directus/sdk'
-
-const directus = createDirectus(useRuntimeConfig().directus.url)
-  .with(rest())
-
-export { directus }
-```
-
-### Redsys
-```javascript
-// utils/redsys.js
-export const generateRedsysForm = (orderData) => {
-  const config = useRuntimeConfig()
-  // Lógica de integración Redsys
-}
-```
-
-## Testing (Futuro)
-
-```
-tests/
-├── unit/
-│   ├── components/
-│   └── composables/
-└── e2e/
-    └── checkout.spec.js
-```
+Nuxt 4 importa automaticamente:
+- **Componentes** desde `app/components/` (con prefijo de directorio: `BentoCard`, `CartItem`, `ProductCard`, etc.)
+- **Composables** desde `app/composables/` (`useDirectus()`)
+- **Stores** via `@pinia/nuxt` (`useCartStore()`, `useProductsStore()`, etc.)
+- **Utilidades de Vue/Nuxt** (`ref`, `computed`, `useRoute`, `useFetch`, etc.)

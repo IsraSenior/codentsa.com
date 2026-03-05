@@ -1,492 +1,134 @@
-# Integración con Directus CMS
+# Integracion con Directus CMS
 
-## Qué es Directus
+## Vision General
 
-Directus es un headless CMS open-source que proporciona una interfaz administrativa para gestionar contenido y una API REST/GraphQL para consumirlo.
+Codentsa utiliza Directus como headless CMS para gestionar productos, categorias, marcas, resenas y pedidos. La integracion se divide en dos capas: un composable client-side (`app/composables/useDirectus.js`) y utilidades server-side (`server/utils/directus.js`).
 
-**Ventajas para Codentsa:**
-- Gestión visual de productos, categorías, y contenido
-- API REST y GraphQL automáticas
-- Control de permisos granular
-- Workflow de publicación
-- Gestión de archivos y medios
-- Extensible con custom fields
+**SDK:** `@directus/sdk` v20.3.0 (mantenido intencionalmente en v20.x por compatibilidad; ver decisiones de Fase 1).
 
-## Setup Inicial
+## Composable Client-Side: `useDirectus()`
 
-### 1. Instalación de Directus
+**Archivo:** `app/composables/useDirectus.js`
 
-**Opción A: Docker (Recomendado para desarrollo)**
-```yaml
-# docker-compose.yml
-version: '3'
-services:
-  database:
-    image: postgis/postgis:13-master
-    environment:
-      POSTGRES_USER: directus
-      POSTGRES_PASSWORD: directus
-      POSTGRES_DB: directus
+Proporciona acceso de solo lectura a Directus desde el cliente. Usa `createDirectus()` con el plugin `rest()`, sin autenticacion (acceso publico).
 
-  directus:
-    image: directus/directus:latest
-    ports:
-      - 8055:8055
-    depends_on:
-      - database
-    environment:
-      KEY: '255d861b-5ea1-5996-9aa3-922530ec40b1'
-      SECRET: '6116487b-cda1-52c2-b5b5-c8022c45e263'
-      DB_CLIENT: 'pg'
-      DB_HOST: 'database'
-      DB_PORT: '5432'
-      DB_DATABASE: 'directus'
-      DB_USER: 'directus'
-      DB_PASSWORD: 'directus'
-      ADMIN_EMAIL: 'admin@example.com'
-      ADMIN_PASSWORD: 'admin'
-```
+### Inicializacion
 
-```bash
-docker-compose up -d
-```
+El cliente se crea como singleton (`directusClient`) usando la URL publica de `runtimeConfig.public.directusUrl`. Si la URL no esta configurada, todas las funciones devuelven arrays vacios o `null` y registran un warning en consola.
 
-**Opción B: Cloud Hosting**
-- Directus Cloud (oficial)
-- Railway
-- DigitalOcean
-- AWS/GCP
-
-### 2. Configuración en Nuxt
-
-**Instalar SDK:**
-```bash
-pnpm add @directus/sdk
-```
-
-**Crear utilidad Directus:**
 ```javascript
-// utils/directus.js
-import { createDirectus, rest, authentication } from '@directus/sdk'
+import { createDirectus, rest, readItems, readItem } from '@directus/sdk'
 
-export const useDirectusClient = () => {
-  const config = useRuntimeConfig()
-
-  const directus = createDirectus(config.directus.url)
-    .with(rest())
-    .with(authentication('json'))
-
-  return directus
-}
+// Se inicializa una unica vez (singleton)
+const client = createDirectus(directusUrl).with(rest())
 ```
 
-**Variables de entorno (.env):**
-```env
-NUXT_DIRECTUS_URL=http://localhost:8055
-NUXT_DIRECTUS_TOKEN=your_static_token_here
+### Funciones Exportadas
+
+| Funcion | Parametros | Retorno | Descripcion |
+|---|---|---|---|
+| `getProducts(options)` | `{ filter, sort, limit, fields }` | `Promise<Array>` | Obtiene productos. Default: sin filtro, ordenados por `-created_at`, sin limite, todos los campos. |
+| `getProductById(id)` | `id: string\|number` | `Promise<Object\|null>` | Obtiene un producto por ID. |
+| `getCategories()` | ninguno | `Promise<Array>` | Obtiene categorias ordenadas por nombre. |
+| `getBrands()` | ninguno | `Promise<Array>` | Obtiene marcas ordenadas por nombre. |
+| `getProductReviews(productId)` | `productId: string\|number` | `Promise<Array>` | Obtiene resenas publicadas de un producto, ordenadas por `-created_at`. |
+| `searchProducts(query)` | `query: string` | `Promise<Array>` | Busca productos por nombre o descripcion (filtro `_contains`). |
+
+El composable tambien expone `client` (la instancia de Directus) para uso directo si fuera necesario.
+
+### Uso
+
+```javascript
+const { getProducts, getProductById, searchProducts } = useDirectus()
+
+// Obtener todos los productos
+const products = await getProducts()
+
+// Con opciones
+const featured = await getProducts({
+  filter: { featured: { _eq: true } },
+  limit: 6,
+})
+
+// Buscar
+const results = await searchProducts('fresa')
 ```
 
-## Estructura de Colecciones
+## Utilidades Server-Side: `server/utils/directus.js`
 
-### Productos (products)
+**Archivo:** `server/utils/directus.js`
+
+Proporciona acceso autenticado a Directus desde server routes de Nitro. Usa un token estatico (`runtimeConfig.directusToken`) para operaciones de escritura.
+
+### Inicializacion
+
+```javascript
+import { createDirectus, rest, readItems, readItem, createItem, updateItem } from '@directus/sdk'
+
+// Singleton con autenticacion por token estatico
+const client = createDirectus(directusUrl)
+  .with(rest())
+  .with(() => ({
+    beforeRequest: (options) => {
+      options.headers.Authorization = `Bearer ${directusToken}`
+      return options
+    },
+  }))
+```
+
+### Funciones Exportadas
+
+| Funcion | Parametros | Retorno | Descripcion |
+|---|---|---|---|
+| `useDirectusServer()` | ninguno | `Object\|null` | Devuelve la instancia autenticada del cliente Directus. |
+| `createOrder(orderData)` | `orderData: Object` | `Promise<Object\|null>` | Crea un pedido en Directus tras un pago exitoso. |
+| `updateOrderStatus(orderId, status, additionalData)` | `orderId: string`, `status: string`, `additionalData: Object` | `Promise<Object\|null>` | Actualiza el estado de un pedido (busca por `order_id`, no por PK). |
+| `getOrderById(orderId)` | `orderId: string` | `Promise<Object\|null>` | Obtiene un pedido por su `order_id`. |
+| `updateProductStock(items)` | `items: Array<{ productId, quantity }>` | `Promise<boolean>` | Decrementa el stock de productos tras una compra. |
+| `logPaymentEvent(eventData)` | `eventData: Object` | `Promise<Object\|null>` | Registra eventos de pago en la coleccion `payment_logs` para auditoria. |
+
+### Estructura de `orderData`
 
 ```javascript
 {
-  id: UUID,
-  status: 'published' | 'draft' | 'archived',
-  name: String,             // Nombre del producto
-  slug: String,             // URL-friendly name
-  description: Text,        // Descripción completa
-  short_description: Text,  // Descripción corta para cards
-  sku: String,              // Código único
-  price: Decimal,           // Precio en EUR
-  compare_price: Decimal,   // Precio anterior (para descuentos)
-  stock: Integer,           // Cantidad en inventario
-  low_stock_threshold: Integer, // Alerta de stock bajo
-  images: O2M,              // Relación a product_images
-  category: M2O,            // Relación a categories
-  tags: M2M,                // Relación a tags
-  featured: Boolean,        // Producto destacado
-  seo_title: String,
-  seo_description: Text,
-  seo_keywords: Array,
-  created_at: Timestamp,
-  updated_at: Timestamp
+  orderId: string,
+  status: string,
+  customerEmail: string,
+  customerName: string,
+  customerPhone: string,
+  shippingAddress: Object,
+  billingAddress: Object,
+  items: Array,          // JSON con items del carrito
+  subtotal: number,
+  shipping: number,
+  tax: number,
+  total: number,
+  paymentMethod: string, // Default: 'redsys'
+  paymentData: Object,   // Respuesta completa de Redsys
 }
 ```
 
-### Categorías (categories)
+## Variables de Entorno
 
-```javascript
-{
-  id: UUID,
-  status: 'published' | 'draft',
-  name: String,
-  slug: String,
-  description: Text,
-  image: File,
-  parent_category: M2O,     // Para categorías anidadas
-  sort_order: Integer,
-  seo_title: String,
-  seo_description: Text
-}
+| Variable | Scope | Descripcion |
+|---|---|---|
+| `NUXT_PUBLIC_DIRECTUS_URL` | Publico (cliente + servidor) | URL base de la instancia Directus |
+| `NUXT_DIRECTUS_TOKEN` | Privado (solo servidor) | Token estatico para operaciones autenticadas |
+
+**Seguridad:** El token de Directus NUNCA se expone al cliente. Solo se accede via `runtimeConfig.directusToken` en server routes y utilidades.
+
+## Flujo de Datos
+
+```
+[Cliente]                              [Servidor]
+useDirectus().getProducts()            server/utils/directus.js
+  → createDirectus(url).rest()           → createDirectus(url).rest() + Bearer token
+  → readItems('products', ...)           → createItem('orders', ...)
+  → Solo lectura publica                 → Lectura/escritura autenticada
 ```
 
-### Imágenes de Producto (product_images)
+## Estado Actual
 
-```javascript
-{
-  id: UUID,
-  product: M2O,             // Relación a products
-  image: File,
-  alt_text: String,
-  sort_order: Integer,
-  is_primary: Boolean
-}
-```
-
-### Tags (tags)
-
-```javascript
-{
-  id: UUID,
-  name: String,
-  slug: String,
-  color: String             // Hex color para badge
-}
-```
-
-### Órdenes (orders)
-
-```javascript
-{
-  id: UUID,
-  order_number: String,     // Auto-generado
-  user_email: String,
-  user_phone: String,
-  status: 'pending' | 'paid' | 'processing' | 'shipped' | 'delivered' | 'cancelled',
-  items: O2M,               // Relación a order_items
-  subtotal: Decimal,
-  shipping_cost: Decimal,
-  tax: Decimal,
-  total: Decimal,
-  payment_method: String,
-  payment_status: String,
-  shipping_address: JSON,
-  billing_address: JSON,
-  notes: Text,
-  created_at: Timestamp,
-  updated_at: Timestamp
-}
-```
-
-### Items de Orden (order_items)
-
-```javascript
-{
-  id: UUID,
-  order: M2O,
-  product: M2O,
-  product_name: String,     // Snapshot del nombre
-  product_sku: String,      // Snapshot del SKU
-  quantity: Integer,
-  unit_price: Decimal,
-  total_price: Decimal
-}
-```
-
-## API Endpoints
-
-### Obtener Productos
-
-**Server API Route:**
-```javascript
-// server/api/products/index.get.js
-export default defineEventHandler(async (event) => {
-  const directus = useDirectusClient()
-  const query = getQuery(event)
-
-  try {
-    const response = await directus.request(
-      readItems('products', {
-        filter: {
-          status: { _eq: 'published' },
-          ...(query.category && { category: { _eq: query.category } })
-        },
-        fields: [
-          'id',
-          'name',
-          'slug',
-          'short_description',
-          'price',
-          'compare_price',
-          'stock',
-          'featured',
-          'images.image',
-          'images.alt_text',
-          'category.name',
-          'category.slug',
-          'tags.tags_id.name'
-        ],
-        sort: query.sort || '-created_at',
-        limit: parseInt(query.limit) || 12,
-        page: parseInt(query.page) || 1
-      })
-    )
-
-    return response
-  } catch (error) {
-    throw createError({
-      statusCode: 500,
-      message: 'Error fetching products'
-    })
-  }
-})
-```
-
-**Uso en componente:**
-```vue
-<script setup>
-const { data: products, pending } = await useFetch('/api/products', {
-  query: {
-    category: 'instrumental-quirurgico',
-    limit: 12
-  }
-})
-</script>
-```
-
-### Obtener Producto por Slug
-
-```javascript
-// server/api/products/[slug].get.js
-export default defineEventHandler(async (event) => {
-  const directus = useDirectusClient()
-  const slug = getRouterParam(event, 'slug')
-
-  const products = await directus.request(
-    readItems('products', {
-      filter: {
-        slug: { _eq: slug },
-        status: { _eq: 'published' }
-      },
-      fields: ['*', 'images.*', 'category.*', 'tags.tags_id.*'],
-      limit: 1
-    })
-  )
-
-  if (!products.length) {
-    throw createError({
-      statusCode: 404,
-      message: 'Product not found'
-    })
-  }
-
-  return products[0]
-})
-```
-
-### Crear Orden
-
-```javascript
-// server/api/orders/create.post.js
-export default defineEventHandler(async (event) => {
-  const directus = useDirectusClient()
-  const body = await readBody(event)
-
-  try {
-    // Generar número de orden
-    const orderNumber = `ORD-${Date.now()}`
-
-    // Crear orden
-    const order = await directus.request(
-      createItem('orders', {
-        order_number: orderNumber,
-        user_email: body.email,
-        user_phone: body.phone,
-        status: 'pending',
-        subtotal: body.subtotal,
-        shipping_cost: body.shippingCost,
-        tax: body.tax,
-        total: body.total,
-        payment_method: body.paymentMethod,
-        shipping_address: body.shippingAddress,
-        billing_address: body.billingAddress
-      })
-    )
-
-    // Crear items de orden
-    for (const item of body.items) {
-      await directus.request(
-        createItem('order_items', {
-          order: order.id,
-          product: item.productId,
-          product_name: item.name,
-          product_sku: item.sku,
-          quantity: item.quantity,
-          unit_price: item.price,
-          total_price: item.price * item.quantity
-        })
-      )
-    }
-
-    return { success: true, orderId: order.id, orderNumber }
-  } catch (error) {
-    throw createError({
-      statusCode: 500,
-      message: 'Error creating order'
-    })
-  }
-})
-```
-
-## Composables
-
-### useProducts.js
-
-```javascript
-export const useProducts = () => {
-  const fetchProducts = async (filters = {}) => {
-    return await $fetch('/api/products', {
-      query: filters
-    })
-  }
-
-  const fetchProduct = async (slug) => {
-    return await $fetch(`/api/products/${slug}`)
-  }
-
-  const searchProducts = async (query) => {
-    return await $fetch('/api/products/search', {
-      query: { q: query }
-    })
-  }
-
-  return {
-    fetchProducts,
-    fetchProduct,
-    searchProducts
-  }
-}
-```
-
-## Gestión de Imágenes
-
-### Obtener URL de Imagen
-
-```javascript
-// utils/directus-assets.js
-export const getDirectusAssetUrl = (fileId) => {
-  const config = useRuntimeConfig()
-  if (!fileId) return ''
-
-  return `${config.public.directusUrl}/assets/${fileId}`
-}
-
-export const getDirectusImageUrl = (fileId, options = {}) => {
-  const config = useRuntimeConfig()
-  if (!fileId) return ''
-
-  const params = new URLSearchParams({
-    width: options.width || '',
-    height: options.height || '',
-    quality: options.quality || 80,
-    fit: options.fit || 'cover'
-  }).toString()
-
-  return `${config.public.directusUrl}/assets/${fileId}?${params}`
-}
-```
-
-**Uso en componente:**
-```vue
-<template>
-  <NuxtImg
-    :src="getDirectusImageUrl(product.images[0].image, { width: 400, quality: 85 })"
-    :alt="product.images[0].alt_text"
-    width="400"
-    height="400"
-  />
-</template>
-```
-
-## Seguridad
-
-### 1. Variables de Entorno
-
-**NUNCA** exponer el token de Directus en el cliente. Usar solo en server-side.
-
-```javascript
-// ✅ CORRECTO - Server API Route
-export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig() // Acceso a variables privadas
-  // ...
-})
-
-// ❌ INCORRECTO - Cliente
-const config = useRuntimeConfig() // Solo variables públicas
-```
-
-### 2. Permisos en Directus
-
-Configurar roles y permisos:
-- **Public**: Solo lectura de productos, categorías (status: published)
-- **Authenticated**: Crear órdenes, ver sus propias órdenes
-- **Admin**: Acceso completo
-
-### 3. Rate Limiting
-
-Implementar rate limiting en las API routes para prevenir abuso.
-
-## Webhooks (Opcional)
-
-Directus puede notificar cambios mediante webhooks:
-
-```javascript
-// server/api/webhooks/directus.post.js
-export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
-
-  // Verificar signature
-  const signature = getHeader(event, 'directus-webhook-signature')
-
-  if (body.collection === 'products' && body.action === 'update') {
-    // Invalidar cache, reindexar, etc.
-  }
-
-  return { received: true }
-})
-```
-
-## Migración de Datos
-
-### Script de importación
-
-```javascript
-// scripts/import-products.js
-import { createDirectus, rest, createItems } from '@directus/sdk'
-
-const directus = createDirectus('http://localhost:8055').with(rest())
-
-const products = [
-  {
-    name: 'Producto 1',
-    slug: 'producto-1',
-    price: 99.99,
-    // ...
-  }
-]
-
-for (const product of products) {
-  await directus.request(createItems('products', product))
-}
-```
-
-## Próximos Pasos
-
-1. Configurar instancia de Directus
-2. Crear colecciones según el schema definido
-3. Importar productos iniciales
-4. Configurar permisos y roles
-5. Integrar API endpoints en Nuxt
-6. Probar flujo completo de producto a orden
+- Los productos estan hardcoded en `app/stores/products.js` (preparado para migracion a Directus).
+- El composable `useDirectus()` y las utilidades server-side estan implementados y listos para conectarse a una instancia de Directus.
+- La integracion con Redsys usa las funciones server-side (`createOrder`, `updateOrderStatus`, `logPaymentEvent`) en el flujo de pago.
