@@ -24,7 +24,10 @@
 
 ## Componentes y Paginas
 
-**Componentes** (estructura flat por dominio): Product/, Cart/, Checkout/, Toast/, Bento/, Brand/, Staff/, FAQ/, Form/, Legal/
+**Componentes** (estructura jerarquica en `app/components/`):
+- `layout/`: AnnouncementBar, Footer, Header, HeroBanner, Logo, Section
+- `ui/`: BaseCarousel, Breadcrumbs, Button, DateInput, OfferPopup, Pagination
+- `features/`: Bento/, Brand/, Cart/, Checkout/, FAQ/, Legal/, Product/, Staff/, Testimonials/, Toast/
 - Auto-imports de Nuxt activos para componentes, composables y utils
 
 **Paginas principales:**
