@@ -16,10 +16,10 @@ Requirements para milestone de limpieza, reorganizacion y actualizacion.
 
 ### Configuracion Claude
 
-- [ ] **CLDE-01**: .claude/rules/ contiene reglas modulares extraidas de CLAUDE.md (arquitectura, design tokens, convenciones)
-- [ ] **CLDE-02**: .claude/settings.json configurado con permisos y MCP servers correctos
-- [ ] **CLDE-03**: Playwright MCP configurado para output exclusivamente en .playwright-mcp/
-- [ ] **CLDE-04**: CLAUDE.md en raiz es un indice ligero que referencia .claude/rules/
+- [x] **CLDE-01**: .claude/rules/ contiene reglas modulares extraidas de CLAUDE.md (arquitectura, design tokens, convenciones)
+- [x] **CLDE-02**: .claude/settings.json configurado con permisos y MCP servers correctos
+- [x] **CLDE-03**: Playwright MCP configurado para output exclusivamente en .playwright-mcp/
+- [x] **CLDE-04**: CLAUDE.md en raiz es un indice ligero que referencia .claude/rules/
 
 ### Componentes
 
@@ -72,10 +72,10 @@ Deferred to next milestone.
 | DOCS-01 | Phase 2 | Complete |
 | DOCS-02 | Phase 2 | Complete |
 | DOCS-03 | Phase 2 | Complete |
-| CLDE-01 | Phase 3 | Pending |
-| CLDE-02 | Phase 3 | Pending |
-| CLDE-03 | Phase 3 | Pending |
-| CLDE-04 | Phase 3 | Pending |
+| CLDE-01 | Phase 3 | Complete |
+| CLDE-02 | Phase 3 | Complete |
+| CLDE-03 | Phase 3 | Complete |
+| CLDE-04 | Phase 3 | Complete |
 | COMP-01 | Phase 4 | Pending |
 | COMP-02 | Phase 4 | Pending |
 | COMP-03 | Phase 4 | Pending |
