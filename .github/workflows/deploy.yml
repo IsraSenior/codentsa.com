@@ -102,22 +102,22 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup SSH
-        run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq sshpass > /dev/null
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          known_hosts: unnecessary
+          if_key_exists: replace
+
+      - name: Add known hosts
+        run: ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
 
       - name: Copy deployment files
-        env:
-          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
         run: |
-          sshpass -e scp -o StrictHostKeyChecking=no -r infrastructure/ ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }}:${{ secrets.DEPLOY_PATH }}/
+          scp -o StrictHostKeyChecking=no -r infrastructure/ ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }}:${{ secrets.DEPLOY_PATH }}/
 
       - name: Deploy with zero-downtime
-        env:
-          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
         run: |
-          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }} << 'ENDSSH'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }} << 'ENDSSH'
             cd ${{ secrets.DEPLOY_PATH }}/infrastructure
 
             # Create backup before deploy
