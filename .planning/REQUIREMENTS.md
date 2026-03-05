@@ -30,8 +30,8 @@ Requirements para milestone de limpieza, reorganizacion y actualizacion.
 
 ### Dependencias
 
-- [ ] **DEPS-01**: Nuxt actualizado a 4.3.1
-- [ ] **DEPS-02**: Todas las dependencias actualizadas a versiones compatibles con Nuxt 4.3.1
+- [x] **DEPS-01**: Nuxt actualizado a 4.3.1
+- [x] **DEPS-02**: Todas las dependencias actualizadas a versiones compatibles con Nuxt 4.3.1
 - [ ] **DEPS-03**: El proyecto compila (pnpm build) y funciona (pnpm dev) sin errores
 - [ ] **DEPS-04**: Dependencias no utilizadas identificadas y removidas
 
@@ -65,8 +65,8 @@ Deferred to next milestone.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DEPS-01 | Phase 1 | Pending |
-| DEPS-02 | Phase 1 | Pending |
+| DEPS-01 | Phase 1 | Complete |
+| DEPS-02 | Phase 1 | Complete |
 | DEPS-03 | Phase 1 | Pending |
 | DEPS-04 | Phase 1 | Pending |
 | DOCS-01 | Phase 2 | Pending |
