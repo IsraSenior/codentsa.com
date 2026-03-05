@@ -9,9 +9,9 @@ Requirements para milestone de limpieza, reorganizacion y actualizacion.
 
 ### Documentacion
 
-- [ ] **DOCS-01**: Docs desactualizados (architecture.md, components.md, directus-integration.md) estan actualizados y reflejan el codigo real
-- [ ] **DOCS-02**: PNGs sueltos en la raiz del proyecto estan eliminados o movidos a su ubicacion correcta
-- [ ] **DOCS-03**: .gitignore incluye .playwright-mcp/ para evitar trackear output de Playwright
+- [x] **DOCS-01**: Docs desactualizados (architecture.md, components.md, directus-integration.md) estan actualizados y reflejan el codigo real
+- [x] **DOCS-02**: PNGs sueltos en la raiz del proyecto estan eliminados o movidos a su ubicacion correcta
+- [x] **DOCS-03**: .gitignore incluye .playwright-mcp/ para evitar trackear output de Playwright
 - [ ] **DOCS-04**: CLAUDE.md refleja el estado real del proyecto despues de todos los cambios
 
 ### Configuracion Claude
@@ -69,9 +69,9 @@ Deferred to next milestone.
 | DEPS-02 | Phase 1 | Complete |
 | DEPS-03 | Phase 1 | Complete |
 | DEPS-04 | Phase 1 | Complete |
-| DOCS-01 | Phase 2 | Pending |
-| DOCS-02 | Phase 2 | Pending |
-| DOCS-03 | Phase 2 | Pending |
+| DOCS-01 | Phase 2 | Complete |
+| DOCS-02 | Phase 2 | Complete |
+| DOCS-03 | Phase 2 | Complete |
 | CLDE-01 | Phase 3 | Pending |
 | CLDE-02 | Phase 3 | Pending |
 | CLDE-03 | Phase 3 | Pending |

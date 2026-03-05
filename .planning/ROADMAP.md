@@ -13,7 +13,7 @@ Milestone v1.0 brings a dormant but functional e-commerce project back to profes
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Dependencies Update** - Update Nuxt to 4.3.1, all deps to compatible versions, remove unused packages
-- [ ] **Phase 2: Docs Cleanup** - Clean stale docs, remove loose files, fix .gitignore
+- [x] **Phase 2: Docs Cleanup** - Clean stale docs, remove loose files, fix .gitignore (completed 2026-03-05)
 - [ ] **Phase 3: Claude Config** - Set up .claude/rules/ with modular rules, configure settings and MCP
 - [ ] **Phase 4: Components Reorg** - Reorganize 42 components into ui/layout/features structure
 - [ ] **Phase 5: Final Validation** - Update CLAUDE.md to reflect all changes from phases 1-4
@@ -43,7 +43,7 @@ Plans:
   1. docs/architecture.md, docs/components.md, and docs/directus-integration.md reflect the actual code and file structure
   2. No PNG files exist in the project root directory
   3. .gitignore contains an entry for .playwright-mcp/ and git status shows no tracked Playwright output
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 02-01-PLAN.md — Remove root PNGs, add .playwright-mcp/ to .gitignore, update stale docs
@@ -97,7 +97,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Dependencies Update | 0/2 | Planning complete | - |
-| 2. Docs Cleanup | 0/1 | Planning complete | - |
+| 2. Docs Cleanup | 1/1 | Complete   | 2026-03-05 |
 | 3. Claude Config | 0/? | Not started | - |
 | 4. Components Reorg | 0/? | Not started | - |
 | 5. Final Validation | 0/? | Not started | - |
