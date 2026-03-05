@@ -1,6 +1,5 @@
 <script setup>
 import { CheckIcon } from '@heroicons/vue/24/outline'
-import Section from '~/components/Section.vue'
 
 // Stats animation
 const statsRef = ref(null)
