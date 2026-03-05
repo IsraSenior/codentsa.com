@@ -2,7 +2,7 @@
 
 ## Arquitectura
 
-- **Stack**: Nuxt 4 + Vue 3 + Tailwind CSS v4 + Pinia, JavaScript (no TypeScript)
+- **Stack**: Nuxt 4.3.1 + Vue 3 + Tailwind CSS v4 + Pinia, JavaScript (no TypeScript)
 - **Frontend**: `app/` (pages, components, composables, stores, assets)
 - **Backend**: `server/api/` (Nitro server routes)
 - **Estado**: Pinia stores en `app/stores/` (products, cart, favorites, toast)
