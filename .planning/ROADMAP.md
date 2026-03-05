@@ -72,10 +72,10 @@ Plans:
   3. app/components/features/ contains subdirectories for Product, Cart, Checkout, Bento, Brand, Staff, Testimonials, Legal, FAQ
   4. Running `pnpm dev` and navigating every page shows no broken component references
   5. Running `pnpm build` completes without component resolution errors
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 04-01: TBD
+- [ ] 04-01-PLAN.md — Configure nuxt.config.ts component scanning and move all 42 components to layout/ui/features hierarchy
 
 ### Phase 5: Final Validation
 **Goal**: CLAUDE.md is the single source of truth for the project's current state after all cleanup
@@ -99,5 +99,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Dependencies Update | 0/2 | Planning complete | - |
 | 2. Docs Cleanup | 1/1 | Complete   | 2026-03-05 |
 | 3. Claude Config | 0/1 | Planning complete | - |
-| 4. Components Reorg | 0/? | Not started | - |
+| 4. Components Reorg | 0/1 | Planning complete | - |
 | 5. Final Validation | 0/? | Not started | - |
