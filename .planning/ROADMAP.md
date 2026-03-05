@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 1: Dependencies Update** - Update Nuxt to 4.3.1, all deps to compatible versions, remove unused packages
 - [x] **Phase 2: Docs Cleanup** - Clean stale docs, remove loose files, fix .gitignore (completed 2026-03-05)
 - [ ] **Phase 3: Claude Config** - Set up .claude/rules/ with modular rules, configure settings and MCP
-- [ ] **Phase 4: Components Reorg** - Reorganize 42 components into ui/layout/features structure
+- [x] **Phase 4: Components Reorg** - Reorganize 42 components into ui/layout/features structure (completed 2026-03-05)
 - [ ] **Phase 5: Final Validation** - Update CLAUDE.md to reflect all changes from phases 1-4
 
 ## Phase Details
@@ -72,7 +72,7 @@ Plans:
   3. app/components/features/ contains subdirectories for Product, Cart, Checkout, Bento, Brand, Staff, Testimonials, Legal, FAQ
   4. Running `pnpm dev` and navigating every page shows no broken component references
   5. Running `pnpm build` completes without component resolution errors
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 04-01-PLAN.md — Configure nuxt.config.ts component scanning and move all 42 components to layout/ui/features hierarchy
@@ -99,5 +99,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Dependencies Update | 0/2 | Planning complete | - |
 | 2. Docs Cleanup | 1/1 | Complete   | 2026-03-05 |
 | 3. Claude Config | 0/1 | Planning complete | - |
-| 4. Components Reorg | 0/1 | Planning complete | - |
+| 4. Components Reorg | 1/1 | Complete   | 2026-03-05 |
 | 5. Final Validation | 0/? | Not started | - |

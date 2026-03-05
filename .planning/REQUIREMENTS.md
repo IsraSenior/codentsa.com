@@ -23,10 +23,10 @@ Requirements para milestone de limpieza, reorganizacion y actualizacion.
 
 ### Componentes
 
-- [ ] **COMP-01**: Componentes reorganizados en layout/ (Header, Footer, AnnouncementBar, HeroBanner, Section, Logo)
-- [ ] **COMP-02**: Componentes reorganizados en ui/ (Button, Pagination, Breadcrumbs, Carousel, Toast, Accordion, DateInput, OfferPopup)
-- [ ] **COMP-03**: Componentes reorganizados en features/ (Product, Cart, Checkout, Bento, Brand, Staff, Testimonials, Legal, FAQ)
-- [ ] **COMP-04**: Todas las referencias a componentes en paginas y otros componentes actualizadas al nuevo path
+- [x] **COMP-01**: Componentes reorganizados en layout/ (Header, Footer, AnnouncementBar, HeroBanner, Section, Logo)
+- [x] **COMP-02**: Componentes reorganizados en ui/ (Button, Pagination, Breadcrumbs, Carousel, Toast, Accordion, DateInput, OfferPopup)
+- [x] **COMP-03**: Componentes reorganizados en features/ (Product, Cart, Checkout, Bento, Brand, Staff, Testimonials, Legal, FAQ)
+- [x] **COMP-04**: Todas las referencias a componentes en paginas y otros componentes actualizadas al nuevo path
 
 ### Dependencias
 
@@ -76,10 +76,10 @@ Deferred to next milestone.
 | CLDE-02 | Phase 3 | Complete |
 | CLDE-03 | Phase 3 | Complete |
 | CLDE-04 | Phase 3 | Complete |
-| COMP-01 | Phase 4 | Pending |
-| COMP-02 | Phase 4 | Pending |
-| COMP-03 | Phase 4 | Pending |
-| COMP-04 | Phase 4 | Pending |
+| COMP-01 | Phase 4 | Complete |
+| COMP-02 | Phase 4 | Complete |
+| COMP-03 | Phase 4 | Complete |
+| COMP-04 | Phase 4 | Complete |
 | DOCS-04 | Phase 5 | Pending |
 
 **Coverage:**
