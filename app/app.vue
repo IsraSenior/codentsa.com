@@ -19,7 +19,7 @@ async function submitKey() {
     })
     accessCookie.value = 'granted'
     showMaintenance.value = false
-  } catch (e) {
+  } catch {
     error.value = 'Clave incorrecta. Intentalo de nuevo.'
     accessKey.value = ''
   } finally {

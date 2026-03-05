@@ -245,8 +245,8 @@
         usuario (artículo 103.c TRLGDCU).
       </li>
       <li>
-        Productos que por su naturaleza no puedan ser devueltos o puedan <strong>deteriorarse o
-        caducar con rapidez</strong> (artículo 103.d TRLGDCU).
+        Productos que por su naturaleza no puedan ser devueltos o puedan
+        <strong>deteriorarse o caducar con rapidez</strong> (artículo 103.d TRLGDCU).
       </li>
     </ul>
     <p>
@@ -315,9 +315,11 @@
     <p>
       En caso de controversia, el usuario puede recurrir a la plataforma de Resolución de Litigios
       en Línea (ODR) de la Unión Europea, disponible en:
-      <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer"
-        >https://ec.europa.eu/consumers/odr</a
-      >.
+      <a
+        href="https://ec.europa.eu/consumers/odr"
+        target="_blank"
+        rel="noopener noreferrer"
+      >https://ec.europa.eu/consumers/odr</a>.
     </p>
     <p>
       Asimismo, el usuario puede dirigirse a las Juntas Arbitrales de Consumo competentes para la
