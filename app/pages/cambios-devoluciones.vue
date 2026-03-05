@@ -108,7 +108,7 @@ const finish = () => {
             >
 
             <!-- Fecha de solicitud -->
-            <FormDateInput
+            <DateInput
               v-model="formData.fechaSolicitud"
               placeholder="Fecha de solicitud"
             />
@@ -190,7 +190,7 @@ const finish = () => {
             >
 
             <!-- Fecha de compra del producto -->
-            <FormDateInput
+            <DateInput
               v-model="formData.fechaCompra"
               placeholder="Fecha de compra del producto"
             />

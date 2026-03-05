@@ -13,6 +13,21 @@ export default defineNuxtConfig({
 
   modules: ['@pinia/nuxt', 'nuxt-gtag', 'nuxt-umami', '@nuxt/eslint'],
 
+  components: [
+    {
+      path: '~/components/layout',
+      pathPrefix: false,
+    },
+    {
+      path: '~/components/ui',
+      pathPrefix: false,
+    },
+    {
+      path: '~/components/features',
+      pathPrefix: true,
+    },
+  ],
+
   app: {
     pageTransition: {
       name: 'page',
