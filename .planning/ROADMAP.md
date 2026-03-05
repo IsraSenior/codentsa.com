@@ -29,10 +29,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Running `pnpm build` completes successfully and produces a working build
   3. Nuxt version reported in dev server output is 4.3.1
   4. No unused packages remain in package.json (dependencies and devDependencies are lean)
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 01-01: TBD
+- [ ] 01-01-PLAN.md — Update Nuxt to 4.3.1 and all dependencies to latest compatible versions
+- [ ] 01-02-PLAN.md — Remove unused dependencies and verify full build/dev functionality
 
 ### Phase 2: Docs Cleanup
 **Goal**: Project documentation is accurate, and the repository root is free of stray files
@@ -95,7 +96,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Dependencies Update | 0/? | Not started | - |
+| 1. Dependencies Update | 0/2 | Planning complete | - |
 | 2. Docs Cleanup | 0/? | Not started | - |
 | 3. Claude Config | 0/? | Not started | - |
 | 4. Components Reorg | 0/? | Not started | - |
