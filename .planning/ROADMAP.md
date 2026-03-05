@@ -57,10 +57,10 @@ Plans:
   2. .claude/settings.json has correct permissions and MCP server configuration
   3. Playwright MCP screenshots are written exclusively to .playwright-mcp/ (not project root)
   4. CLAUDE.md in project root is a lightweight index that points to .claude/rules/ for details
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 03-01: TBD
+- [ ] 03-01-PLAN.md — Create .claude/rules/ modular files, settings.json, and slim CLAUDE.md index
 
 ### Phase 4: Components Reorg
 **Goal**: All components live in a structured hierarchy and every reference in the codebase is updated
@@ -98,6 +98,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Dependencies Update | 0/2 | Planning complete | - |
 | 2. Docs Cleanup | 1/1 | Complete   | 2026-03-05 |
-| 3. Claude Config | 0/? | Not started | - |
+| 3. Claude Config | 0/1 | Planning complete | - |
 | 4. Components Reorg | 0/? | Not started | - |
 | 5. Final Validation | 0/? | Not started | - |
