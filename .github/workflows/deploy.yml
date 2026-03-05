@@ -102,26 +102,22 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          echo "Key head: $(head -1 ~/.ssh/id_rsa)"
-          echo "Key tail: $(tail -1 ~/.ssh/id_rsa)"
-          echo "Key lines: $(wc -l < ~/.ssh/id_rsa)"
-          echo "Key bytes: $(wc -c < ~/.ssh/id_rsa)"
-          ssh-keygen -l -f ~/.ssh/id_rsa || echo "KEY VALIDATION FAILED"
-          ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
+          sudo apt-get update -qq && sudo apt-get install -y -qq sshpass > /dev/null 2>&1
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: Copy deployment files
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
         run: |
-          scp -o StrictHostKeyChecking=no -r infrastructure/ ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }}:${{ secrets.DEPLOY_PATH }}/
+          sshpass -e scp -o StrictHostKeyChecking=no -r infrastructure/ ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }}:${{ secrets.DEPLOY_PATH }}/
 
       - name: Deploy with zero-downtime
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }} << 'ENDSSH'
+          sshpass -e ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }} << 'ENDSSH'
             cd ${{ secrets.DEPLOY_PATH }}/infrastructure
 
             # Create backup before deploy
