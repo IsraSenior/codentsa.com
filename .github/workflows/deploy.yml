@@ -102,19 +102,20 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: Add VPS to known hosts
+        run: ssh-keyscan -H ${{ secrets.PRODUCTION_HOST }} >> ~/.ssh/known_hosts
 
       - name: Copy deployment files
         run: |
-          scp -i ~/.ssh/deploy_key -r infrastructure/ ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }}:${{ secrets.DEPLOY_PATH }}/
+          scp -r infrastructure/ ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }}:${{ secrets.DEPLOY_PATH }}/
 
       - name: Deploy with zero-downtime
         run: |
-          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }} << 'ENDSSH'
+          ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.PRODUCTION_HOST }} << 'ENDSSH'
             cd ${{ secrets.DEPLOY_PATH }}/infrastructure
 
             # Create backup before deploy
@@ -130,10 +131,6 @@ jobs:
             # Cleanup old images
             docker image prune -f
           ENDSSH
-
-      - name: Cleanup SSH key
-        if: always()
-        run: rm -f ~/.ssh/deploy_key
 
   verify:
     name: Verify Deployment
