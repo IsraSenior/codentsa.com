@@ -43,10 +43,10 @@ Plans:
   1. docs/architecture.md, docs/components.md, and docs/directus-integration.md reflect the actual code and file structure
   2. No PNG files exist in the project root directory
   3. .gitignore contains an entry for .playwright-mcp/ and git status shows no tracked Playwright output
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 02-01: TBD
+- [ ] 02-01-PLAN.md — Remove root PNGs, add .playwright-mcp/ to .gitignore, update stale docs
 
 ### Phase 3: Claude Config
 **Goal**: .claude/ directory contains modular, well-organized rules and correct tool configuration
@@ -97,7 +97,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Dependencies Update | 0/2 | Planning complete | - |
-| 2. Docs Cleanup | 0/? | Not started | - |
+| 2. Docs Cleanup | 0/1 | Planning complete | - |
 | 3. Claude Config | 0/? | Not started | - |
 | 4. Components Reorg | 0/? | Not started | - |
 | 5. Final Validation | 0/? | Not started | - |
