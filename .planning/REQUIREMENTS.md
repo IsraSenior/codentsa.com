@@ -65,28 +65,28 @@ Deferred to next milestone.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DOCS-01 | -- | Pending |
-| DOCS-02 | -- | Pending |
-| DOCS-03 | -- | Pending |
-| DOCS-04 | -- | Pending |
-| CLDE-01 | -- | Pending |
-| CLDE-02 | -- | Pending |
-| CLDE-03 | -- | Pending |
-| CLDE-04 | -- | Pending |
-| COMP-01 | -- | Pending |
-| COMP-02 | -- | Pending |
-| COMP-03 | -- | Pending |
-| COMP-04 | -- | Pending |
-| DEPS-01 | -- | Pending |
-| DEPS-02 | -- | Pending |
-| DEPS-03 | -- | Pending |
-| DEPS-04 | -- | Pending |
+| DEPS-01 | Phase 1 | Pending |
+| DEPS-02 | Phase 1 | Pending |
+| DEPS-03 | Phase 1 | Pending |
+| DEPS-04 | Phase 1 | Pending |
+| DOCS-01 | Phase 2 | Pending |
+| DOCS-02 | Phase 2 | Pending |
+| DOCS-03 | Phase 2 | Pending |
+| CLDE-01 | Phase 3 | Pending |
+| CLDE-02 | Phase 3 | Pending |
+| CLDE-03 | Phase 3 | Pending |
+| CLDE-04 | Phase 3 | Pending |
+| COMP-01 | Phase 4 | Pending |
+| COMP-02 | Phase 4 | Pending |
+| COMP-03 | Phase 4 | Pending |
+| COMP-04 | Phase 4 | Pending |
+| DOCS-04 | Phase 5 | Pending |
 
 **Coverage:**
 - v1.0 requirements: 16 total
-- Mapped to phases: 0
-- Unmapped: 16
+- Mapped to phases: 16
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-05*
-*Last updated: 2026-03-05 after initial definition*
+*Last updated: 2026-03-05 after roadmap creation*
