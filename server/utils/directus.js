@@ -1,54 +1,34 @@
-import { createDirectus, rest, readItems, readItem, createItem, updateItem } from '@directus/sdk'
-
-/**
- * Server-side Directus client
- * This client uses static token authentication for server-only operations
- * DO NOT expose this client or its methods to the frontend
- */
+import { createDirectus, rest, staticToken, readItems, readItem, createItem, updateItem } from '@directus/sdk'
 
 let directusServerClient = null
 
-/**
- * Initialize server-side Directus client with authentication
- * @returns {Object|null} Directus client instance or null if not configured
- */
 function initDirectusServer() {
   if (directusServerClient) {
     return directusServerClient
   }
 
   const config = useRuntimeConfig()
-  const directusUrl = config.public.directusUrl // Public URL
-  const directusToken = config.directusToken // Private token (server-only)
+  const directusUrl = config.public.directusUrl
+  const directusToken = config.directusToken
 
   if (!directusUrl) {
-    console.warn('⚠️ Directus URL not configured (NUXT_PUBLIC_DIRECTUS_URL). Server operations will fail.')
+    console.warn('Directus URL not configured (NUXT_PUBLIC_DIRECTUS_URL)')
     return null
   }
 
   if (!directusToken) {
-    console.warn('⚠️ Directus token not configured (NUXT_DIRECTUS_TOKEN). Server operations will fail.')
+    console.warn('Directus token not configured (NUXT_DIRECTUS_TOKEN)')
     return null
   }
 
   try {
     directusServerClient = createDirectus(directusUrl)
+      .with(staticToken(directusToken))
       .with(rest())
-      .with(
-        // Static token authentication
-        () => ({
-          beforeRequest: (options) => {
-            options.headers = options.headers || {}
-            options.headers.Authorization = `Bearer ${directusToken}`
-            return options
-          },
-        })
-      )
 
-    console.log('✅ Directus server client initialized with authentication')
     return directusServerClient
   } catch (error) {
-    console.error('❌ Error initializing Directus server client:', error)
+    console.error('Error initializing Directus server client:', error)
     return null
   }
 }
