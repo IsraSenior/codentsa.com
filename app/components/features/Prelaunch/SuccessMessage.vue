@@ -3,7 +3,7 @@ const currentYear = new Date().getFullYear()
 </script>
 
 <template>
-  <div class="min-h-screen bg-neutral-50 flex items-center justify-center px-5">
+  <div class="min-h-screen bg-neutral-50 flex items-center justify-center px-5" role="main">
     <div class="max-w-lg text-center p-10">
       <!-- Check icon -->
       <div class="flex justify-center mb-8">
@@ -62,7 +62,7 @@ const currentYear = new Date().getFullYear()
 
       <!-- Logo -->
       <div class="opacity-30">
-        <Logo color="text-neutral-500" class="h-4 w-auto mx-auto" />
+        <Logo color="text-neutral-500" class="h-4 w-auto mx-auto" role="img" aria-label="Codentsa" />
       </div>
 
       <p class="font-body text-xs text-neutral-400 mt-4">

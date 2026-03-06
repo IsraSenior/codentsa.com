@@ -29,6 +29,44 @@ export default defineNuxtConfig({
   ],
 
   app: {
+    head: {
+      htmlAttrs: { lang: 'es' },
+      link: [
+        { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
+        { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        {
+          rel: 'preconnect',
+          href: 'https://fonts.gstatic.com',
+          crossorigin: 'anonymous',
+        },
+        {
+          rel: 'preload',
+          as: 'style',
+          href: 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&display=swap',
+          onload: "this.onload=null;this.rel='stylesheet'",
+        },
+        {
+          rel: 'preload',
+          as: 'image',
+          href: '/image-qs-3.webp',
+          type: 'image/webp',
+        },
+      ],
+      style: [
+        {
+          innerHTML:
+            '#__nuxt{animation:nuxtReveal .2s ease forwards}@keyframes nuxtReveal{from{opacity:0}to{opacity:1}}',
+        },
+      ],
+      noscript: [
+        {
+          innerHTML:
+            '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&display=swap">',
+        },
+      ],
+    },
     pageTransition: {
       name: 'page',
       mode: 'out-in',
@@ -36,6 +74,7 @@ export default defineNuxtConfig({
   },
 
   gtag: {
+    enabled: process.env.NODE_ENV === 'production',
     id: process.env.NUXT_PUBLIC_GOOGLE_ANALYTICS_ID,
   },
 
