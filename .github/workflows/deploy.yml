@@ -88,6 +88,7 @@ jobs:
             NUXT_PUBLIC_UMAMI_ID=${{ secrets.NUXT_PUBLIC_UMAMI_ID }}
             NUXT_PUBLIC_GOOGLE_ANALYTICS_ID=${{ secrets.NUXT_PUBLIC_GOOGLE_ANALYTICS_ID }}
             NUXT_PUBLIC_META_PIXEL_ID=${{ secrets.NUXT_PUBLIC_META_PIXEL_ID }}
+            NUXT_PUBLIC_MAINTENANCE_ENABLED=true
 
   deploy:
     name: Deploy to VPS
