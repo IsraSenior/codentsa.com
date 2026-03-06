@@ -66,10 +66,10 @@ async function submitKey() {
 
       <div class="mt-10 pt-6 border-t border-neutral-200">
         <p class="font-body text-sm text-neutral-500 mb-1">
-          Contacto: <a href="mailto:soporte@codentsa.com" class="text-primary-500 hover:underline">soporte@codentsa.com</a>
+          Contacto: <a href="mailto:pedidos@codentsa.es" class="text-primary-500 hover:underline">pedidos@codentsa.es</a>
         </p>
         <p class="font-body text-sm text-neutral-500">
-          Tel: <a href="tel:900000000" class="text-primary-500 hover:underline">900 000 000</a>
+          Tel: <a href="tel:914773880" class="text-primary-500 hover:underline">914 773 880</a>
         </p>
       </div>
     </div>
