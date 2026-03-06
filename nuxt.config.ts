@@ -50,7 +50,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Private keys (only available server-side)
     directusToken: process.env.NUXT_DIRECTUS_TOKEN,
-    maintenanceAccessKey: process.env.NUXT_MAINTENANCE_ACCESS_KEY || 'codentsa',
+    maintenanceAccessKey: process.env.NUXT_MAINTENANCE_ACCESS_KEY || 'codentsa2025',
     redsys: {
       merchantCode: process.env.NUXT_REDSYS_MERCHANT_CODE,
       terminal: process.env.NUXT_REDSYS_TERMINAL,
